@@ -215,7 +215,7 @@ var tableapp=new Vue({
 	    var tablecode="<table class='ui celled table'><thead><tr><th>原始文件名</th><th>大小</th><th>URL</th><th></tr></thead><tbody>";
 	    //uploadfile初始化
 	    $("#fileuploader").uploadFile({
-			url:"{:U('Admin/Index/remoteDownloadAPI')}",
+			url:"{:U('Admin/Index/uploadAPI')}",
 			fileName:"fileselect[]",
 			sequential:true,
 			sequentialCount:1,
