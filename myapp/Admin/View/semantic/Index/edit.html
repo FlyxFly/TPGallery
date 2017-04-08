@@ -1,0 +1,317 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Public/navbar.html"/>
+<div class="ui container">
+<form class="ui form">
+	<div class="ui grid">
+		<div class="six wide column">
+		<div class="field">
+			<label for="title">标题</label>
+	        <input id="title" name="title" type="text" value="{$entryinfo[0]['title']}">
+	        <input id="pid" name="pid" type="hidden" value="{$entryinfo[0]['postid']}">
+		</div>
+        </div>
+		<div class="three wide column">
+		<div class="field">
+            <label for="datetime">时间</label>
+			<input type="text" name="publishdate" class="pickdate" id="time" value="{$entryinfo[0]['createdate']}">
+		</div>
+		</div>
+		<div class="three wide column">
+			<div class="field">
+			<div class="ui checkbox toggle">
+				<label>隐藏</label>
+				<input type="checkbox" name="private" tabindex="0" value="1" {$entryinfo[0]['private']==1?'checked':''}>
+				</div>
+				
+			</div>
+		</div>
+		<div class="three wide column">
+			<div class="field">
+				<label for="">操作</label>
+				<div class="ui buttons">
+				  <a class="ui primary button" id="infosave">保存</a>
+				  <div class="or" data-text=""></div>
+				  <a class="ui button" id="infocancel">取消</a>
+				</div>
+			</div>
+		</div>
+	
+		<!-- 分类列表开始 -->
+		<div class="row">
+<!-- 				<div class="ui checkbox">
+					<input class="filled-in" type="checkbox" id="allselect"><label for="allselect">全选</label>
+				</div> -->
+			<foreach name="allcategory" item="category">
+			<div class="three wide column">
+			<div class="field">
+				<div class="ui checkbox">
+					<input class="hidden" {:in_array($category['mid'],$thiscategory)?"checked":""} id="{$category.name}" tabindex="0" type="checkbox" name="category" value="{$category.mid}">
+					<label for="{$category.name}">{$category.name}</label>
+				</div>
+				</div>
+			</div>
+			</foreach>
+
+		</div>
+		</form>
+
+		<div class="row">
+			<div class="column">
+				<a id="openaddpic" class="ui primary button" >新增</a>
+				<a class="ui red button" id="deleteimg">删除</a>
+				<table class="ui celled table" id="maintable">
+					<thead>
+						<tr>
+							<th class="col m1 text-center">序号</th>
+							<th class="col m8 text-center">URL</th>
+							<th class="col m1 text-center">长度</th>
+							<th class="col m1 text-center">宽度</th>
+							<th class="col m1 text-center">封面</th>
+						</tr>
+					</thead>
+					<tbody>
+						<foreach name="entryinfo['imgs']" item="item">
+							<tr data-id="{$item['id']}">
+								<td class="collapsing"><div class="inline field"><input type="checkbox" id="item{$item['id']}"><label for="item{$item['id']}">{$key+1}</label></div></td>
+								<td><input readonly name="url" class="form-control input-sm imgurl" type="text" value="{$item['url']}"></td>
+								<td class="collapsing"><input readonly name="width" class="form-control input-sm" type="text" value="{$item['width']}"></td>
+								<td class="collapsing"><input readonly name="height" class="form-control input-sm" type="text" value="{$item['height']}"></td>
+								<td class="collapsing"><div class="inline field"><input id="cover{$item['id']}" type="radio" name="cover" value="{$item['id']}" {$item['cover'] == 1?"checked":""}><label for="cover{$item['id']}">设</label></div></td>
+							</tr>
+						</foreach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+</div>
+</div>
+
+
+<!-- 图片展示模态框开始 -->
+ 
+<div class="ui basic modal" id="displaypic">
+  <div class="ui icon header" id="modaltitle">
+    <i class="archive icon"></i>
+    Archive Old Messages
+  </div>
+  <div class="content" id="modalbody">
+    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+  </div>
+  <div class="actions">
+    <div class="ui green ok inverted button">
+      <i class="checkmark icon"></i>
+      Ok
+    </div>
+  </div>
+</div>
+
+ <!-- 图片展示模态框结束 -->   
+
+
+
+
+
+
+<!-- 新增图片态框开始 modal -->
+<!-- <div class="modal fade" tabindex="-1" role="dialog" >
+	<div class="modal-content" id="addpicbody">
+      <h4>添加图片</h4>
+      <a href="#" id="addinputbox">[+]</a>
+      	<input type="text" class="addpic">
+	  </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">关闭</a>
+      <a href="#!" class= "waves-effect waves-green btn-flat" id="saveaddedimg">保存更改</a>
+    </div>
+</div> -->
+
+
+
+<div class="ui modal" id="create-entry">
+   <i class="close icon"></i>
+   <div class="header">
+    添加图片
+   </div>
+   <div class="content">
+
+    <div class="description" id="addpicbody">
+   		<div class="field">
+       	<label for=""><a href="#" id="addinputbox">[+]</a></label>
+      	<input type="text" class="addpic ">
+	  </div>
+    </div>
+    </div>
+
+  <div class="actions">
+    <div class="ui black deny button">
+      关闭
+    </div>
+    <div class="ui positive right labeled icon button" id="saveaddedimg">
+      保存更改
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+<!-- 新增图片态框结束 modal -->
+
+<script>
+	//初始化mdcss模态框
+	$(document).ready(function(){
+		$('.ui.radio.checkbox').checkbox();
+		$('.ui.checkbox').checkbox();
+		$("#displaypic").modal();
+		$("#create-entry").modal();
+
+	})
+	$(".ui checkbox").checkbox();
+
+	$("#openaddpic").click(function(){
+		$("#create-entry").modal("show")
+	})
+
+	$("#infosave").click(function(){
+		var categorys=[];//选中的分类
+		var imgs={};
+		$("input[name='category']:checked").each(function(){
+			categorys.push($(this).val());
+		})
+		var imgs={};//图片数据
+		var new_img_index=1
+		$("tbody tr").each(function(){
+			var that=$(this);
+			var imgid=that.data('id') || new_img_index;
+			imgs[imgid]={};
+			imgs[imgid]['url']=that.find("input[name='url']").val();
+			imgs[imgid]['height']=that.find("input[name='height']").val();
+			imgs[imgid]['width']=that.find("input[name='width']").val();
+			imgs[imgid]['cover']=that.find("input[name='cover']:checked").val();
+			new_img_index+=1
+		})
+		var alldata={
+			"categorys":categorys,
+			"imgs":imgs,
+			"title":$("#title").val(),
+			"pid":$("#pid").val(),
+			"cover":$("input[name='cover']:checked").val(),
+			"private":$("input[name='private']:checked").val() || 0
+		}
+		console.log(alldata);//所有数据
+
+		var saveAPI="{:U('Admin/Index/savepost')}";
+		$.post(saveAPI,alldata,function(data){
+			var result=JSON.parse(data);
+			if(result.code==200){
+				layer.msg(result.message,{"icon":1});
+				setTimeout(function(){window.location.reload()},2000)
+				// setTimeout(function(){window.history.back()},2000)
+			}else{
+				layer.msg(result.message,{"icon":2})
+			}
+		})
+	})
+	$("#allselect").click(function(){
+		console.log($(this).is(":checked"));
+		if($(this).is(":checked")){
+			$("input[name='category']").each(function(){$(this).attr("checked",true)})
+		}else{
+			$("input[name='category']").each(function(){$(this).attr("checked",false)})
+		}
+	})
+	var index=1;
+	// $("#create-entry").click(function(event){
+	// 	// var template="<tr><td class='col m1 text-center'><input type='checkbox'></td><td class='col m1 text-center'>"+index+"</td><td class='col m7'><input name='url' class='form-control input-sm imgurl' type='text'></td><td class='col m1'><input name='width' class='form-control input-sm' type='text' ></td><td class='col m1'><input name='height' class='form-control input-sm' type='text' ></td><td class='col m1 text-center'><input type='radio' name='cover' value='"+index+"'></td></tr>";
+	// 	// $("table").append(template);
+	// 	// index=index+1;
+	// 	// event.preventDefault();
+
+	// 	$("#addpic").modal();
+	// 	$("#addpictitle").text("新增图片");
+	// 	event.stopPropagation();
+	// 	event.preventDefault();
+		
+	// })
+
+	$("#maintable").find("input[name='url']").click(function(){
+		var imgId=this.parentElement.parentElement.dataset.id;
+		var imgtemplate="<img id='viewimage' class='ui image' alt='此处应有图片' src='"+this.value+"'></img>";
+		$("#modaltitle").text("图片ID: "+imgId);
+		$("#modalbody").html(imgtemplate);
+		layer.load();
+		setTimeout(function(){
+			layer.closeAll("loading");
+			$("#displaypic").modal("show");
+		},700)
+
+	})
+		
+
+
+	$("#addinputbox").click(function(){
+		$("#addpicbody").append("<input type='text' class='addpic'>")
+	})
+
+	$("#saveaddedimg").click(function(){
+		if($("#pid").val()==""){
+			layer.msg("请填写标题分类并保存后再添加图片",{icon:7});
+		}else{
+			var tobeadd={"action":"add","postid":"","url":[]},
+			result=[];
+			tobeadd.postid=$("#pid").val();
+
+			$("#addpicbody").find(".addpic").each(function(){
+				result.push(this.value)
+			})
+			tobeadd.url=result;
+			$("#addpicbody").html("<input type='text 'class='form-control addpic'>");
+			imgAPI(tobeadd);
+			$("#create-entry").modal("close");
+
+		}
+	})
+
+	$("#deleteimg").click(function(){
+		//删除图片
+		var data={
+				"action":"delete",
+				"imgid":[]
+			};
+		//获取勾选删除图片的id
+		$("#maintable").find("input[type='checkbox']:checked").each(function(){
+			data.imgid.push(this.parentElement.parentElement.parentElement.dataset.id);
+		})
+		
+		imgAPI(data);
+	})
+
+	function imgAPI(dataobj){
+		var imgMngApi="{:U('Admin/Index/imgEdit')}";
+		$.post(imgMngApi,dataobj,function(response){
+			try{
+				data=JSON.parse(response);
+				if(data.message){
+					layer.msg("成功处理了"+data.message+"条数据！",{icon:1})
+				}else{
+					layer.msg("没有处理数据",{icon:0})
+				}
+				layer.msg(data.message)
+			}catch(e){
+				layer.msg("服务器返回了不可描述的信息"+e.message,{icon:2})
+			}
+		})
+	}
+
+
+  
+
+// layer.msg.icon
+// 0:感叹号
+// 1:勾勾
+// 2:叉叉
+// 3:问号
+// 4:锁住
+// 5:不开心
+// 6:开心
+
+</script>
+</body>
+</html>

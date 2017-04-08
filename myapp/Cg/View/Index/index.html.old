@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="__PUBLIC__/css/bootstrapmin.css">
+    
+    <style>
+    .all-action{
+    	width: 60%;
+    	margin:0 auto;
+    }
+    .items{
+    	float: left;
+    	width: 33%;
+    	height: 32px;
+    	background-color: aqua;
+    	text-align: center;
+    	line-height: 33px;
+    	border: 1px solid white;
+    	font-weight: bold;
+    	font-family: Microsoft Yahei,arial
+    }
+    .items:hover,
+    .item-select{
+    	background-color: #154a81;
+    	color: white
+    }
+
+
+
+
+    
+    
+    </style>
+</head>
+
+<body ng-app="linkGenerator">
+    <div class="container">
+        <form role="form" ng-controller="iptables">
+            <div class="all-action">
+                <div class="items" ng-repeat="x in actions" ng-class="{true:'item-select',false:''}[x==selectedItem]" ng-click="select(x)">
+                	<span class="item-name">{{x.action}}</span>
+                </div>
+
+
+            </div>
+            <div class="col-md-3">
+            	<select name="province" class="form-control" ng-model="selectedProvince" ng-options="province for province in provinces">
+            		
+            	</select>
+            </div>
+            <div class="col-md-3">
+            	<select name="city" class="form-control" ng-model="selectedCity" ng-options="city for city in cities">
+            		
+            	</select>
+            </div>
+            <div class="col-md-3">
+            	<select name="district" class="form-control" ng-model="selectedDistrict" ng-options="district for district in districts">
+            		
+            	</select>
+            </div>
+            <div class="col-md-12">
+               
+                <br/> provinces:{{cities}}
+                <br/> selectedProvince:{{selectedProvince}}
+                <br/> selectedCity:{{selectedCity}}
+                <br/> selectedDistrict:{{selectedDistrict}}
+            </div>
+        </form>
+    </div>
+    <script src="__PUBLIC__/js/angular-1.5.8.js"></script>
+    <script>
+    angular.module("linkGenerator", [])
+        .controller("iptables", function($scope) {
+        	$scope.actions=[{"action":"新增"},{"action":"修改"},{"action":"删除"}]
+        	$scope.provinces=["四川","广东"]
+        	$scope.$watch("selectedProvince",function(province){
+        		switch(province){
+        			case "四川" :{
+        				$scope.cities=["成都","南充","绵阳"];
+        				break;
+        			}
+        			case "广东":{
+        				$scope.cities=["广州"];
+        				break;
+        			}
+
+        		}
+        	})
+        	$scope.$watch("selectedCity",function(city){
+        		switch(city){
+        			case "成都":{
+        				$scope.districts=["青羊区","锦江区"];
+        				break;
+        			}
+        			case "南充":{
+        				$scope.districts=["顺庆区"];
+        				break;
+        			}
+        			case "绵阳":{
+        				$scope.districts=["不知道"];
+        				break;
+        			}
+        			case "广州":{
+        				$scope.districts=["白云区","增城市"];
+        				break;
+        			}
+        		}
+        	})
+        	$scope.selectedItem=$scope.actions[0]
+        	$scope.selectedProvince=$scope.provinces[0]
+        	$scope.select=function(item){
+        		$scope.selectedItem=item;
+        	}
+
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+<div class="entrybody" ng-controller="entrycontroller" onFinishRenderFilters>
+    <div class="entrytitle">{{data.info[0].title}}
+        <span class="entryinfo">{{data.info[0].createdate}}</span>
+    </div>
+
+    <div class="entryimgs" ng-repeat="(x,y) in data.content">
+        <a ng-href="{{y.url}}" rel="lightbox"><img ng-src="{{y.url}}"></a>
+    </div>
+</div>
+<div class="clear"></div>

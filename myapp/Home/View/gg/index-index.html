@@ -1,0 +1,18 @@
+      <div class="main" id="mainbox" lazy-container mas>
+            <div class="entry" ng-repeat="(x,y) in data" on-finish-render-filters  repeat-finish="renderFinish()" ele1="main" ele2="entry">
+               <a ng-href="#/post/{{y[0].postid}}">
+                    <div class="entrycontent">
+                        <img lazy-src="{{y[1].url}}">
+                    </div>
+                    <div class="entryinfo">
+                        <p>{{y[0].title}}</p>
+                    </div>
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="pagenavi">
+            <ul class="pagenavi">
+                <li ng-repeat="p in pagesequence"><a ng-class="{true:'active'}[p+1==currpage]" ng-href="#/page/{{p+1}}">{{p+1}}</a></li>
+            </ul>
+        </div>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta Content-type='text/html'>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/reset.css" type="text/css">
+<link rel="stylesheet" href="css/picbox.css" type="text/css">
+<script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://libs.useso.com/js/angular.js/1.2.9/angular.min.js"></script>
+<script src="http://libs.useso.com/js/angular.js/1.2.9/angular-route.min.js"></script>
+<script src="js/me-lazyimg.js"></script>
+<script src="js/picbox.js"></script>
+<script src="js/masonry.pkgd.min.js"></script>
+<script src='index.js'></script>
+
+<title>首页</title>
+<style>
+/*     {font-family: Microsoft Yahei}*/
+    a{text-decoration: none;color: #004f50}
+    .wrap{margin:0 auto;width: 100%;min-width: 800px}
+    .head{height:100px;border: 1px dotted #ccc}
+    .head img{width: 250px;height: 100px}
+    .head p{float: right;line-height: 100px;height: 100px;padding-right: 50px;font-family: Microsoft Yahei;font-size: 40pt;margin-top: 0px}
+    .navi{height: 50px;border: 1px dotted #ccc;border-radius: 10px;margin-top: 3px}
+    .navi li a{float: left;height: 50px;line-height: 50px;padding: 0 20px;font-weight: bold;}
+    .navi li a:hover{background-color: #004f50;color: white}
+    .main{border: 1px dotted #ccc;padding: 15px;margin-top: 3px;}
+    .entry{width: auto;float: left;padding: 10px;margin-left: 5px;margin-top: 10px; background-color: #f2f2f2}
+    .entryinfo{margin-top: 15px;}
+    .entrycontent{font-size: 11pt;font-family: Microsoft Yahei;line-height: 17px;padding-left: 15px}
+    .entrycontent img{border-radius: 10px;box-shadow: 5px 5px 5px #888888;width:320px}
+    .clear{clear:both}
+    .entrybody{border: 1px solid #ccc;margin-top: 3px;padding: 10px}
+    .entrytitle{font-weight: bold;margin: 10px;font-size: 25px;border-bottom: 1px dotted #ccc}
+    .entryinfo{font-weight: 100;color: #ccc;margin: 6px;font-size: 13px}
+    .entryimgs img{width: 330px;float: left;margin-bottom: 10px}
+    .pagenavi{margin: 0 auto}
+    .pagenavi li {float:left}
+    .pagenavi li a:link{margin-right: 5px;border: 1px solid #93979b;line-height: 60px;padding: 0 25px; text-decoration: none; font-size: 2em;font-family: fantasy;}
+    .pagenavi li a:hover{background-color: #468dff;color: white}
+    .active{background-color: #468dff;color: white}
+</style>
+</head>
+<body ng-app="myapp">
+    <div class="wrap">
+        <div class="head">
+            <a href="#"><img src="images/logo.gif" alt="小明的网站"></a>
+            <p>小明的网站</p>
+        </div>
+        <div class="navi">
+            <ul>
+                <li><a href="#">首页</a></li>
+            </ul>
+        </div>
+        <div ng-view></div>
+    </div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<include file="myapp/Admin/View/default/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/default/Public/navbar.html"/>
+<div class="container">
+		<div>
+			<table class="table table-condensed table-responsive table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>操作</th>
+						<th>序号</th>
+						<th>标题</th>
+						<th>作者</th>
+						<th>最后修改</th>
+						<th>分类</th>
+						<!-- <th>编辑</th> -->
+					</tr>
+				</thead>
+				<tbody id="entry-list">
+
+					<foreach name="entryinfo" item="item">
+						<tr id="tr{$item['postid']}">
+							<td><a class="link del-entry-link" data-postid="{$item.postid}" data-title="{$item.title}">删除</a></td>
+							<td>{$item["postid"]}</td>
+							<td><a href="{:U('/Admin/Index/edit?pid='.$item['postid'])}">{$item["title"]}</a></td>
+							<td>{$item["authorid"]}</td>
+							<td>{$item["createdate"]}</td>
+							<td>
+								<volist name="item['category']" id="ct">{$ct},</volist>
+							</td>
+							<!-- <td><a class="btn btn-primary" href="{:U('/Admin/Index/edit?pid='.$item['postid'])}">编辑</a></td> -->
+						</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<a href="{:U('Admin/index/edit')}" class="btn btn-primary">新增</a>
+		 <div class="pagenumber">
+            <ul class="pagenavi">
+                {$page}
+            </ul>
+        </div>
+		</div>
+</div>
+<script>
+// var quiEditCache="";
+// $(".quickEdit").click(function(){
+// 	var thisPID=$(this).data('pid');
+// 	quiEditCache=$("#tr"+thisPID).html();
+// 	var thisTD=$("#tr"+thisPID+" td");
+// 	var fieldsArray=[2,3,4,5];
+// 	thisTD.each(function(index,item){
+// 		if(fieldsArray.indexOf(index)>=0){
+// 			var tmp=$(item).text();
+// 			$(this).empty().append("<input type='text' value='"+tmp+"' class='form-control'>");
+// 		}
+// 	})
+// 	var quickEditBtnTpl="<button class='btn btn-primary' id='quickEditSave' data-pid='"+thisPID+"'>保存</button>  <button class='btn btn-danger' id='quickEditCancel' data-pid='"+thisPID+"'>取消</button>";
+// 	$(thisTD[6]).empty().append(quickEditBtnTpl);
+// 	$('#quickEditCancel').click(function(){location.reload();})
+// });
+
+$("#entry-list").find(".del-entry-link").click(function(){
+	var that=$(this);
+	layer.confirm("是否删除："+that.data("title"),{btn:["是的","并不"]},function(){
+		var animaHandler=layer.load(0, {shade: false});
+			$.post("{:U('Admin/Index/delPost')}",{"pid":that.data("postid")},function(data){
+				layer.closeAll("loading");
+				data=JSON.parse(data);
+				if(data.code==200){
+					layer.msg(data.message,{icon:6})
+				}else{
+					layer.msg(data.message,{icon:5})
+				}
+				setTimeout(function(){window.location.reload},2000)
+			})
+	})
+
+	
+})
+
+
+</script>
+<include file="myapp/Admin/View/default/Public/footer.html"/>

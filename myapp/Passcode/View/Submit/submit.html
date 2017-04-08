@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang=zh>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="__PUBLIC__/PasscodeIndex/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="__PUBLIC__/PasscodeIndex/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="__PUBLIC__/PasscodeIndex/css/style.css" rel="stylesheet">
+    <title>提交一个新代码</title>
+</head>
+<body>
+<div class="container">
+    <!--Navbar-->
+    <nav class="navbar navbar-dark bg-primary">
+        <!-- Collapse button-->
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx2">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="container">
+            <!--Collapse content-->
+            <div class="collapse navbar-toggleable-xs" id="collapseEx2">
+                <!--Navbar Brand-->
+                <a class="navbar-brand" href={:U("Passcode/Index/index")}>Ingress 兑换代码</a>
+                <!--Links-->
+                <ul class="nav navbar-nav">
+                    <!--                         <li class="nav-item active">
+                                                <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                                            </li> -->
+                    <li class="nav-item active">
+                        <a class="nav-link pull-right ">提交新代码</a>
+                    </li>
+                    <!--                         <li class="nav-item">
+                                                <a class="nav-link">Pricing</a>
+                                            </li>
+                                            <li class="nav-item btn-group">
+                                                <a class="nav-link dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <a class="dropdown-item">Action</a>
+                                                    <a class="dropdown-item">Another action</a>
+                                                    <a class="dropdown-item">Something else here</a>
+                                                </div>
+                                            </li> -->
+                </ul>
+            </div>
+            <!--/.Collapse content-->
+        </div>
+    </nav>
+    <!--/.Navbar-->
+
+    <if condition="$checkedData neq null">
+    <h5>点击提交，将忽略所有不可提交的条目</h5>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Code</th>
+                <th>是否可以提交</th>
+            </tr>
+            </thead>
+            <tbody>
+                <foreach name="checkedData" item="oneSet" key="key">
+                <tr {$oneSet['result']?"class='table-danger'":"class='table-success'"}>
+                    <td>{$key+1}</td>
+                    <td>{$oneSet.code}</td>
+                    <td>{$oneSet['result']?"否":"是"}</td>
+                </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-primary" id="savedata">确认并提交</a>
+        <a href="{:U('Passcode/Submit/index')}" class="btn btn-danger">重新来过</a>
+        <script>var batchNo={$batchNo};</script>
+    <else/>
+        <form action="{:U('Passcode/Submit/index')}" method="post">
+            <div class="md-form">
+                <textarea name="codes" id="codes" class="md-textarea" style="height:300px"></textarea>
+                <label for="codes">在此输入您的新代码，每行一条</label>
+            </div>
+            <button type="submit" class="btn btn-primary">检查是否已经存在</button>
+            <button type="reset" class="btn btn-danger">清空</button>
+        </form>
+    </if>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/tether.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/mdb.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/layer.js"></script>
+<script>
+    (function(){
+        $("#savedata").click(function(){
+            var animate=layer.load(0,{shade:false});
+            $.post("{:U('Passcode/Submit/save')}",{"action":"savedata","batchNo":batchNo},function(data){
+                layer.close(animate);
+                var jsdata=JSON.parse(data);
+                var resultData=jsdata.data;
+                var resultTable=["<table class='table'><thead><tr><th>代码</th><th>结果</th></tr></thead><tbody>"];
+                for(i in resultData){
+                    if(resultData[i].result){
+                        resultTable.push("<tr class='table-success'><td>"+resultData[i].code+"</td><td>"+"成功"+"</td></tr>")
+                    }else{
+                        resultTable.push("<tr class='table-danger'><td>"+resultData[i].code+"</td><td>"+"失败"+"</td></tr>")
+                    }
+                }
+                resultTable.push("</tbody></table><p style='text-align:center'>感谢！你的代码将在管理员审核后显示。</p>");
+                var resultTableHtml=resultTable.join("");
+                layer.open({
+                    type:1,
+                    title:false,
+                    closeBtn:true,
+                    area:"300px",
+                    shade:0.8,
+                    id:"Result_notice",
+                    btn:["好"],
+                    moveType:0,
+                    content:resultTableHtml,
+                    success:function(layero){
+                        var btn=layero.find(".layui-layer-btn");
+                        btn.css("text-align","center");
+                        btn.find(".layui-layer-btn0").attr({
+                            href:"{:U('Passcode/Index/index')}",
+                        })
+                    }
+                })
+            })
+        })
+    })()
+</script>
+
+</body>
+</html>

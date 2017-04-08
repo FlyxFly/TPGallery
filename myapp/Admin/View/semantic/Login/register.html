@@ -1,0 +1,95 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Login/navbar.html" />
+<div class="ui middle aligned center aligned grid">
+<div class="column six wide">
+	<h2 class="ui teal image header">
+		<img src="">
+		<div class="content">账号注册</div>
+	</h2>
+	<form class="ui large form">
+		<div class="ui stacked segment">
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="mail icon"></i>
+					<input name="email" type="email" id="email" placeholder="请输入邮箱">
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="user icon"></i>
+					<input name="email" type="text" id="username" placeholder="请输入用户名">
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="lock icon"></i>
+					<input name="email" type="password" id="password" placeholder="请输入密码">
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="lock icon"></i>
+					<input type="password" name="repassword" id="repassword" placeholder="请再次输入密码">
+				</div>
+			</div>
+			<div class="ui fluid large teal submit button">注册</div>
+			<div class="ui error message"></div>
+		</div>
+	</form>
+	<div class="ui message">
+		<a href="{:U('Admin/Login/index')}">返回登陆</a>
+	</div>
+</div>
+</div>
+<script>
+$(document).ready(function(){
+	$(".ui.form").form({
+		fields:{
+			email:{
+				identifier:'email',
+				rules:[
+				{
+					type:'empty',
+					promopt:'请输入邮箱'
+				},
+				{
+					type:'email',
+					prompt:'请输入正确的邮箱'
+				}]
+			},
+			username:{
+				identifier:'username',
+				rules:[{
+					type:'empty',
+					prompt:'用户名不能为空'
+				},{
+					type:'minLength[4]',
+					prompt:'用户名最少需要四个字符'
+				}]
+			},
+			password:{
+				identifier:'password',
+				rules:[{
+					type:'length[6]',
+					prompt:'密码应该多于六位数'
+				},
+				{
+					type:'empty',
+					prompt:'请填写密码'
+				}]	
+			},
+			repassword:{
+				identifier:'repassword',
+				rules:[{
+					type:'match[password]',
+					prompt:'两次输入的密码不一致'
+				}]
+			}
+		}
+	},{onSuccess:function(){
+		console.log("验证成功")
+	}})
+})
+
+</script>
+<include file="myapp/Admin/View/semantic/Index/footer.html"/>

@@ -1,0 +1,21 @@
+[21-May-2016 16:34:38 UTC] PHP Fatal error:  Call to a member function setFetchMode() on boolean in /home/user487137f6/public_html/gg/index.php on line 46
+[21-May-2016 16:34:38 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 26
+[21-May-2016 16:34:44 UTC] PHP Fatal error:  Call to a member function setFetchMode() on boolean in /home/user487137f6/public_html/gg/index.php on line 46
+[21-May-2016 16:40:18 UTC] PHP Parse error:  syntax error, unexpected ')', expecting variable (T_VARIABLE) in /home/user487137f6/public_html/gg/edit.php on line 6
+[21-May-2016 16:41:02 UTC] PHP Fatal error:  Call to a member function prepare() on null in /home/user487137f6/public_html/gg/db.php on line 23
+[21-May-2016 16:41:17 UTC] PHP Fatal error:  Call to a member function setFetchMode() on boolean in /home/user487137f6/public_html/gg/index.php on line 46
+[21-May-2016 16:43:51 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 26
+[21-May-2016 16:44:50 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 26
+[21-May-2016 16:48:37 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 27
+[21-May-2016 16:48:50 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 27
+[21-May-2016 16:49:02 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/user487137f6/public_html/gg/index.php:2) in /home/user487137f6/public_html/gg/index.php on line 7
+[21-May-2016 16:49:02 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 28
+[21-May-2016 16:50:22 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/user487137f6/public_html/gg/index.php:2) in /home/user487137f6/public_html/gg/index.php on line 7
+[21-May-2016 16:50:22 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 29
+[21-May-2016 16:50:52 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 28
+[21-May-2016 16:51:47 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 28
+[21-May-2016 16:52:21 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 28
+[21-May-2016 16:53:20 UTC] PHP Parse error:  syntax error, unexpected 'try' (T_TRY) in /home/user487137f6/public_html/gg/index.php on line 15
+[21-May-2016 16:53:42 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 35
+[21-May-2016 16:55:19 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 34
+[21-May-2016 16:57:52 UTC] PHP Fatal error:  Call to a member function fetchAll() on boolean in /home/user487137f6/public_html/gg/index.php on line 34

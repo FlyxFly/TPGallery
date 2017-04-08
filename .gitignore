@@ -1,0 +1,5 @@
+#git排除的文件目录
+myapp/Runtime/
+ThinkPHP/
+.idea/
+myapp/Common/Conf/

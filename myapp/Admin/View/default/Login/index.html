@@ -1,0 +1,100 @@
+<include file="myapp/Admin/View/default/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+
+	
+
+  <nav>
+    <div class="nav-wrapper">
+    <div class="container">
+      <a href="#" class="brand-logo">Logo</a>
+      
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{:U('Admin/Login/reg')}">注册</a></li>
+	
+      </ul>
+      </div>
+    </div>
+  </nav>
+<style>
+/*** !important was needed for snippet ***/
+label.input-field input,.input-field input:focus + label,.row .input-field input,.row .input-field input:focus {
+   font-size: 2em
+ }
+</style>
+<div class="container">
+	
+
+<div class="row">
+	<div class="col m6 offset-m3">
+	<div class="row">
+		<p class="caption">
+			<h2 class="header center" >登陆</h2>
+		</p>
+	</div>
+	<form>
+	<div class="row">
+		<div class="row">
+	        <div class="input-field col m12">
+	          <input name="email" id="email" type="email" class="validate">
+	          <label for="email">邮箱</label>
+        	</div>	
+		</div>
+        <div class="row">
+	        <div class="input-field col m12">
+	          <input name="password" id="password" type="password">
+	          <label for="password">密码</label>
+        	</div>
+		</div>
+	</div>
+	</form>
+	<div class="row">
+		<div class="input-field col l6 center">
+			<a class="waves-effect waves-light btn " id="logincheck">登陆</a>
+		</div>
+		<div class="input-field col l6 center">
+			<a href="{:U('reg')}" class="waves-effect waves-light btn red">注册</a>
+		</div>
+	</div>
+</div>
+
+</div>
+
+<script>
+	$("#logincheck").on('click',function(){
+		if(fieldcheck()){login();return false}else{return false;}
+	});
+	$(document).keyup(function(event){
+		if(event.which==13 && fieldcheck()){login()}
+	})
+
+	function fieldcheck(){
+		if($("#email").val().trim()==""){
+			layer.msg("请输入邮箱",{"icon":3});
+			return false;
+		}else if($("#password").val().trim()==""){
+			layer.msg("请输入密码",{"icon":3})
+			return false;
+		}else{
+
+			return true;
+		}
+
+	}
+
+
+	function login(){
+		$.post("{:U('login')}",$("form").serialize(),function(data,status){
+			var result=JSON.parse(data);
+			if(result.code==200){
+				layer.msg(result.message,{"icon":1});
+				setTimeout(function(){
+					location.href="{:U('Admin/Index/Index')}"
+				},2000)
+			}else{
+				layer.msg(result.message,{"icon":2})
+			}
+		})
+		return false;
+	}
+</script>
+
+<include file="myapp/Admin/View/default/Public/default/footer.html"/>

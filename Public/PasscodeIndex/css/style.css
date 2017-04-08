@@ -1,0 +1,74 @@
+/* YOUR CUSTOM STYLES */
+.info{
+	margin-right: 20px;
+}
+
+.available{
+	color: #4285F4
+}
+
+.notavailable{
+	color: #4285F4
+}
+
+code{
+	font-size: 1.5em;
+	color:#3F729B;
+	margin-top: -10px
+}
+
+.navbg{
+	background-color: #336699;
+}
+.contain-item li{
+	line-height: 10px
+}
+
+.code-info{
+	margin-bottom: -10px
+}
+
+.card-block{
+	padding-top: 5px
+}
+
+.zhongwen{
+	font-family: "Helvetica Neue","Helvetica","Arial","PingFang SC","Hiragino Sans GB", "Microsoft YaHei","WenQuanYi Micro Hei", sans-serif;
+}
+
+code:selection{
+	color:#E91E63;
+	background-color: darkblue
+}
+
+.navbar{
+	margin-bottom: 10px
+}
+
+.page-number{
+	text-align: center
+}
+
+.right-btn{
+	background-color: #a8c6f7;
+}
+
+.right-btn:hover{
+	background-color: #4285F4;
+}
+
+.cross-btn{
+	background-color: #ffc4c4;
+}
+.cross-btn:hover{
+	background-color: red
+}
+
+.success-high{
+	color: green;
+	font-weight: bold
+}
+
+.success-low {
+	color: pink;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		测试
+	</title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrapmin.css">
+	<style type="text/css">
+		.grid-item{width: 300px}
+		.grid-item img{width: 300px}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="grid">
+		<foreach name="data" item="entry">
+			<div class="grid-item">
+				<img src="__PUBLIC__/img/loading.gif" data-original="{$entry.cover}" alt="此处应有图片，然而并没有">
+			</div>
+		</foreach>
+	</div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript" src="__PUBLIC__/js/jquerymin.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/masonry-pkgd-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.lazyload.js"></script>
+<script type="text/javascript">
+	window.onload=function(){
+		$(".grid-item img").lazyload({
+			effect:"fadeIn",
+			failurelimit:40,
+			load:function(){
+				$(".grid").masonry({
+					gutterWidth:300,
+					itemSelector:".grid-item",
+					isAnimated:true
+				})
+			}
+		})
+	// 	$(".grid").masonry({
+	// 	itemSelector:".grid-item",
+	// 	columnWidth:300
+	// })
+	}
+</script>
+</body>
+</html>

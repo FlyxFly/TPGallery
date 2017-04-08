@@ -1,0 +1,40 @@
+<include file="myapp/Admin/View/default/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/default/Public/navbar.html"/>
+
+<div class="row">
+	<div class="col s12">
+		<table class="bordered highlight responsive-table">
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>用户名</th>
+					<th>邮箱</th>
+					<th>注册日期</th>
+					<th>上次登陆</th>
+					<th>上次登陆IP</th>
+					<th>用户组</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<foreach name="alluser" item="user">
+					<tr>
+						<td>{$user.id}</td>
+						<td>{$user.username}</td>
+						<td>{$user.email}</td>
+						<td>{$user.createdate|date="Y-m-d h:i:s",###}</td>
+						<td>{$user.lastlogindate|date="Y-m-d h:i:s",###}</td>
+						<td>{$user.lastloginip}</td>
+						<td>{$usertype[$user['type']]}</td>
+						<td>
+							<a class="btn-sm btn-primary" href="{:U('Admin/User/edit?id='.$user['id'])}">编辑</a>
+							<a class="btn waves-effect waves-light">删除</a>
+						</td>
+					</tr>
+				</foreach>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<include file="myapp/Admin/View/default/Index/footer.html"/>

@@ -1,0 +1,14 @@
+<div class="wrap" ng-app="myapp" ng-controller="mycontroller as c" onFinishRenderFilters>
+    <div class="box" ng-repeat="(x,y) in data" on-finish-render-filters>
+        <div class="info">
+            <h2>{{y[0].title}}</h2>
+            <p class="info">发布日期{{y[0].createdate}}</p>
+        </div>
+        <hr>
+        <div class="content">
+
+            <a ng-href="#/post/{{y[0].postid}}" rel="lightbox"><img ng-src="{{y[1].url}}"></a>
+        </div>
+
+    </div>
+</div>

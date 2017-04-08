@@ -1,0 +1,10 @@
+<div class="entry" ng-repeat="(x,y) in data" on-finish-render-filters>
+               <a ng-href="index.php?post={{y[0].postid}}">
+                    <div class="entrycontent">
+                        <img ng-src="{{y[1].url}}">
+                    </div>
+                    <div class="entryinfo">
+                        <p>{{y[0].title}}</p>
+                    </div>
+                </a>
+            </div>

@@ -1,0 +1,144 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Login/navbar.html" />
+
+<div class="ui container">
+	
+
+<div class="ui middle aligned center aligned grid">
+<div class="column four wide">
+	<h2 class="ui teal image header">
+		<img src="">
+		<div class="content">登陆</div>
+	</h2>
+	<form class="ui large form">
+		<div class="ui stacked segment">
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="user icon"></i>
+					<input type="text" name="email" type="email" id="email" placeholder="请输入邮箱">
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui left icon input">
+					<i class="lock icon"></i>
+					<input type="password" name="password" id="password" placeholder="请输入密码">
+				</div>
+			</div>
+			<div class="ui fluid large teal button" id="loginbtn">登陆</div>
+			<div class="ui error message"></div>
+		</div>
+	</form>
+	<div class="ui message">
+		<a href="{:U('Admin/Login/reg')}">注册一个新用户</a>
+	</div>
+</div>
+</div>
+
+
+
+<!-- 	<div class="col m6 offset-m3">
+	<div class="row">
+		<p class="caption">
+			<h2 class="header center" >登陆</h2>
+		</p>
+	</div>
+	<form>
+	<div class="row">
+		<div class="row">
+	        <div class="input-field col m12">
+	          <input name="email" id="email" type="email" class="validate">
+	          <label for="email">邮箱</label>
+        	</div>	
+		</div>
+        <div class="row">
+	        <div class="input-field col m12">
+	          <input name="password" id="password" type="password">
+	          <label for="password">密码</label>
+        	</div>
+		</div>
+	</div>
+	</form>
+	<div class="row">
+		<div class="input-field col l6 center">
+			<a class="waves-effect waves-light btn " id="logincheck">登陆</a>
+		</div>
+		<div class="input-field col l6 center">
+			<a href="{:U('reg')}" class="waves-effect waves-light btn red">注册</a>
+		</div>
+	</div>
+</div>
+
+</div> -->
+
+<script>
+$(document).ready(function(){
+	$(".ui.form").form({
+		fields:{
+			email:{
+				identifier:'email',
+				rules:[
+				{
+					type:'empty',
+					promopt:'请输入邮箱'
+				},
+				{
+					type:'email',
+					prompt:'请输入正确的邮箱'
+				}]
+			},
+			password:{
+				identifier:'password',
+				rules:[{
+					type:'length[5]',
+					prompt:'密码应该多于六位数'
+				}]
+			}
+		}
+		},{
+			onSuccess:function(){
+			console.log("成功");
+			return false;
+		}
+	})
+})
+
+
+	$("#loginbtn").on('click',function(){
+		if($("form").form("validate form")){login();return false}else{return false;}
+	});
+	$(document).keyup(function(event){
+		if(event.which==13 && $("form").form("validate form")){login()}
+	})
+
+	function fieldcheck(){
+		if($("#email").val().trim()==""){
+			layer.msg("请输入邮箱",{"icon":3});
+			return false;
+		}else if($("#password").val().trim()==""){
+			layer.msg("请输入密码",{"icon":3})
+			return false;
+		}else{
+
+			return true;
+		}
+
+	}
+
+
+	function login(){
+		$.post("{:U('login')}",$("form").serialize(),function(data,status){
+			var result=JSON.parse(data);
+			if(result.code==200){
+				layer.msg(result.message,{"icon":1});
+				setTimeout(function(){
+					location.href="{:U('Admin/Index/Index')}"
+				},2000)
+			}else{
+				layer.msg(result.message,{"icon":2})
+			}
+		})
+		return false;
+	}
+</script>
+
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

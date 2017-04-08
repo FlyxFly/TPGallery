@@ -1,0 +1,11 @@
+<div class="entrybody" on-finish-render-filters2 lazy-container>
+    <div class="entrytitle">{{data.info[0].title}}
+        <span class="entryinfo">{{data.info[0].createdate}}</span>
+    </div>
+<div class="entrycontent" id="entrycontent">
+    <div class="entryimgs" ng-repeat="(x,y) in data.content" repeat-finish="renderFinish('ccav')" >
+        <a ng-href="{{y.url}}" rel="lightbox-group"><img lazy-src="{{y.url}}"></a>
+    </div>
+</div>
+</div>
+<div class="clear"></div>

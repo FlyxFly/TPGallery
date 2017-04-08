@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html -->
+<html lang="zh"><script data-x-lastpass="">(function(){var c=0;if("undefined"!==typeof CustomEvent&&"function"===typeof window.dispatchEvent){var a=function(a){try{if("object"===typeof a&&(a=JSON.stringify(a)),"string"===typeof a)return window.dispatchEvent(new CustomEvent("lprequeststart",{detail:{data:a,requestID:++c}})),c}catch(f){}},b=function(a){try{window.dispatchEvent(new CustomEvent("lprequestend",{detail:a}))}catch(f){}};"undefined"!==typeof XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.send&&(XMLHttpRequest.prototype.send=
+function(c){return function(f){var d=this,e=a(f);e&&d.addEventListener("loadend",function(){b({requestID:e,statusCode:d.status})});return c.apply(d,arguments)}}(XMLHttpRequest.prototype.send));"function"===typeof fetch&&(fetch=function(c){return function(f,d){var e=a(d),g=c.apply(this,arguments);if(e){var h=function(a){b({requestID:e,statusCode:a&&a.status})};g.then(h)["catch"](h)}return g}}(fetch))}})();
+(function(){if("undefined"!==typeof CustomEvent){var c=function(a){if(a.lpsubmit)return a;var b=function(){try{this.dispatchEvent(new CustomEvent("lpsubmit"))}catch(k){}return a.apply(this,arguments)};b.lpsubmit=!0;return b};window.addEventListener("DOMContentLoaded",function(){if(document&&document.forms&&0<document.forms.length)for(var a=0;a<document.forms.length;++a)document.forms[a].submit=c(document.forms[a].submit)},!0);document.createElement=function(a){return function(){var b=a.apply(this,
+arguments);b&&"FORM"===b.nodeName&&b.submit&&(b.submit=c(b.submit));return b}}(document.createElement)}})();
+</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="./文件上传-小明的网站_files/materialize.css">
+	<link rel="stylesheet" type="text/css" href="./文件上传-小明的网站_files/datepicker.css">
+	<!-- css/normalize,css/bootstrapmin,js/bootstrapmin -->
+	<link rel="stylesheet" href="./文件上传-小明的网站_files/bootstrap-datepicker.min.css">
+	<script type="text/javascript" src="./文件上传-小明的网站_files/jquerymin.js.下载"></script><script type="text/javascript" src="./文件上传-小明的网站_files/bootstrap-select-min.js.下载"></script><script type="text/javascript" src="./文件上传-小明的网站_files/layer.js.下载"></script><link rel="stylesheet" href="./文件上传-小明的网站_files/layer.css" id="layui_layer_skinlayercss">
+	<link rel="stylesheet" href="./文件上传-小明的网站_files/icons.css">
+	<script src="./文件上传-小明的网站_files/bootstrap-datepicker.min.js.下载"></script>
+	<script src="./文件上传-小明的网站_files/bootstrap-datepicker.zh-CN.min.js.下载"></script>
+	<script src="./文件上传-小明的网站_files/materialize.js.下载"></script>
+	
+	<title>文件上传-小明的网站</title>
+	<style>
+		#preview{position: absolute;}
+		#del-entry-link{cursor: pointer}
+	</style>
+</head>
+<body>
+<!-- 导航下拉菜单 -->
+
+  <nav>
+    <div class="nav-wrapper">
+      <div class="container">
+      <a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#" class="brand-logo right">Logo</a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+		<li><a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/Index.html">日志管理</a></li>
+		<li><a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#">基础设定</a></li>
+		<li><a href="http://127.0.0.1/thinkphp/index.php/Admin/Tag/Index.html">分类管理</a></li>
+		<li></li><li><a class="dropdown-button" href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#!" data-activates="userdropdown">用户管理<i class="material-icons right">arrow_drop_down</i></a><ul id="userdropdown" class="dropdown-content">
+  <li><a href="http://127.0.0.1/thinkphp/index.php/Admin/User/index.html">查看所有用户</a></li>
+  <li><a href="http://127.0.0.1/thinkphp/index.php/Admin/User/edit.html">添加用户</a></li>
+</ul></li>
+		<li class="active"><a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html">文件上传</a></li>
+		<li><a href="http://127.0.0.1/thinkphp/index.php/Home/Index/index.html">查看网站</a></li>
+		<li><a class="navbar-link" href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#" data-userid="">你好! </a></li>
+		<li><a class="navbar-link" href="http://127.0.0.1/thinkphp/index.php/Admin/Index/logout.html">退出登陆</a></li>
+      </ul>
+      </div>
+    </div>
+  </nav>
+<script src="./文件上传-小明的网站_files/jquery.uploadfile.min.js.下载"></script>
+<link rel="stylesheet" href="./文件上传-小明的网站_files/uploadfile.css">
+<div class="container">
+<h4>文件上传</h4>
+  <div class="row">
+    <div class="col m12">
+      <ul class="tabs">
+        <li class="tab col m3"><a class="active" href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#addto">添加到现有日志中</a></li>
+        <li class="tab col m3"><a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#createone">新建一个日志</a></li>
+      <div class="indicator" style="right: 960px; left: 0px;"></div><div class="indicator" style="right: 960px; left: 0px;"></div></ul>
+    </div>
+    <!-- 添加到现有日志中-开始 -->
+    <div id="addto" class="col m12">
+		<form action="http://127.0.0.1/thinkphp/index.php/Admin/Index/uploadAPI.html" enctype="multipart/form-data" method="post" role="form" id="uploadForm">
+		<div class="row">
+			<div class="input-field col m12">
+			<!-- 左侧区域，放标题、选择框，提交按钮 -->
+				<div class="col m6">
+					<div class="row">
+						<input type="radio" name="action" value="new" id="actionNew">
+						<label for="actionNew">新建一个日志</label>
+						<input type="radio" name="action" value="add" id="actionAdd">
+						<label for="actionAdd">添加到现有日志中</label>
+					</div>
+					<div class="row">
+						<div class="input-field">
+						<input type="text" name="newTitle" id="newTitle">
+						<label for="newTitle">请输入日志名称</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="select-wrapper"><span class="caret">▼</span><input type="text" class="select-dropdown" readonly="true" data-activates="select-options-f51f8692-ed4e-7613-d108-cb76fac7ff1d" value="在此选择一个"><ul id="select-options-f51f8692-ed4e-7613-d108-cb76fac7ff1d" class="dropdown-content select-dropdown "><li class="disabled "><span>在此选择一个</span></li><li class=""><span>Maciek_Obrebski</span></li><li class=""><span>Barefeet</span></li><li class=""><span>Hugedick</span></li><li class=""><span>Muscle</span></li><li class=""><span>LiamJones</span></li><li class=""><span>ErogenousMonster</span></li><li class=""><span>新浪微博_小打小闹_024</span></li><li class=""><span>肌肉帅哥</span></li><li class=""><span>泰国萌萌帅哥</span></li><li class=""><span>叶俊杰</span></li><li class=""><span>周柏均</span></li><li class=""><span>Red_Shoes</span></li><li class=""><span>新浪微博_四川小虎丶Master</span></li><li class=""><span>新浪微博_My7</span></li><li class=""><span>Converse</span></li><li class=""><span>EvanParker</span></li><li class=""><span>Football_Socks</span></li><li class=""><span>Sperm</span></li><li class=""><span>张逸杰</span></li><li class=""><span>JQ映畫性感卧室脱衣帥哥</span></li><li class=""><span>Ankle</span></li><li class=""><span>新浪微博_白色路西法先森</span></li><li class=""><span>新浪微博_苝亰哓迺</span></li><li class=""><span>Enihschan</span></li><li class=""><span>黄凌</span></li><li class=""><span>Underware</span></li><li class=""><span>Cats</span></li><li class=""><span>曾崇倫</span></li><li class=""><span>新浪微博_M_ooDy_mOno</span></li><li class=""><span>李国铭</span></li><li class=""><span>DanteCos</span></li><li class=""><span>小虎</span></li><li class=""><span>成都体院90后运动男玩自拍</span></li><li class=""><span>新浪微博_Simon小叮当</span></li><li class=""><span>拳击白袜帅哥</span></li><li class=""><span>新浪微博_Evan恩少</span></li><li class=""><span>新浪微博_韩先森FUCK</span></li><li class=""><span>陈谭山</span></li><li class=""><span>新浪微博_Romeo_白袜少年</span></li><li class=""><span>王建银</span></li><li class=""><span>小帅趁家里没人玩脚</span></li><li class=""><span>大白腿</span></li><li class=""><span>篮球鞋</span></li><li class=""><span>三叶草高帮</span></li><li class=""><span>新浪微博_袜运动阳光</span></li><li class=""><span>general</span></li><li class=""><span>NikeHyperdunk</span></li><li class=""><span>liui aquino</span></li><li class=""><span>新浪微博_Mr_Y_爺</span></li><li class=""><span>af模特</span></li><li class=""><span>可爱小帅</span></li><li class=""><span>新浪微博_李扬呢</span></li><li class=""><span>新浪微博_郝吏海</span></li><li class=""><span>Quinton_Wynn</span></li><li class=""><span>跑鞋</span></li><li class=""><span>新浪微博_ErogenousMonster</span></li><li class=""><span>MitchHewer</span></li><li class=""><span>Skinny_Boy</span></li><li class=""><span>新浪微博_Mr_不是很黑的陈小嘎</span></li><li class=""><span>新浪微博_Masochism_0</span></li><li class=""><span>温少伟</span></li><li class=""><span>帅腿</span></li><li class=""><span>新浪微博_藏马006</span></li><li class=""><span>杨贺天</span></li><li class=""><span>新浪微博_____白昼</span></li><li class=""><span>NGA帅哥</span></li><li class=""><span>动漫</span></li><li class=""><span>新浪微博_美男子轩ALIN</span></li><li class=""><span>大长腿</span></li><li class=""><span>亲亲</span></li><li class=""><span>greatfeet</span></li><li class=""><span>新浪微博_他的小虎牙</span></li><li class=""><span>新浪微博__懒癌灬</span></li><li class=""><span>新浪微博_FeetFresa</span></li><li class=""><span>新浪微博_Airman_z</span></li><li class=""><span>新浪微博_JingYe烨少</span></li><li class=""><span>新浪微博_Captain撒马</span></li><li class=""><span>新浪微博_--EMBER的小号</span></li><li class=""><span>新浪微博_FonSuker</span></li><li class=""><span>新浪微博_-blue_cherry-</span></li><li class=""><span>新浪微博_AleksRen</span></li><li class=""><span>新浪微博_-Biscut-</span></li><li class=""><span>新浪微博_CrazyBoy-超</span></li><li class=""><span>新浪微博_BWZ小轩</span></li><li class=""><span>新浪微博_Darky_小翼</span></li><li class=""><span>新浪微博_Bv青筋</span></li><li class=""><span>Nongtea_kup</span></li><li class=""><span>新浪微博_Eric_小清新</span></li><li class=""><span>新浪微博_Brian-YC</span></li><li class=""><span>新浪微博_Angie承宇</span></li><li class=""><span>lick_feet</span></li><li class=""><span>新浪微博_重口邪恶小清新的私奴</span></li><li class=""><span>白袜</span></li><li class=""><span>新浪微博_重口邪恶小清新</span></li><li class=""><span>Football_Socks_Fck</span></li><li class=""><span>新浪微博_小爱charm</span></li><li class=""><span>Teen_Boy</span></li><li class=""><span>Sk8erboy_Snnfer</span></li><li class=""><span>新浪微博_JOSH-先生</span></li><li class=""><span>新浪微博_一只疯狂的猴子</span></li><li class=""><span>新浪微博_内裤花生</span></li><li class=""><span>新浪微博_v兔牙先生v</span></li><li class=""><span>新浪微博_NBQUEER</span></li><li class=""><span>新浪微博_shota666</span></li><li class=""><span>只有一张图的帅逼</span></li><li class=""><span>新浪微博_PorryAngry</span></li><li class=""><span>新浪微博_Henryyy_X</span></li><li class=""><span>新浪微博_译晨钧</span></li><li class=""><span>嘉义小帅哥</span></li><li class=""><span>新浪微博_Mr_Whalee</span></li><li class=""><span>新浪微博_一缕清风白2</span></li><li class=""><span>Scarvelli Gabriel Cali</span></li><li class=""><span>Great</span></li><li class=""><span>新浪微博_一缕清风白1</span></li><li class=""><span>新浪微博_Light_玄青</span></li><li class=""><span>啦啦啦</span></li><li class=""><span>Great</span></li></ul><select name="postid" class="initialized">
+						<option value="" selected="" disabled="">在此选择一个</option>
+						<option value="1">Maciek_Obrebski</option><option value="2">Barefeet</option><option value="3">Hugedick</option><option value="4">Muscle</option><option value="5">LiamJones</option><option value="6">ErogenousMonster</option><option value="7">新浪微博_小打小闹_024</option><option value="8">肌肉帅哥</option><option value="9">泰国萌萌帅哥</option><option value="10">叶俊杰</option><option value="11">周柏均</option><option value="12">Red_Shoes</option><option value="13">新浪微博_四川小虎丶Master</option><option value="14">新浪微博_My7</option><option value="15">Converse</option><option value="16">EvanParker</option><option value="17">Football_Socks</option><option value="18">Sperm</option><option value="19">张逸杰</option><option value="20">JQ映畫性感卧室脱衣帥哥</option><option value="21">Ankle</option><option value="22">新浪微博_白色路西法先森</option><option value="23">新浪微博_苝亰哓迺</option><option value="24">Enihschan</option><option value="25">黄凌</option><option value="26">Underware</option><option value="27">Cats</option><option value="28">曾崇倫</option><option value="29">新浪微博_M_ooDy_mOno</option><option value="30">李国铭</option><option value="31">DanteCos</option><option value="32">小虎</option><option value="33">成都体院90后运动男玩自拍</option><option value="34">新浪微博_Simon小叮当</option><option value="35">拳击白袜帅哥</option><option value="36">新浪微博_Evan恩少</option><option value="37">新浪微博_韩先森FUCK</option><option value="38">陈谭山</option><option value="39">新浪微博_Romeo_白袜少年</option><option value="40">王建银</option><option value="41">小帅趁家里没人玩脚</option><option value="42">大白腿</option><option value="43">篮球鞋</option><option value="44">三叶草高帮</option><option value="45">新浪微博_袜运动阳光</option><option value="46">general</option><option value="47">NikeHyperdunk</option><option value="48">liui aquino</option><option value="49">新浪微博_Mr_Y_爺</option><option value="50">af模特</option><option value="51">可爱小帅</option><option value="52">新浪微博_李扬呢</option><option value="53">新浪微博_郝吏海</option><option value="54">Quinton_Wynn</option><option value="55">跑鞋</option><option value="56">新浪微博_ErogenousMonster</option><option value="57">MitchHewer</option><option value="58">Skinny_Boy</option><option value="59">新浪微博_Mr_不是很黑的陈小嘎</option><option value="60">新浪微博_Masochism_0</option><option value="61">温少伟</option><option value="62">帅腿</option><option value="63">新浪微博_藏马006</option><option value="64">杨贺天</option><option value="65">新浪微博_____白昼</option><option value="66">NGA帅哥</option><option value="67">动漫</option><option value="68">新浪微博_美男子轩ALIN</option><option value="69">大长腿</option><option value="70">亲亲</option><option value="71">greatfeet</option><option value="72">新浪微博_他的小虎牙</option><option value="73">新浪微博__懒癌灬</option><option value="74">新浪微博_FeetFresa</option><option value="75">新浪微博_Airman_z</option><option value="76">新浪微博_JingYe烨少</option><option value="77">新浪微博_Captain撒马</option><option value="78">新浪微博_--EMBER的小号</option><option value="79">新浪微博_FonSuker</option><option value="80">新浪微博_-blue_cherry-</option><option value="81">新浪微博_AleksRen</option><option value="82">新浪微博_-Biscut-</option><option value="83">新浪微博_CrazyBoy-超</option><option value="84">新浪微博_BWZ小轩</option><option value="85">新浪微博_Darky_小翼</option><option value="86">新浪微博_Bv青筋</option><option value="87">Nongtea_kup</option><option value="88">新浪微博_Eric_小清新</option><option value="89">新浪微博_Brian-YC</option><option value="90">新浪微博_Angie承宇</option><option value="91">lick_feet</option><option value="92">新浪微博_重口邪恶小清新的私奴</option><option value="93">白袜</option><option value="94">新浪微博_重口邪恶小清新</option><option value="95">Football_Socks_Fck</option><option value="96">新浪微博_小爱charm</option><option value="97">Teen_Boy</option><option value="98">Sk8erboy_Snnfer</option><option value="99">新浪微博_JOSH-先生</option><option value="100">新浪微博_一只疯狂的猴子</option><option value="101">新浪微博_内裤花生</option><option value="102">新浪微博_v兔牙先生v</option><option value="103">新浪微博_NBQUEER</option><option value="104">新浪微博_shota666</option><option value="105">只有一张图的帅逼</option><option value="106">新浪微博_PorryAngry</option><option value="107">新浪微博_Henryyy_X</option><option value="108">新浪微博_译晨钧</option><option value="109">嘉义小帅哥</option><option value="110">新浪微博_Mr_Whalee</option><option value="111">新浪微博_一缕清风白2</option><option value="112">Scarvelli Gabriel Cali</option><option value="113">Great</option><option value="114">新浪微博_一缕清风白1</option><option value="115">新浪微博_Light_玄青</option><option value="116">啦啦啦</option><option value="117">Great</option>						</select></div>
+					</div>
+					<div class="row">
+						<div class="input-field col m6">
+							<input id="fileImage" type="file" size="30" name="fileselect[]" multiple="true">
+						</div>
+					</div>
+					
+					<div class="row">
+						<a class="btn btn-primary" id="startUpload" disabled="">提交</a>
+					</div>
+				</div>
+
+				<!-- 左侧结束 -->
+
+				<!-- 右侧区域，放文件列表 -->
+				<div class="col s6">
+					<ul class="collection" id="toUploadList">
+					</ul>
+				</div>
+				<!-- 右侧结束 -->
+			</div>
+		</div>
+		</form>
+    </div>
+    <!-- 添加到现有日志中-结束 -->
+
+
+    <!-- 新建一个日志-开始 -->
+    <div id="createone" class="col s12" style="display: none;">Test 2</div>
+    <!-- 新建一个日志-结束 -->
+  </div>
+  </div>
+
+
+
+
+<!-- 上传文件返回信息模态框 -->
+<div id="showResult" class="modal">
+<div class="modal-content">
+  <h4>上传成功</h4>
+  <div id="resultDiv"></div>
+</div>
+<div class="modal-footer">
+  <a href="http://127.0.0.1/thinkphp/index.php/Admin/Index/upload.html#!" class=" modal-action modal-close waves-effect waves-green btn-flat">好</a>
+</div>
+</div>
+<!-- 上传文件返回信息模态框 结束 -->
+
+<script>
+	$(document).ready(function(){
+		//组件初始化
+	    $('ul.tabs').tabs();
+	    $('select').material_select();
+	    $('.modal').modal({
+	    	complete:function(){
+	    		var fm=document.getElementsByTagName('form')[0];
+	    		fm.reset();
+	    		$("#toUploadList").empty();
+	    		$("#resultDiv").empty();
+
+	    	}
+	    });
+
+	    //uploadfile初始化
+	    $("#fileuploader").uploadFile({
+			url:"/thinkphp/index.php/Admin/Index/uploadAPI.html",
+			fileName:"myfile"
+		    });
+	    
+
+
+	    var fileSelect=$("#fileImage");
+	    fileSelect.on("change",function(){
+	    	var files=this.files;
+	    	var tpl="";
+	    	$("#startUpload").removeAttr("disabled");
+	    	for(x in files){
+	    		//index:x   filename:files[x].name.
+	    		if(!isNaN(x)){
+	    			tpl+=imgListAdd(x, files[x].name);	
+	    		}
+	   		}
+	   		$("#toUploadList").append(tpl);
+			$(".imgdelete").unbind("click").click(function(){
+				var t=this;
+				delete fileSelect[t.parentElement.parentElement.dataset.id];
+				$(t.parentElement.parentElement).remove();
+	    	})  
+
+	})
+
+
+	    function imgListAdd(id,filename){
+	    	return "<li class='collection-item' data-id='"+id+"'>"+filename+"<a href='#'' class='secondary-content'><i class='material-icons imgdelete'>delete</i></a></li>";
+	    	
+	    }
+
+	    function makeTable(data){
+	    	var tablecode="<table><thead><tr><th>原始文件名</th><th>大小</th><th>URL</th><th></tr></thead><tbody>";
+	    	for(index in data){
+	    		var item=data[index];
+	    		console.log(item);
+	    		tablecode+="<tr><td>"+item.name+"</td><td>"+(item.size/1024).toFixed(2)+"K"+"</td><td>"+"http://gg.d-hl.com/imgs"+"/"+item.savepath+item.savename+"</td></tr>"
+	    	}
+	    	tablecode+="</tbody></table>";
+	    	return tablecode;
+	    }
+
+// 异步上传文件
+$("#startUpload").click(function(){
+	if(!$("#fileImage").val){
+		layer.msg("还没有选择文件呢",{icon:0})
+		return false;
+	}
+	$.ajax({
+	    url: "/thinkphp/index.php/Admin/Index/uploadAPI.html",
+	    type: 'POST',
+	    cache: false,
+	    data: new FormData($('#uploadForm')[0]),
+	    processData: false,
+	    contentType: false
+	}).done(function(res) {
+		var result=res;
+
+
+		//ThinkPHP上传组件定义的错误
+		if(result.status===0){
+			layer.msg(result.info,{icon:0});
+			return false;
+		}
+
+		try{
+			var result=JSON.parse(res);
+		}catch(err){
+			layer.msg("服务器返回了不可描述的信息"+res+err,{icon:5});
+			return false;
+		}
+
+		//控制器定义的错误
+		if(result.code>0){
+			
+			$("#resultDiv").append(makeTable(result.data));
+			$("#showResult").modal("open");
+		}else{
+			layer.msg("错误："+result.message,{icon:0})
+		}
+		
+		
+
+	}).fail(function(res) {
+		layer.msg("上传出错，请查看原因："+res,{icon:5})
+	}); 
+	
+})
+
+
+  });
+        
+</script>
+	
+
+
+<div id="think_page_trace" style="position: fixed;bottom:0;right:0;font-size:14px;width:100%;z-index: 999999;color: #000;text-align:left;font-family:&#39;微软雅黑&#39;;">
+<div id="think_page_trace_tab" style="display: none;background:white;margin:0;height: 250px;">
+<div id="think_page_trace_tab_tit" style="height:30px;padding: 6px 12px 0;border-bottom:1px solid #ececec;border-top:1px solid #ececec;font-size:16px">
+	    <span style="color: rgb(0, 0, 0); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">基本</span>
+        <span style="color: rgb(153, 153, 153); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">文件</span>
+        <span style="color: rgb(153, 153, 153); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">流程</span>
+        <span style="color: rgb(153, 153, 153); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">错误</span>
+        <span style="color: rgb(153, 153, 153); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">SQL</span>
+        <span style="color: rgb(153, 153, 153); padding-right: 12px; height: 30px; line-height: 30px; display: inline-block; margin-right: 3px; cursor: pointer; font-weight: 700;">调试</span>
+    </div>
+<div id="think_page_trace_tab_cont" style="overflow:auto;height:212px;padding: 0; line-height: 24px">
+		    <div style="display: block;">
+    <ol style="padding: 0; margin:0">
+	<li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">请求信息 : 2017-02-21 20:40:01 HTTP/1.1 GET : /thinkphp/index.php/Admin/Index/upload.html</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">运行时间 : 0.0390s ( Load:0.0100s Init:0.0030s Exec:0.0090s Template:0.0170s )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">吞吐率 : 25.64req/s</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">内存开销 : 3,125.82 kb</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">查询信息 : 2 queries 0 writes </li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">文件加载 : 34</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">缓存信息 : 0 gets 0 writes </li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">配置加载 : 127</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">会话信息 : SESSION_ID=3jforqj491sg37jk77gkaqj9k2</li>    </ol>
+    </div>
+        <div style="display:none;">
+    <ol style="padding: 0; margin:0">
+	<li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\index.php ( 1.00 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\ThinkPHP.php ( 4.71 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Think.class.php ( 12.32 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Storage.class.php ( 1.38 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Storage\Driver\File.class.php ( 3.56 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Mode\common.php ( 2.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Common\functions.php ( 52.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\myapp\Common\Common\function.php ( 0.98 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Hook.class.php ( 4.02 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\App.class.php ( 12.44 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Dispatcher.class.php ( 15.15 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Route.class.php ( 13.38 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Controller.class.php ( 10.95 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\View.class.php ( 7.96 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\BuildLiteBehavior.class.php ( 3.69 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\ParseTemplateBehavior.class.php ( 3.89 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\ContentReplaceBehavior.class.php ( 1.93 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Conf\convention.php ( 11.18 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\myapp\Common\Conf\config.php ( 0.66 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Lang\zh-cn.php ( 2.57 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Conf\debug.php ( 1.51 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\myapp\Admin\Conf\config.php ( 0.08 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\ReadHtmlCacheBehavior.class.php ( 5.62 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\myapp\Admin\Controller\IndexController.class.php ( 10.74 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Model.class.php ( 67.27 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Db.class.php ( 5.70 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Db\Driver\Mysql.class.php ( 8.73 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Db\Driver.class.php ( 41.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Template.class.php ( 28.35 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Template\TagLib\Cx.class.php ( 22.62 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Think\Template\TagLib.class.php ( 9.19 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\myapp\Runtime\Cache\Admin\75c1d82234c14caa87f7513595116958.php ( 8.29 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\WriteHtmlCacheBehavior.class.php ( 1.43 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">D:\wamp64\www\thinkphp\ThinkPHP\Library\Behavior\ShowPageTraceBehavior.class.php ( 5.27 KB )</li>    </ol>
+    </div>
+        <div style="display:none;">
+    <ol style="padding: 0; margin:0">
+	<li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ app_init ] --START--</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ app_init ] --END-- [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ app_begin ] --START--</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ app_begin ] --END-- [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ view_parse ] --START--</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ template_filter ] --START--</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ template_filter ] --END-- [ RunTime:0.000000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">Run Behavior\ParseTemplateBehavior [ RunTime:0.013001s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ view_parse ] --END-- [ RunTime:0.013001s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ view_filter ] --START--</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ view_filter ] --END-- [ RunTime:0.001000s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ app_end ] --START--</li>    </ol>
+    </div>
+        <div style="display:none;">
+    <ol style="padding: 0; margin:0">
+	<li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8] Undefined variable: userinfo D:\wamp64\www\thinkphp\myapp\Runtime\Cache\Admin\75c1d82234c14caa87f7513595116958.php 第 37 行.</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[8] Undefined variable: userinfo D:\wamp64\www\thinkphp\myapp\Runtime\Cache\Admin\75c1d82234c14caa87f7513595116958.php 第 37 行.</li>    </ol>
+    </div>
+        <div style="display:none;">
+    <ol style="padding: 0; margin:0">
+	<li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">SHOW COLUMNS FROM `entry` [ RunTime:0.0010s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">SELECT `postid`,`title` FROM `entry`  [ RunTime:0.0010s ]</li>    </ol>
+    </div>
+        <div style="display:none;">
+    <ol style="padding: 0; margin:0">
+	    </ol>
+    </div>
+    </div>
+</div>
+<div id="think_page_trace_close" style="display:none;text-align:right;height:15px;position:absolute;top:10px;right:12px;cursor: pointer;"><img style="vertical-align:top;" src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAAMDA////wAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQxMjc1MUJCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQxMjc1MUNCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDEyNzUxOUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDEyNzUxQUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAAAAAAALAAAAAAPAA8AAAIdjI6JZqotoJPR1fnsgRR3C2jZl3Ai9aWZZooV+RQAOw=="></div>
+</div>
+<div id="think_page_trace_open" style="height:30px;float:right;text-align: right;overflow:hidden;position:fixed;bottom:0;right:0;color:#000;line-height:30px;cursor:pointer;"><div style="background:#232323;color:#FFF;padding:0 6px;float:right;line-height:30px;font-size:14px">0.0390s </div><img width="30" style="" title="ShowPageTrace" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVERDVENkZGQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVERDVENzAwQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NURENUQ2RkRCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NURENUQ2RkVCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5fx6IRAAAMCElEQVR42sxae3BU1Rk/9+69+8xuNtkHJAFCSIAkhMgjCCJQUi0GtEIVbP8Qq9LH2No6TmfaztjO2OnUdvqHFMfOVFTqIK0vUEEeqUBARCsEeYQkEPJoEvIiELLvvc9z+p27u2F3s5tsBB1OZiebu5dzf7/v/L7f952zMM8cWIwY+Mk2ulCp92Fnq3XvnzArr2NZnYNldDp0Gw+/OEQ4+obQn5D+4Ubb22+YOGsWi/Todh8AHglKEGkEsnHBQ162511GZFgW6ZCBM9/W4H3iNSQqIe09O196dLKX7d1O39OViP/wthtkND62if/wj/DbMpph8BY/m9xy8BoBmQk+mHqZQGNy4JYRwCoRbwa8l4JXw6M+orJxpU0U6ToKy/5bQsAiTeokGKkTx46RRxxEUgrwGgF4MWNNEJCGgYTvpgnY1IJWg5RzfqLgvcIgktX0i8dmMlFA8qCQ5L0Z/WObPLUxT1i4lWSYDISoEfBYGvM+LlMQQdkLHoWRRZ8zYQI62Thswe5WTORGwNXDcGjqeOA9AF7B8rhzsxMBEoJ8oJKaqPu4hblHMCMPwl9XeNWyb8xkB/DDGYKfMAE6aFL7xesZ389JlgG3XHEMI6UPDOP6JHHu67T2pwNPI69mCP4rEaBDUAJaKc/AOuXiwH07VCS3w5+UQMAuF/WqGI+yFIwVNBwemBD4r0wgQiKoFZa00sEYTwss32lA1tPwVxtc8jQ5/gWCwmGCyUD8vRT0sHBFW4GJDvZmrJFWRY1EkrGA6ZB8/10fOZSSj0E6F+BSP7xidiIzhBmKB09lEwHPkG+UQIyEN44EBiT5vrv2uJXyPQqSqO930fxvcvwbR/+JAkD9EfASgI9EHlp6YiHO4W+cAB20SnrFqxBbNljiXf1Pl1K2S0HCWfiog3YlAD5RGwwxK6oUjTweuVigLjyB0mX410mAFnMoVK1lvvUvgt8fUJH0JVyjuvcmg4dE5mUiFtD24AZ4qBVELxXKS+pMxN43kSdzNwudJ+bQbLlmnxvPOQoCugSap1GnSRoG8KOiKbH+rIA0lEeSAg3y6eeQ6XI2nrYnrPM89bUTgI0Pdqvl50vlNbtZxDUBcLBK0kPd5jPziyLdojJIN0pq5/mdzwL4UVvVInV5ncQEPNOUxa9d0TU+CW5l+FoI0GSDKHVVSOs+0KOsZoxwOzSZNFGv0mQ9avyLCh2Hpm+70Y0YJoJVgmQv822wnDC8Miq6VjJ5IFed0QD1YiAbT+nQE8v/RMZfmgmcCRHIIu7Bmcp39oM9fqEychcA747KxQ/AEyqQonl7hATtJmnhO2XYtgcia01aSbVMenAXrIomPcLgEBA4liGBzFZAT8zBYqW6brI67wg8sFVhxBhwLwBP2+tqBQqqK7VJKGh/BRrfTr6nWL7nYBaZdBJHqrX3kPEPap56xwE/GvjJTRMADeMCdcGpGXL1Xh4ZL8BDOlWkUpegfi0CeDzeA5YITzEnddv+IXL+UYCmqIvqC9UlUC/ki9FipwVjunL3yX7dOTLeXmVMAhbsGporPfyOBTm/BJ23gTVehsvXRnSewagUfpBXF3p5pygKS7OceqTjb7h2vjr/XKm0ZofKSI2Q/J102wHzatZkJPYQ5JoKsuK+EoHJakVzubzuLQDepCKllTZi9AG0DYg9ZLxhFaZsOu7bvlmVI5oPXJMQJcHxHClSln1apFTvAimeg48u0RWFeZW4lVcjbQWZuIQK1KozZfIDO6CSQmQQXdpBaiKZyEWThVK1uEc6v7V7uK0ysduExPZx4vysDR+4SelhBYm0R6LBuR4PXts8MYMcJPsINo4YZCDLj0sgB0/vLpPXvA2Tn42Cv5rsLulGubzW0sEd3d4W/mJt2Kck+DzDMijfPLOjyrDhXSh852B+OvflqAkoyXO1cYfujtc/i3jJSAwhgfFlp20laMLOku/bC7prgqW7lCn4auE5NhcXPd3M7x70+IceSgZvNljCd9k3fLjYsPElqLR14PXQZqD2ZNkkrAB79UeJUebFQmXpf8ZcAQt2XrMQdyNUVBqZoUzAFyp3V3xi/MubUA/mCT4Fhf038PC8XplhWnCmnK/ZzyC2BSTRSqKVOuY2kB8Jia0lvvRIVoP+vVWJbYarf6p655E2/nANBMCWkgD49DA0VAMyI1OLFMYCXiU9bmzi9/y5i/vsaTpHPHidTofzLbM65vMPva9HlovgXp0AvjtaqYMfDD0/4mAsYE92pxa+9k1QgCnRVObCpojpzsKTPvayPetTEgBdwnssjuc0kOBFX+q3HwRQxdrOLAqeYRjkMk/trTSu2Z9Lik7CfF0AvjtqAhS4NHobGXUnB5DQs8hG8p/wMX1r4+8xkmyvQ50JVq72TVeXbz3HvpWaQJi57hJYTw4kGbtS+C2TigQUtZUX+X27QQq2ePBZBru/0lxTm8fOOQ5yaZOZMAV+he4FqIMB+LQB0UgMSajANX29j+vbmly8ipRvHeSQoQOkM5iFXcPQCVwDMs5RBCQmaPOyvbNd6uwvQJ183BZQG3Zc+Eiv7vQOKu8YeDmMcJlt2ckyftVeMIGLBCmdMHl/tFILYwGPjXWO3zOfSq/+om+oa7Mlh2fpSsRGLp7RAW3FUVjNHgiMhyE6zBFjM2BdkdJGO7nP1kJXWAtBuBpPIAu7f+hhu7bFXIuC5xWrf0X2xreykOsUyKkF2gwadbrXDcXrfKxR43zGcSj4t/cCgr+a1iy6EjE5GYktUCl9fwfMeylyooGF48bN2IGLTw8x7StS7sj8TF9FmPGWQhm3rRR+o9lhvjJvSYAdfDUevI1M6bnX/OwWaDMOQ8RPgKRo0eulBTdT8AW2kl8e9L7UHghHwMfLiZPNoSpx0yugpQZaFqKWqxVSM3a2pN1SAhC2jf94I7ybBI7EL5A2Wvu5ht3xsoEt4+Ay/abXgCQAxyOeDsDlTCQzy75ohcGgv9Tra9uiymRUYTLrswOLlCdfAQf7HPDQQ4ErAH5EDXB9cMxWYpjtXApRncojS0sbV/cCgHTHwGNBJy+1PQE2x56FpaVR7wfQGZ37V+V+19EiHNvR6q1fRUjqvbjbMq1/qfHxbTrE10ePY2gPFk48D2CVMTf1AF4PXvyYR9dV6Wf7H413m3xTWQvYGhQ7mfYwA5mAX+18Vue05v/8jG/fZX/IW5MKPKtjSYlt0ellxh+/BOCPAwYaeVr0QofZFxJWVWC8znG70au6llVmktsF0bfHF6k8fvZ5esZJbwHwwnjg59tXz6sL/P0NUZDuSNu1mnJ8Vab17+cy005A9wtOpp3i0bZdpJLUil00semAwN45LgEViZYe3amNye0B6A9chviSlzXVsFtyN5/1H3gaNmMpn8Fz0GpYFp6Zw615H/LpUuRQQDMCL82n5DpBSawkvzIdN2ypiT8nSLth8Pk9jnjwdFzH3W4XW6KMBfwB569NdcGX93mC16tTflcArcYUc/mFuYbV+8zY0SAjAVoNErNgWjtwumJ3wbn/HlBFYdxHvSkJJEc+Ngal9opSwyo9YlITX2C/P/+gf8sxURSLR+mcZUmeqaS9wrh6vxW5zxFCOqFi90RbDWq/YwZmnu1+a6OvdpvRqkNxxe44lyl4OobEnpKA6Uox5EfH9xzPs/HRKrTPWdIQrK1VZDU7ETiD3Obpl+8wPPCRBbkbwNtpW9AbBe5L1SMlj3tdTxk/9W47JUmqS5HU+JzYymUKXjtWVmT9RenIhgXc+nroWLyxXJhmL112OdB8GCsk4f8oZJucnvmmtR85mBn10GZ0EKSCMUSAR3ukcXd5s7LvLD3me61WkuTCpJzYAyRurMB44EdEJzTfU271lUJC03YjXJXzYOGZwN4D8eB5jlfLrdWfzGRW7icMPfiSO6Oe7s20bmhdgLX4Z23B+s3JgQESzUDiMboSzDMHFpNMwccGePauhfwjzwnI2wu9zKGgEFg80jcZ7MHllk07s1H+5yojtUQTlH4nFdLKTGwDmPbIklOb1L1zO4T6N8NCuDLFLS/C63c0eNRimZ++s5BMBHxU11jHchI9oFVUxRh/eMDzHEzGYu0Lg8gJ7oS/tFCwoic44fyUtix0n/46vP4bf+//BRgAYwDDar4ncHIAAAAASUVORK5CYII="></div>
+<script type="text/javascript">
+(function(){
+var tab_tit  = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
+var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
+var open     = document.getElementById('think_page_trace_open');
+var close    = document.getElementById('think_page_trace_close').childNodes[0];
+var trace    = document.getElementById('think_page_trace_tab');
+var cookie   = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
+var history  = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0,0];
+open.onclick = function(){
+	trace.style.display = 'block';
+	this.style.display = 'none';
+	close.parentNode.style.display = 'block';
+	history[0] = 1;
+	document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+}
+close.onclick = function(){
+	trace.style.display = 'none';
+this.parentNode.style.display = 'none';
+	open.style.display = 'block';
+	history[0] = 0;
+	document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+}
+for(var i = 0; i < tab_tit.length; i++){
+	tab_tit[i].onclick = (function(i){
+		return function(){
+			for(var j = 0; j < tab_cont.length; j++){
+				tab_cont[j].style.display = 'none';
+				tab_tit[j].style.color = '#999';
+			}
+			tab_cont[i].style.display = 'block';
+			tab_tit[i].style.color = '#000';
+			history[1] = i;
+			document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+		}
+	})(i)
+}
+parseInt(history[0]) && open.click();
+(tab_tit[history[1]] || tab_tit[0]).click();
+})();
+</script>
+<div class="hiddendiv common"></div><script aria-hidden="true" type="application/x-lastpass" id="hiddenlpsubmitdiv" style="display: none;"></script></body></html>

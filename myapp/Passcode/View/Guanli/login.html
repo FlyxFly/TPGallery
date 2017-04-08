@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Login</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="__PUBLIC__/lib/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="__PUBLIC__/PasscodeIndex/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="__PUBLIC__/PasscodeIndex/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="__PUBLIC__/PasscodeIndex/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Start your project here-->
+    <div class="container">
+        <!--Navbar-->
+        <nav class="navbar navbar-dark bg-primary">
+            <!-- Collapse button-->
+            <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx2">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="container">
+                <!--Collapse content-->
+                <div class="collapse navbar-toggleable-xs" id="collapseEx2">
+                    <!--Navbar Brand-->
+                    <a class="navbar-brand">Ingress 兑换代码</a>
+                    <!--Links-->
+                    <ul class="nav navbar-nav">
+                        <!--                         <li class="nav-item active">
+                            <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                        </li> -->
+                        <li class="nav-item ">
+                            <a href="{:U('Passcode/Submit/index')}" class="nav-link pull-right">提交新代码</a>
+                        </li>
+                        <!--                         <li class="nav-item">
+                            <a class="nav-link">Pricing</a>
+                        </li>
+                        <li class="nav-item btn-group">
+                            <a class="nav-link dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <a class="dropdown-item">Action</a>
+                                <a class="dropdown-item">Another action</a>
+                                <a class="dropdown-item">Something else here</a>
+                            </div>
+                        </li> -->
+                    </ul>
+                    <form class="form-inline">
+                        <input class="form-control" type="text" placeholder="Search">
+                    </form>
+                </div>
+                <!--/.Collapse content-->
+            </div>
+        </nav>
+        <!--/.Navbar-->
+        <!-- 登陆表单开始 -->
+        <div class="row">
+            <div style="width:40%;margin: 5% auto;">
+                <!--Naked Form-->
+                <form action="{:U('Passcode/Guanli/Login')}" method="post">
+                    <div class="card-block">
+                        <!--Header-->
+                        <div class="text-xs-center">
+                            <h3><i class="fa fa-lock"></i> Login:</h3>
+                            <hr class="mt-2 mb-2">
+                        </div>
+                        <!--Body-->
+                        <div class="md-form">
+                            <i class="fa fa-envelope prefix"></i>
+                            <input type="text" name="username" class="form-control">
+                            <label for="form2">Your name</label>
+                        </div>
+                        <div class="md-form">
+                            <i class="fa fa-lock prefix"></i>
+                            <input type="password" name="password" class="form-control">
+                            <label for="form4">Your password</label>
+                        </div>
+                        <div class="text-xs-center">
+                            <a class="btn btn-primary" id="getname">Get name</a>
+                            <button class="btn btn-default" id="login" type="submit">Login</button>
+                        </div>
+                    </div>
+                </form>
+                <!--Footer-->
+                <div class="modal-footer">
+                    <div class="options">
+                        <p>Not a member? <a href="{:U('Passcode/Index/Index')}">Go back</a></p>
+                    </div>
+                </div>
+                <!--Naked Form-->
+            </div>
+        </div>
+        <!-- 登陆表单结束 -->
+    </div>
+    <!-- /Start your project here-->
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/tether.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/mdb.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/layer.js"></script>
+    <script>
+    var voteAPI = "{:U('Passcode/index/vote')}"
+    </script>
+    <script src="__PUBLIC__/js/js.cookie.js"></script>
+    <script src="__PUBLIC__/js/jquery-lang.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/PasscodeIndex/js/main.js"></script>
+    <script>
+    $("#getname").click(function() {
+        $.post("{:U('Passcode/Guanli/Login')}", {
+            "action": "getname"
+        }, function(data) {
+            try {
+                var jsondata = JSON.parse(data);
+                if (jsondata.code) {
+                    var l = $("input[name=username]").siblings("label, i");
+                    $(l).addClass("active");
+                    $("input[name=username]").val(jsondata.data);
+                }
+            } catch (e) {
+                alert("服务器内部错误，请稍后再试");
+            }
+        })
+    })
+    </script>
+</body>
+
+</html>

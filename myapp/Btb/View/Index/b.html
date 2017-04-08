@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<import type="css" file="css/bootstrapmin,css/btbcss"/>
+	<import type="js" file="js/jquerymin,js/bootstrapmin"/>
+	<meta charset="UTF-8">
+	<title>{:C("sitename")}</title>
+<body>
+	<div class="container">
+		<nav class="navbar navbar-default">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="{:U('Btb/Index/index')}">查询系统</a>
+			</div>
+			<div>
+			<ul class="nav navbar-nav">
+				<li><a href="{:U('Btb/Index/Index')}" >快速查询</a></li>
+				<li class="active"><a href="#">B2B详细</a></li>
+				<li><a href="{:U('Btb/Index/fh')}">发货单详细</a></li>
+				<li><a href="{:U('Btb/Index/transport')}">运输情况</a></li>
+			</ul>
+		</div>
+		</nav>
+		<div class="row">
+			<form action="{:U('Btb/Index/b')}" role="form" class="form-inline">
+				<div class="col-md-12">
+					<input type="text" class="form-control" name="btborder" placeholder="请输入B2B单号">
+					<button class="btn btn-primary" type="submit">查询</button>  <button class="btn btn-danger" bype="reset">重置</button>
+				</div>
+			</form>
+
+		</div>
+		<if condition="($data eq null)">
+		<p class="help-block">请输入查询条件</p>
+		<else/>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="help-block">B2B单号：{$data[0]["s"]} <a href="{:U('Btb/Index/Index?btborder='.$data[0]['s'])}">查看详情</a></p>
+				<p class="help-block">客户名称：{$data[0]["c"]}</p>
+				<table class="table table-condensed table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>产品名称</th>
+							<th>取消数量</th>
+							<th>有效数量</th>
+							<th>发货仓库</th>
+							<th>确认人</th>
+							<th>销售订单号</th>
+							<th>发货单号</th>
+							<th>发货数量</th>
+							<th>签收数量</th>
+							<th>途损数量</th>
+						</tr>
+					</thead>
+					<tbody>
+						<foreach name="data" item="item">
+							<tr>
+								<td>{$item["ac"]}</td>
+								<td>{$item["ae"]}</td>
+								<td>{$item["af"]}</td>
+								<td>{$item["aq"]}</td>
+								<td>{$item["as"]}</td>
+								<td>{$item["aw"]}</td>
+								<td><a href="{:U('Btb/Index/fh?fhdh='.$item['bo'])}">{$item["bo"]}</a></td>
+								<td>{$item["bs"]}</td>
+								<td>{$item["bz"]}</td>
+								<td>{$item["cd"]}</td>
+							</tr>
+						</foreach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</if>
+	</div>
+</body>
+</html>

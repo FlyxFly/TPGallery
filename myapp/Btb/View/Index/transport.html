@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<import type="css" file="css/bootstrapmin,css/btbcss"/>
+	<import type="js" file="js/jquerymin,js/bootstrapmin"/>
+	<meta charset="UTF-8">
+	<title>{:C("sitename")}</title>
+</head>
+<body>
+<script>
+	var transport={json_encode($transport)};
+</script>
+	<div class="container">
+		<nav class="navbar navbar-default">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="{:U('Btb/Index/index')}">查询系统</a>
+			</div>
+			<div>
+			<ul class="nav navbar-nav">
+				<li><a href="{:U('Btb/Index/index')}" >快速查询</a></li>
+				<li><a href="{:U('Btb/Index/b')}">B2B详细</a></li>
+				<li><a href="{:U('Btb/Index/fh')}">发货单详细</a></li>
+				<li class="active"><a href="{:U('Btb/Index/transport')}">运输情况</a></li>
+			</ul>
+		</div>
+		</nav>
+		<div class="row">
+			<form action="{:U('Btb/Index/transport')}" role="form" class="form-inline">
+				<div class="col-md-12">
+					<input type="text" class="form-control" name="fhdh" placeholder="请输入发货单单号">
+					<button class="btn btn-primary" type="submit">查询</button>  <button class="btn btn-danger" bype="reset">重置</button>
+				</div>
+			</form>
+
+		</div>
+<!-- 		<if condition="($transport eq null)">
+		<p class="help-block">请输入查询条件</p>
+		<else/> -->
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-condensed table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>单号</th>
+							<th>客户</th>
+							<!-- <th>下单时间</th> -->
+							<th>发运时间</th>
+							<th>类型</th>
+							<th>货主</th>
+							<th>状态</th>
+							<th>预计到货</th>
+							<th>到货倒计时</th>
+							<th>查看详细</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<foreach name="transport" item="item">
+							<tr>
+								<td><a href="http://tcp.gongsuda.com/gsdoms/query/query_web_search.action?searchText={$item.subOrderNo}">{$item["subOrderNo"]}</a></td>
+								<td>{$item["custName"]}</td>
+								<!-- <td>{$item["orderDate"]}</td> -->
+								<td>{$item["rgstDate"]}</td>
+								<td>{$item["orderTypeName"]}</td>
+								<td>{$item["ownerName"]}</td>
+								<td>{$item["statusName"]}</td>
+								<td>{$item["endDate"]}</td>
+								<td>{$item["surplusDate"]}</td>
+								<td><a href="http://tcp.gongsuda.com/gsdoms/query/query_web_trace.action?enterpriseNo={$item['enterpriseNo']}&systemNo={$item['orderNo']}&dispatchNo={$item['dispatchNo']}&orderNo={$item['systemNo']}&subOrderNo={$item['subOrderNo']}">查看</a></td>
+							</tr>
+						</foreach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+<!-- 		</if> -->
+	</div>
+</body>
+</html>
