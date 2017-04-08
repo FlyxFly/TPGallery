@@ -126,7 +126,7 @@ class IndexController extends Controller {
                     'postid'=>$pid);
             }else{
                 $where1=array(
-                    'postid'=>$pid,),
+                    'postid'=>$pid,
                     'private'=>0);
             }
         $entryInfo=$entryDB->field(array("title","createdate"))->where($where1)->where("createdate < '%s'",date("Y-m-d h:i:s"))->select();
