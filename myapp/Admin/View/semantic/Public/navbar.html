@@ -1,29 +1,70 @@
-  <div class="ui menu">
-  <div class="ui container">
-    <div class="header item">后台</div>
-    <a href="{:U('Admin/Index/Index')}" class="item {$currModule == 'index'?'active':''}">日志管理</a>
-    <a href="" class="item {$currModule == 'setting'?'active':''}">基础设定</a>
-    <a href="{:U('Admin/Tag/Index')}" class="item {$currModule == 'tag'?'active':''}">分类管理</a>
-    <div class="ui dropdown item" tabindex="0">
-      用户管理
-      <i class="dropdown icon"></i>
-      <div class="menu transition hidden" tabindex="-1">
-        <a href="{:U('Admin/User/index')}" class="item">查看所有用户</a>
-        <a href="{:U('Admin/User/edit')}" class="item">添加用户</a>
-      </div>
-    </div>
-    <a href="{:U('Admin/Index/upload')}" class="item {$currModule == 'upload'?'active':''}">文件上传</a>
-    <a href="{:U('Home/Index/index')}" class="item">查看网站</a>
-    <div class="right menu">
-      <div class="item">
-        <div class="ui action left icon input">
-          <i class="search icon"></i>
-          <input type="text" placeholder="">
-          <button class="ui button">搜索</button>
-        </div>
-      </div>
-      <a href="{:U('Admin/Index/logout')}" class="item">退出登陆</a>
+<!-- <div class="ui menu">
+<div class="ui container">
+  <div class="header item">后台</div>
+  <a href="{:U('Admin/Index/Index')}" class="item {$currModule == 'index'?'active':''}">日志管理</a>
+  <a href="" class="item {$currModule == 'setting'?'active':''}">基础设定</a>
+  <a href="{:U('Admin/Tag/Index')}" class="item {$currModule == 'tag'?'active':''}">分类管理</a>
+  <div class="ui dropdown item" tabindex="0">
+    用户管理
+    <i class="dropdown icon"></i>
+    <div class="menu transition hidden" tabindex="-1">
+      <a href="{:U('Admin/User/index')}" class="item">查看所有用户</a>
+      <a href="{:U('Admin/User/edit')}" class="item">添加用户</a>
     </div>
   </div>
+  <a href="{:U('Admin/Index/upload')}" class="item {$currModule == 'upload'?'active':''}">文件上传</a>
+  <a href="{:U('Home/Index/index')}" class="item">查看网站</a>
+  <div class="right menu">
+    <div class="item">
+      <div class="ui action left icon input">
+        <i class="search icon"></i>
+        <input type="text" placeholder="">
+        <button class="ui button">搜索</button>
+      </div>
+    </div>
+    <a href="{:U('Admin/Index/logout')}" class="item">退出登陆</a>
+  </div>
+</div>
+</div> -->
 
+<div class="ui sidebar inverted vertical menu">
+  <div class="header item"><h1>后台管理</h1></div>
+  <div class="divider item"></div>
+  <div class="item">
+    <div class="header">日志管理</div>
+    <div class="menu">
+      <a href="{:U('Admin/Index/Index')}" class="item {$currModule == 'index'?'active':''}">所有</a>
+      <a href="{:U('Admin/Index/edit')}" class="item">新建</a>
+    </div>
   </div>
+  <a href="{:U('Admin/Index/editconf')}" class="item {$currModule == 'setting'?'active':''}">基础设定</a>
+  <a href="{:U('Admin/Tag/Index')}" class="item {$currModule == 'tag'?'active':''}">分类管理</a>
+  <div class="item">
+    <div class="header">用户管理</div>
+    <div class="menu">
+      <a href="{:U('Admin/User/index')}" class="item">查看所有用户</a>
+      <a href="{:U('Admin/User/edit')}" class="item">添加用户</a>
+    </div>
+  </div>  
+  <a href="{:U('Admin/Index/upload')}" class="item {$currModule == 'upload'?'active':''}">文件上传</a>
+  <a href="{:U('Home/Index/index')}" class="item">查看网站</a>
+</div>
+<div class="pusher">
+<!-- 顶部导航栏开始 -->
+<div class="ui menu">
+<div class="ui container">
+  <a class="header item" id="open-menu"><i class="icon list layout"></i></a>
+  <div class="right menu">
+  <div class="ui dropdown item">
+    <i class="power icon"></i>
+    <div class="menu">
+      <a class="item"><i class="user icon"></i>个人中心</a>
+      <a class="item"><i class="icon sign out"></i>退出登陆</a>
+    </div
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+<div class="ui container">
+  

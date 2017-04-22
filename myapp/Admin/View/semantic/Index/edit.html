@@ -1,5 +1,6 @@
 <include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
 <include file="myapp/Admin/View/semantic/Public/navbar.html"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/semantic/components/calendar.min.css">
 <div class="ui container">
 <form class="ui form">
 	<div class="ui grid">
@@ -12,8 +13,13 @@
         </div>
 		<div class="three wide column">
 		<div class="field">
-            <label for="datetime">时间</label>
-			<input type="text" name="publishdate" class="pickdate" id="time" value="{$entryinfo[0]['createdate']}">
+			<label for="datetime">时间</label>
+			 <div class="ui calendar" id="time">
+			    <div class="ui input left icon">
+			       <i class="calendar icon"></i>
+			       <input type="text" name="publishdate" value="{$entryinfo[0]['createdate']}" placeholder="发布日期">
+			</div>
+			</div>
 		</div>
 		</div>
 		<div class="three wide column">
@@ -153,7 +159,7 @@
   </div>
 </div>
 <!-- 新增图片态框结束 modal -->
-
+<script src="__PUBLIC__/semantic/components/calendar.min.js"></script>
 <script>
 	//初始化mdcss模态框
 	$(document).ready(function(){
@@ -161,7 +167,19 @@
 		$('.ui.checkbox').checkbox();
 		$("#displaypic").modal();
 		$("#create-entry").modal();
-
+		$('#time').calendar({
+			type:'date',
+		 	monthFirst: false,
+		    formatter: {
+		    date: function (date, settings) {
+		      if (!date) return '';
+		      var day = date.getDate();
+		      var month = date.getMonth() + 1;
+		      var year = date.getFullYear();
+		      return  year + '-' + month + '-' + day;
+		    }
+		}
+});
 	})
 	$(".ui checkbox").checkbox();
 
@@ -313,5 +331,4 @@
 // 6:开心
 
 </script>
-</body>
-</html>
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

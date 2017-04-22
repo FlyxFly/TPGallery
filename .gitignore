@@ -3,3 +3,4 @@ myapp/Runtime/
 ThinkPHP/
 .idea/
 myapp/Common/Conf/
+index.php

@@ -1,6 +1,9 @@
 
+</div>
+<!-- container 结束 -->
 
-
+</div>
+<!-- sidebar pusher结束 -->
 <script>
 	$(document).ready(function(){
 		$('.ui.menu .ui.dropdown').dropdown({
@@ -9,6 +12,12 @@
 		$('ui.menu a.item').on('click',function(){
 			$(this).addClass('active').siblings().removeClass('active');
 		})
+
+		$('#open-menu').on('click mouseover',function(e){
+			$('.ui.sidebar').sidebar('toggle');
+			e.preventDefault;
+		})
+		
 	})
 
 </script>

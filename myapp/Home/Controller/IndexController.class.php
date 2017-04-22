@@ -3,6 +3,15 @@ namespace Home\Controller;
 use Think\Controller;
 import("ORG\Util\Page");
 class IndexController extends Controller {
+    private $options='';
+    public function __construct(){
+        parent::__construct();
+        $optionsModel = new \Admin\Model\OptionsModel();
+        $this->options=$optionsModel->getCachedSysConfig();
+        $this->options['entrysperpage']=(int)$this->options['entrysperpage'];
+        $this->options['imgsperpage']=(int)$this->options['imgsperpage'];
+    }
+
     private function testIfInt($param){
 	    $param=(int)$param;
 	    if(($param+2==2)){die("非法操作！已记录IP：".get_client_ip()."。");}
@@ -36,13 +45,13 @@ class IndexController extends Controller {
                     'createdate'=>array('lt',$today));
             }else{
                 $whereCondition=array(
-                    'createdate'=>array('lt',$today),'private'=>0);
+                    'createdate'=>array('lt',$today),'private'=>$this->options['showhiddenentry']);
             }
             $entrys = $entryDB
             ->where($whereCondition)
             ->field(array("postid","title","createdate"))
             ->order("postid desc")
-            ->page($p,C("entryPerPage"))
+            ->page($p,$this->options['entrysperpage'])
             ->select();
         }else{
             if(session('user')){
@@ -53,13 +62,13 @@ class IndexController extends Controller {
                 $whereCondition=array(
                     'postid'=>$pid,
                     'createdate'=>array('lt',$today),
-                    'private'=>0);
+                    'private'=>$this->options['showhiddenentry']);
             }
             $entrys = $entryDB
             ->field(array("postid","title","createdate"))
             ->where($whereCondition)
             ->order("postid desc")
-            ->page($p,C("entryPerPage"))
+            ->page($p,$this->options['entrysperpage'])
             ->select();            
         }
         foreach ($entrys as $key => $value) {
@@ -74,13 +83,13 @@ class IndexController extends Controller {
     }
 
     public function index($tagid=null){
+        
         $p=$_GET["p"]?$_GET["p"]:1;
     	self::testIfInt($p);
     	$entryDB=M("entry");
     	$imgsDB=M("imgs");
         $metaDB=M("meta");
         $relationshipDB=M("relationship");
-
         if($tagid==null){
             $entryQty=$entryDB->count();
             $entrys=self::getEntry(null,$p);
@@ -103,14 +112,14 @@ class IndexController extends Controller {
     	$this->assign("data",$entrys);
         // dump($entrys);
         //分页
-        $paging= new  \Think\Page($entryQty, C("entryPerPage"));
+        $paging= new  \Think\Page($entryQty, $this->options['entrysperpage']);
         $show=$paging->show();
         $this->assign("page",$show);
 
         //tag
         $tags = $metaDB->where("type= 'category'")->select();
         $this->assign("AllTags",$tags);
-        // dump($tags);
+        $this->assign("options",$this->options);
     	$this->display("indexHydrogen");      
     }   
 
@@ -127,12 +136,12 @@ class IndexController extends Controller {
             }else{
                 $where1=array(
                     'postid'=>$pid,
-                    'private'=>0);
+                    'private'=>$this->options['showhiddenentry']);
             }
         $entryInfo=$entryDB->field(array("title","createdate"))->where($where1)->where("createdate < '%s'",date("Y-m-d h:i:s"))->select();
         //判断日期和pid是否合法
         if($entryInfo){
-            $imgUrls=$imgsDB->where($where1)->order("id desc")->page($p,C("imgPerPage"))->select();
+            $imgUrls=$imgsDB->where($where1)->order("id desc")->page($p,$this->options['imgsperpage'])->select();
             $result=array("info"=>$entryInfo[0],"content"=>$imgUrls);
             //图片分页
             $imgCount=$imgsDB->where($where1)->count();
@@ -145,10 +154,10 @@ class IndexController extends Controller {
 		
         $metaDB=M("meta");
         $tags = $metaDB->where("type= 'category'")->select();
-        $this->assign("title",C("title"));
         $this->assign("AllTags",$tags);
         $this->assign("page",$pageShow);
 		$this->assign("data",$result);
+        $this->assign("options",$this->options);
 		$this->display("postHydrogen");
 		
     	
@@ -174,7 +183,7 @@ class IndexController extends Controller {
         $this->redirect("Home/Index/index");
     }
 
-    public function whoami(){
-        dump(session("user"));
+    public function test(){
+        dump((int)$this->options['entrysperpage']);
     }
 }

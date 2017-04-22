@@ -261,7 +261,7 @@ var tableapp=new Vue({
 		afterUploadAll:function(){
 			tablecode+="</tbody></table>";
 			$("#resultDiv").append(tablecode);
-			$('.ui.modal').modal("show");
+			$('#showResult').modal("show");
 		}
 	});
 					    
@@ -355,4 +355,4 @@ $("#startUpload").click(function(){
   });
         
 </script>
-<include file="myapp/Admin/View/semantic/Index/footer.html"/>
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

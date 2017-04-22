@@ -299,7 +299,7 @@ class IndexController extends Controller{
 				$res=$imgsDB->where("id=%d",$value)->select();
 				$patharray=explode("/", $res[0]['url']);
 				$filepath=urldecode(C("imgpath").$patharray[3]."/".$patharray[4]."/".$patharray[5]);
-				dump($filepath);
+				// dump($filepath);
 				if(!unlink($filepath)){
 					$result["data"][$key]["delsuccess"]=0;
 				}else{
@@ -480,18 +480,6 @@ class IndexController extends Controller{
 		}
 	}
 
-	public function remoteDownloadProcessAPI(){
-
-	}
-
-	private function downloadUrl($url,$path){
-
-	}
-
-	private function getRemoteFileInfo(){
-
-	}
-
 	private function getImage($url,$save_dir='',$filename='',$type=0){
             if(trim($url)==''){
                 return array('file_name'=>'','save_path'=>'','error'=>1);
@@ -543,7 +531,29 @@ class IndexController extends Controller{
 	}
 
 
-
+	public function editconf(){
+		$optionsDB=D("options");
+		if($_POST){
+			if($_POST['whose']==='system' and session('user')["type"]==1){
+				$userid=0;
+			}else{
+				$userid=session("user")["id"];
+			}
+			if($_POST['sitename']==''){msg(0,'站点名称不能为空');};
+			if($_POST['uploaddir']==''){msg(0,'上传目录不能为空');};
+			if($_POST['entrysperpage']==''){msg(0,'每页日志数不能为空');};
+			if($_POST['imgsperpage']==''){msg(0,'每页图片数不能为空');};
+			echo json_encode(D('options')->updateConfig($userid,$_POST));
+		}else{
+			$sysOption=$optionsDB->getCachedSysConfig();
+			// dump($sysOption);
+			$userOption=$optionsDB->getUserConfig(session("user")["id"]);
+			$this->assign('sysOption',$sysOption);
+			$this->assign('userOption',$userOption);
+			$this->display();
+		}
+		
+	}
 	public function test(){
 		// // $data=array('name'=>'小明','desc'=>'小明是一个中国人');
 		// // F('info',$data);
@@ -559,16 +569,17 @@ class IndexController extends Controller{
 
 		// echo $fileName;
 		// dump(self::getImage($url,'D:\wamp64\www\thinkphp\myapp\Runtime\Temp'),$fileName.'.'.$fileExt);
-		$path='D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\';
-		$filename='cd5fepjoec7rk.txt';
-		if(!is_dir($path)){
-			mkdir($path);
-		}
+		// $path='D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\';
+		// $filename='cd5fepjoec7rk.txt';
+		// if(!is_dir($path)){
+		// 	mkdir($path);
+		// }
 
-		$fp2=@fopen('D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\cd5fepjoec7rk.txt','a');
-        fwrite($fp2,'abc');
-        fclose($fp2);
-	
+		// $fp2=@fopen('D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\cd5fepjoec7rk.txt','a');
+  //       fwrite($fp2,'abc');
+  //       fclose($fp2);
+		
+		echo date("Y-m-d H:m:s",time()-3600*24);
 
 
 	}
