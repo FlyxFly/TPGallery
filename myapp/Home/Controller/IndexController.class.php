@@ -110,7 +110,7 @@ class IndexController extends Controller {
         }
         $this->assign("title",C("title"));
     	$this->assign("data",$entrys);
-        dump($entrys);
+        // dump($entrys);
         //分页
         $paging= new  \Think\Page($entryQty, $this->options['entrysperpage']);
         $show=$paging->show();
