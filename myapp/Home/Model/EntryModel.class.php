@@ -1,5 +1,5 @@
 <?php
-namespace Home\Model;
+namespace Common\Model;
 use Think\Model;
 class EntryModel extends Model{
 	private $entryDB='';
@@ -14,5 +14,9 @@ class EntryModel extends Model{
 
 	public function test(){
 		dump($this->entryDB->select());
+	}
+
+	public function getPostImgCount($postid){
+		return $this->imgsDB->where('postid=%d',$postid)->count();
 	}
 }
