@@ -98,7 +98,7 @@ function semanticPage($totalPage,$currPage,$urlFuncParam){
 			}
 		}
 	}
-	if($currPage!=$totalPage){
+	if($currPage<$totalPage){
 		$html.='<a href="'.U($urlFuncParam.($currPage+1)).'" class="icon item"><i class="right chevron icon"></i></a>';
 	}
 	$html.="</div>";

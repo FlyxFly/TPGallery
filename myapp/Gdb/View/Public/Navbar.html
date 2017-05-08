@@ -1,0 +1,43 @@
+<div class="ui menu">
+<div class="ui container">
+	<div class="item header">GVDB</div>
+	<a href="" class="item">随便看看</a>
+	<div class="ui dropdown item">
+		演员
+		<i class="icon dropdown"></i>
+		<div class="menu">
+			<a href="" class="item">评分最高</a>
+			<a href="" class="item">最常点击</a>
+			<a href="{:U('Actor')}" class="item">所有演员</a>
+		</div>
+	</div>
+	<div class="ui dropdown item">
+		视频
+		<i class="icon dropdown"></i>
+		<div class="menu">
+			<a href="" class="item">评分最高</a>
+			<a href="" class="item">最常点击</a>
+			<a href="{:U('Video')}" class="item">所有视频</a>
+		</div>
+	</div>
+	<div class="right menu">
+		<div class="item">
+		<form action="{:U('[searchapi]')}" method="get">
+			<div class="ui action left icon input">
+				<i class="icon search"></i>
+				<input type="text" placeholder="演员或片名" name="keywords" id="searchKeywords" value="{$searchKeywords}">
+				<button class="ui button submit" id="searchBtn">搜索[ss]</button>
+			</div>
+		</form>
+		</div>
+		<div class="ui dropdown item">
+			添加
+			<i class="icon dropdown"></i>
+			<div class="menu">
+				<a href="" class="item">添加视频</a>
+				<a href="" class="item">添加演员</a>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

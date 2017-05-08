@@ -1,0 +1,13 @@
+<include file='Public/Header' />
+<include file='Public/Navbar' keywords='keywords' searchapi='Gdb/Novel/Search' />
+<div class="ui container">
+<div class="segment">
+	<p><h4 class="ui header">{$threadInfo.title}</h4></p>
+</div>
+	<volist name="novelTheads" id="thread">
+		<div class="segment">
+			{$thread.content}
+		</div>
+	</volist>
+</div>
+<include file='Public/Footer' />

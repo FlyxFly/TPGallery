@@ -1,0 +1,20 @@
+
+
+<script src="__PUBLIC__/Lightbox/js/lightbox.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$('.ui.menu .ui.dropdown').dropdown({
+			on:'click'
+		})
+		$('ui.menu a.item').on('click',function(){
+			$(this).addClass('active').siblings().removeClass('active')
+		})
+
+		$('.special.cards .image').dimmer({
+		  on: 'hover'
+		});
+
+	})
+</script>
+</body>
+</html>
