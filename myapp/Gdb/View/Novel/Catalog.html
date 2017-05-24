@@ -16,9 +16,9 @@
 		<tbody>
 			<volist name="novelList" id="novel">
 			<tr>
-				<td><a href="{:U('search?keywords='.$novel['category'].'&type=category')}">{$novel.category}</a></td>
-				<td><a href="{:U('content?tid='.$novel['threadid'])}">{$novel.title}</a></td>
-				<td><a href="{:U('search?keywords='.$novel['authorname'].'&type=authorname')}">{$novel.authorname}</a></td>
+				<td><a href="{:U('Search?keywords='.$novel['category'].'&type=category')}">{$novel.category}</a></td>
+				<td><a href="{:U('Content?tid='.$novel['threadid'])}">{$novel.title}</a></td>
+				<td><a href="{:U('Search?keywords='.$novel['authorname'].'&type=authorname')}">{$novel.authorname}</a></td>
 				<td>{$novel.createdate}</td>
 				<td>{$novel.view}</td>
 				<td>{$novel.reply}</td>
