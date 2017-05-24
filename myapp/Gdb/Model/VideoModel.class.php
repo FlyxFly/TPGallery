@@ -4,9 +4,13 @@ use Think\Model;
 
 class VideoModel extends Model{
 	private $_db='';
+	private $relation='';
+	private $actor='';
 	private $items_every_page="";
 	public function __construct(){
 		$this->_db=M('video');
+		$this->relation=M('relation');
+		$this->actor=M('actor');
 		$this->items_every_page=C('items_every_page');
 	}
 
@@ -39,5 +43,29 @@ class VideoModel extends Model{
 
 	public function getVideoByUniqueId($id=0){
 		return $this->_db->where('id=%d',array($id))->select();
+	}
+
+	public function getActorsByVideo($internalid,$companyid){
+		// 根据视频id和厂家id，返回演员信息数组
+
+		//根据厂商视频id和厂商id查找视频信息
+		$ret=$this->_db->where('internalid =%d and companyid=%d',array($internalid,$companyid))->select();
+		$result=array();
+		//遍历视频信息，根据视频id和厂商id查找演员id
+		if($ret){
+			foreach ($ret as $key => $value) {
+				$actors=$this->relation->where('internalvideoid=%d and companyid=%d',array($value['internalid'],$value['companyid']))->select();
+				// 遍历演员id，获取演员信息
+				foreach ($actors as $k => $actor) {
+
+					$actorInfo=$this->actor->where('internalid=%d and companyid=%d',array($actor['internalactorid'],$actor['companyid']))->select();
+					if($actorInfo){
+						$result[]=$actorInfo[0];
+					}
+					
+				}
+			}
+		}
+		return $result;
 	}
 }

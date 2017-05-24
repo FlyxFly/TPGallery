@@ -30,7 +30,14 @@ class NovelController extends Controller{
 	public function Content($tid=null,$p=1){
 		$threadInfo=$this->i->where('threadid=%d',$tid)->select();
 		$threadInfo=$threadInfo[0];
-		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid desc')->select();
+		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid')->select();
+		foreach ($content as $key => $value) {
+			$addNewline=str_replace('\r\n', '<br/>', $value);
+			$nonbsp=preg_replace('/\&nbsp;{3,}/', '<br/>&nbsp;&nbsp;', $addNewline);
+			$content[$key]=preg_replace('/\s{3,}/', '<br/>', $nonbsp);
+			// $content[$key]=nl2br($value);
+
+		}
 		$this->assign('threadInfo',$threadInfo);
 		$this->assign('novelTheads',$content);
 		$this->display();

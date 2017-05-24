@@ -11,7 +11,15 @@ class TagModel extends Model{
 	}
 
 	public function getTagsByVideo($videoid,$compid){
-		return $this->relation->fetchSQL(true)->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
+		$tagidResult=$this->relation->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
+		$result=array();
+		if($tagidResult){
+			foreach ($tagidResult as $key => $value) {
+				$tagNameResult=$this->tag->where('tag_id=%d and company_id=%d',array($value['tag_id'],$value['company_id']))->select();
+				array_push($result, $tagNameResult[0]);
+			}
+		}
+		return  $result;
 	}
 
 	public function getVideosByTag($tagid,$compid,$p=1){

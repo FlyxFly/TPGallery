@@ -29,7 +29,12 @@ class ActorModel extends Model{
 	}
 
 	public function getActorById($id=1){
-		return $this->_db->where("id=%d or internalid=%d",$id,$id)->select();
+		$ret=$this->_db->where("id=%d",$id)->select();
+		if($ret){
+			return $ret;
+		}else{
+			return $this->_db->where("internalid=%d",$id)->select();
+		}
 	}
 
 	public function getActorByInternalId($id=null,$compid=null){

@@ -9,7 +9,7 @@ class DnsController extends Controller{
 			$this->assign('query',$_GET['domain']);
 		}
 
-		$this->display();
+		$this->display('Index');
 	}
 
 	public function GetRecord($domain=null){

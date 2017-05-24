@@ -83,31 +83,149 @@ class IndexController extends Controller{
 			$videoInfo=$ret[0];
 			$videoInfo['actorsInfo']=array();
 			$actorsId=D('relation')->getActorsIdByVideoId($ret[0]['internalid'],$ret[0]['companyid']);
-			$tags=D('tag')->getTagsByVideo($videoInfo['id'],$videoInfo['companyid']);
-			dump($tags);
+			$tags=D('tag')->getTagsByVideo($videoInfo['internalid'],$videoInfo['companyid']);
+			// dump($actorsId);
+			$videoInfo['tags']=$tags;
 			foreach ($actorsId as $key => $value) {
 				$actor=D('actor')->getActorByInternalId($value['internalactorid'],$value['companyid']);
+				// dump($value);
 				array_push($videoInfo['actorsInfo'], $actor[0]);
 			}
+			$this->assign('tagColors',array('red','orange','yellow','olive','green','teal','blue','violet','purple','pink','brown','gery','grey','black'));
 			$this->assign('videoDetail',$videoInfo);
+			// dump($videoInfo);
 			$videoGallery=json_decode($videoInfo['officialgallery']);
+			// dump($videoInfo['officialgallery']);
+			// dump($videoGallery);
+			
 			foreach ($videoGallery as $key => $value) {
 				$videoGallery[$key]=str_replace('300h', '1000w', $value);
 			}
 			$this->assign('videoGallery',$videoGallery);
+		}else if(isset($_GET['keywords']) && $_GET['keywords']!==''){
+			$ret=M('video')->where("name like '%s'",array('%'.$_GET['keywords'].'%'))->select();
+			$this->assign('videosInfo',$ret);
 		}else{
 			$pageInfo=D('video')->getVideosByPage($p);
 			$this->assign('pagingCode',semanticPage($pageInfo['totalPage'],$p,"Gdb/Index/Video?p="));
 			$this->assign('videosInfo',$pageInfo['data']);
 			// dump($pageInfo['data']);
 		}
-		
-		
-		
-		
+
 		$this->assign('companyIdtoName',$companyIdtoName);
 		// dump($pageInfo['data']);
 		$this->display();
+	}
+
+	public function Mark($id,$message){
+		header('Content-type: application/json; charset=urf-8',true);
+
+		if($id>0){
+			switch($message){
+				case 'downloaded':
+					$ret=M('video')->where('id=%d',array($id))->setField('have',1);
+					if($ret){
+						msg(200,'Update Success!');
+					}else{
+						msg(1,'Server Error or Already Marked');
+					}
+				break;
+
+				case 'notDownloaded':
+					$ret=M('video')->where('id=%d',array($id))->setField('have',0);
+						if($ret){
+							msg(200,'Update Success!');
+						}else{
+							msg(1,'Server Error or Already Marked');
+						}
+
+				default:
+				msg(0,'Illegal Message');
+				
+			}
+		}else{
+			msg(0,'Illegal Id');
+		}
+		
+	}
+
+	public function VideoList($p=1){
+		$videosInfo=D('video')->getVideosByPage($p);
+		// $videosInfo['data'][$key]['actorsInfo']=D('video')->getActorsByVideo($value['internalid'],$value['companyid']);
+		foreach ($videosInfo['data'] as $key => $value) {
+			$videosInfo['data'][$key]['actorsInfo']=D('video')->getActorsByVideo($value['internalid'],$value['companyid']);
+			// dump($videosInfo['data'][$key]['actorsInfo']);
+			// $actorsId=D('relation')->getActorsIdByVideoId($value['internalid'],$value['companyid']);
+			// foreach ($actorsId as $actorKey => $actor) {
+			// 	$videosInfo['data'][$key]['actorsInfo']=D('actor')->getActorByInternalId($actor['internalactorid'],$actor['companyid']);
+			// 	// dump($videosInfo['data'][$key]['actorsInfo']);
+			// 	// dump($actor);
+			// }
+		}
+		// dump($videosInfo);
+		$this->assign('videosInfo',json_encode($videosInfo));
+		$companyName=D('company')->getCompName();
+		// dump($companyName);
+		$this->assign('allActors',json_encode(M('actor')->select()));
+		$this->assign('companyName',json_encode($companyName));
+		$this->assign('pagingCode',semanticPage($videosInfo['totalPage'],$p,"Gdb/Index/VideoList?p="));
+		// dump($videosInfo);
+		$this->display('List');
+	}
+
+	public function add(){
+		$po=$_POST;
+		if($po['type']=='video'){
+			$ret=M('video')->add($po);
+			msg('200','Save success',$ret);
+		}else if($po['type']=='actor'){
+			$result=array();
+			$result['actorDB']=M('actor')->add($po);
+			$companyid=$po['companyid'];
+			$videoid=$po['internalid'];
+			if(len($po['actors'])>1){
+				foreach ($po['actors'] as $key => $value) {
+					$relationData=array(
+					'internalactorid'=>$value,
+					'internalvideoid'=>$videoid,
+					'companyid'=>$companyid);
+					$result['relationDB']=M('relation')->add($relationData);
+				}
+			}else{
+				$relationData=array(
+					'internalactorid'=>$po['actors'][0],
+					'internalvideoid'=>$videoid,
+					'companyid'=>$companyid);
+					$result['relationDB']=M('relation')->add($relationData);
+			}
+			
+			msg('200','Save success',$result);
+		}else{
+			msg('0','Action not defined;');
+		}
+		
+	}
+
+	public function RealtimeSearch($keywords){
+		$resultVideos=array();
+		$searchByVideoName=M('video')->where("name like '%s'",array('%'.$keywords.'%'))->select();
+
+		$searchByActorName=M('actor')->where("name like '%s'",array('%'.$keywords.'%'))->select();
+		if($searchByActorName){
+			$searchByActorNameVideo=array();
+			foreach ($searchByActorName as $key => $value) {
+				$ret=M('relation')->where('internalactorid = %d and internalvideoid = %d',array($value['internalid'],$value['companyid']))->select();
+				foreach ($ret as $k => $v) {
+					$actorInfo=M('video')->where('internalid =%d and companyid=%d',array($v['internalvideoid'],$v['companyid']))->select();
+					$searchByActorNameVideo[]=$actorInfo[0];
+				}
+			}
+			$result=array_merge($searchByVideoName,$searchByActorNameVideo);
+		}else{
+			$result=$searchByVideoName;
+		}
+		echo json_encode($result);
+
 	}
 
 	public function img($type,$compId,$url=null,$force=0){
@@ -154,6 +272,7 @@ class IndexController extends Controller{
 		echo $image;
 	}
 
+
 	public function imgtest(){
 		$url='http://sm.staxus.com/content/contentthumbs/74489.jpg';
 		$path='D:\dht\2.jpg';
@@ -188,6 +307,16 @@ class IndexController extends Controller{
 	}
 
 	public function test(){
-		dump($_GET);
+		$videoid=4186;
+		$compid=1;
+		$tagidResult=M('tag_relation')->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
+		$result=array();
+		if($ret){
+			foreach ($tagidResult as $key => $value) {
+				$tagNameResult=M('tag')->where('tag_id=%d and company_id=%d',array($value['tag_id'],$value['company_id']))->select();
+				array_push($result, $tagNameResult);
+			}
+		}
+		echo json_encode($tagidResult)  ;
 	}
 }

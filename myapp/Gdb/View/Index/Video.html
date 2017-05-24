@@ -11,7 +11,7 @@
 			<img src="{:U('img',array('url'=>$item['listcover'],'type'=>'video',compId=>$item['companyid']))}" alt="">
 		</div>
 		<div class="content">
-			<i class="icon right floated like"></i>
+			<i class="icon right floated like {$item['have']==1?'red':''}"></i>
 			<div class="header">
 				<a href="{:U('Video',array('id'=>$item['id']))}">{$item.name}</a>
 			</div>
@@ -33,15 +33,26 @@
 
 <!-- 视频详情开始 -->
 <present name="videoDetail">
+<script>
+	var videoId={$videoDetail.id}
+</script>
 <div class="ui grid">
+
 	<div class="sixteen wide column">
+
 	<div class="ui fluid card">
+	<a id="haveFlag" class="ui {$videoDetail['have']==1?'red':'gray'} right corner label" title="{$videoDetail['have']==1?'在库':'没有此视频'}">
+		<i class="video play icon"></i>
+	</a>
 	<div class="header" style="padding: 1em">
 	<div class="column">
+	<h2>{$videoDetail['name']}</h2>
 		<div class="left floated">
-			<h2>{$videoDetail['name']}</h2>
 			<span class="meta">
 				<php>echo date("Y-m-d",strtotime($videoDetail['releasedate']))</php>
+				<if condition="$videoDetail['have'] neq 1">
+				<a class="ui button primary" id="markDownload">标记已下载</a>
+				</if>
 			</span>
 		</div>
 		<div class="right floated">
@@ -62,11 +73,35 @@
 		</div>
 	</div>
 	<div class="description">
-	
+	<div class="ui column">
+
+	</div>
+	<div class="ui column">
+		<volist name="videoDetail['tags']" id='tag' key='i'>
+			<a class="ui label {$tagColors[$i%13-1]}" href="{:U('Tag',array('Id'=>$tag['tag_id'],'CompanyId'=>$tag['company_id']))}">{$tag.tag_name}</a>
+		</volist>
+	</div>
 	</div>
 		
 	</div>
+
 </div>
+<script>
+$(document).ready(function(){
+	$('#markDownload').on('click',function(){
+		var that=$(this);
+		that.attr('disabled','true');
+		$.post("{:U('Mark')}",{id:videoId,message:'downloaded'},function(result){
+			if(result.code==200){
+				that.hide();
+				$('#haveFlag').removeClass('gray').addClass('red');
+			}else{
+				alert(result.message)
+			}
+		})
+	})
+})
+</script>
 </present>
 <!-- 视频详情结束 -->
 
@@ -80,6 +115,7 @@
 <div class="ui small images gallery-thumb" id="gallery-thumb">
 	<volist name="videoGallery" id="item" key="k">
 		<a href="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" data-lightbox="actor-picture"><img style="cursor:pointer" data-index={$k}  src="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" alt=""></a>
+	}
 	</volist>
 </div>
 
@@ -107,7 +143,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-
+	
 	window.onload=function(){
 		progressBar.fadeOut();
 	}
