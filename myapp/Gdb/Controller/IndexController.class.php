@@ -26,7 +26,7 @@ class IndexController extends Controller{
 					$actorInfo['age']=round((strtotime(date('Y-m-d'))-strtotime($actorInfo['birthday']))/3600/24/365);
 			}
 			$imgFileSuffix=explode('.', $actorInfo['localcover']);
-			$actorInfo['localcover']=U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
+			$actorInfo['localcover']='http://127.0.0.1'.U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
 			$imgSubDirRet=M('company')->field('img_sub_dir')->where('id=%d',array($actorInfo['companyid']))->select();
 			$imgSubDir=$imgSubDirRet[0]['img_sub_dir'];
 			$actorVideoIDs=D('relation')->getVideosByActorID($actorInfo['internalid'],$actorInfo['companyid']);
