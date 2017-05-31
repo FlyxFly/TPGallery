@@ -26,7 +26,7 @@ class IndexController extends Controller{
 					$actorInfo['age']=round((strtotime(date('Y-m-d'))-strtotime($actorInfo['birthday']))/3600/24/365);
 			}
 			$imgFileSuffix=explode('.', $actorInfo['localcover']);
-			$actorInfo['localcover']='http://127.0.0.1'.U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
+			$actorInfo['localcover']=U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
 			$imgSubDirRet=M('company')->field('img_sub_dir')->where('id=%d',array($actorInfo['companyid']))->select();
 			$imgSubDir=$imgSubDirRet[0]['img_sub_dir'];
 			$actorVideoIDs=D('relation')->getVideosByActorID($actorInfo['internalid'],$actorInfo['companyid']);
@@ -236,12 +236,13 @@ class IndexController extends Controller{
 		$path=$imageHostPrefix.$compIdtoImgSubDir[$compId].$type.'/'.$filename;
 		// dump($path);
 		// return;
-		$image = fread(fopen($path,r),filesize($path));
+		
 		// echo 234;
 		if($force==1){
 			self::remoteDownload($url,$path);
 		}else{
-			if($image){
+			if(filesize($path)==0){
+				$image = fread(fopen($path,r),filesize($path);
 				header('Content-type: image/jpeg',true);
 				echo $image;
 				return;
