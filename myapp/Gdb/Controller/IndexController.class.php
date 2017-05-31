@@ -229,9 +229,6 @@ class IndexController extends Controller{
 	}
 
 	public function img($type,$compId,$url=null,$force=0){
-		if($force){
-
-		}
 		$urlArr=explode('/', $url);
 		$filename=$urlArr[sizeof($urlArr)-1];
 		$imageHostPrefix=C('gdb_img_dir');
@@ -240,13 +237,14 @@ class IndexController extends Controller{
 		// dump($path);
 		// return;
 		$image = fread(fopen($path,r),filesize($path));
-		if($force){
+		// echo 234;
+		if($force==1){
 			self::remoteDownload($url,$path);
 		}else{
 			if($image){
 				header('Content-type: image/jpeg',true);
 				echo $image;
-				exit();
+				return;
 			}else if($url){
 				self::remoteDownload($url,$path);
 			}else{
@@ -261,7 +259,7 @@ class IndexController extends Controller{
 			return null;
 		}
 		ob_start();
-        readfile('http://poii.pw:8888/get?url='.$url);
+        readfile($url);
         $img=ob_get_contents();
         ob_end_clean();
 		$fp2=@fopen($path,'a');

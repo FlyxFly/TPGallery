@@ -1,26 +1,36 @@
-<div class="ui menu">
+<div class="ui menu navbar">
 <div class="ui container">
 	<div class="item header">GVDB</div>
-	<a href="" class="item">随便看看</a>
 	<div class="ui dropdown item">
 		演员
 		<i class="icon dropdown"></i>
 		<div class="menu">
 			<a href="" class="item">评分最高</a>
 			<a href="" class="item">最常点击</a>
-			<a href="{:U('Actor')}" class="item">所有演员</a>
+			<a href="{:U('Index/Actor')}" class="item">所有演员</a>
 		</div>
 	</div>
 	<div class="ui dropdown item">
 		视频
 		<i class="icon dropdown"></i>
 		<div class="menu">
+			<a href="{:U('Index/VideoList')}" class="item">视频列表</a>
 			<a href="" class="item">评分最高</a>
 			<a href="" class="item">最常点击</a>
-			<a href="{:U('Video')}" class="item">所有视频</a>
+			<a href="{:U('Index/Video')}" class="item">所有视频</a>
 		</div>
 	</div>
-	<a href="{:U('VideoList')}" class="item">简版</a>
+	
+	<div class="ui dropdown item">
+		小说
+		<i class="icon dropdown"></i>
+		<div class="menu">
+			<a href="{:U('Novel/Catalog')}" class="item">目录</a>
+			<a href="{:U('Novel/Random')}" class="item">随便看看</a>
+			<a href="{:U('Novel/Search',array('fav'=>1))}" class="item">收藏夹</a>
+			
+		</div>
+	</div>
 	<div class="right menu">
 		<div class="item">
 		<div class="ui action left icon input">
@@ -40,6 +50,18 @@
 	</div>
 </div>
 </div>
+
+<style>
+#sidebarBtn{
+display:none;
+}
+@media (max-width:749px){
+.right.menu{
+	display: none!important;
+}
+
+}
+</style>
 <script>
 $(document).ready(function(){
 	$('#searchKeywords').on('keydown',function(event){
@@ -58,6 +80,13 @@ $(document).ready(function(){
 	$('#addActor').on('click',function(){
 		$('#newActorModal').modal('show')
 	})
+
+	$('#sidebarBtn').on('click',function(){
+		$('.ui.sidebar')
+		  .sidebar('toggle')
+		;
+	})
+
 
 })
 </script>

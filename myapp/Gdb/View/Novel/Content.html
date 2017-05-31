@@ -2,7 +2,8 @@
 <include file='Public/Navbar' keywords='keywords' searchapi='Gdb/Novel/Search' />
 <div class="ui container">
 <div class="segment">
-	<p><h4 class="ui header">{$threadInfo.title}</h4></p>
+	<h4 class="ui header">{$threadInfo.title}</h4>
+	<div class="meta"><a id="addFav" data-tid='{$threadInfo.threadid}'>加入收藏</a></div>
 </div>
 	<volist name="novelTheads" id="thread">
 		<div class="segment">
@@ -10,4 +11,12 @@
 		</div>
 	</volist>
 </div>
+<script>
+$("#addFav").on('click',function(){
+	var that=$(this);
+	$.post('{:U("Mark")}',{tid:that.data('tid')},function(res){
+		alert(res.message)
+	})
+})
+</script>
 <include file='Public/Footer' />
