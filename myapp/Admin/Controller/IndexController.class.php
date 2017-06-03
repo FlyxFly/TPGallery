@@ -389,9 +389,9 @@ class IndexController extends Controller{
 
 			case "new";
 			// if($newFileDir[0]['value']=='upload'){
-			// 	$upload->savePath  = date("Y-m",time())."/";
+				$upload->savePath  = date("Y-m",time())."/";
 			// }else{
-				$upload->savePath  = $_POST["newTitle"]."/";
+				// $upload->savePath  = $_POST["newTitle"]."/";
 			// }
 			$info   =   $upload->upload();
 		    if(!$info) {// 上传错误提示错误信息
