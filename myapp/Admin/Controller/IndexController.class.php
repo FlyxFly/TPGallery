@@ -437,7 +437,7 @@ class IndexController extends Controller{
 		switch($_POST['action']){
 			case 'new':
 			$dirName=$_POST['newTitle'];
-			$savePath  = C("uploadDir").$dirName."/";
+			$savePath  = C("uploadDir").date("Y-m",time())."/";
 			if(!is_dir($savePath)){
 				mkdir($savePath);
 			}
@@ -470,7 +470,12 @@ class IndexController extends Controller{
 			}
 			$titleResult=$entryDB->field("title")->where("postid=%d",(int)$_POST["postid"])->select();
 			if($titleResult){
-				$dirName=$titleResult[0]["title"];
+				if($_POST["postid"]<142){
+					$dirName=$titleResult[0]["title"];
+				}else{
+					$dirName=date("Y-m",time())
+				}
+				
 				$savePath  = C("uploadDir").$dirName."/";
 				if(!is_dir($savePath)){
 				mkdir($savePath);
