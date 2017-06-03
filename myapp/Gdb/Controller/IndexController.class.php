@@ -241,8 +241,8 @@ class IndexController extends Controller{
 		if($force==1){
 			self::remoteDownload($url,$path);
 		}else{
-			if(filesize($path)==0){
-				$image = fread(fopen($path,r),filesize($path);
+			if(filesize($path)>0){
+				$image = fread(fopen($path,r),filesize($path));
 				header('Content-type: image/jpeg',true);
 				echo $image;
 				return;

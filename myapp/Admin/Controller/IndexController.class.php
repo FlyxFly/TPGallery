@@ -363,9 +363,14 @@ class IndexController extends Controller{
 			if(!isset($_POST["postid"])){
 				msg(0,"未指定日志ID");
 			}
-			$result=$entryDB->field("title")->where("id=%d",(int)$_POST["postid"])->select();
-			if($result){
-				$upload->savePath  = $result[0]["title"]."/";
+			$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
+			if($newFileDir[0]['value']=='upload'){
+				$upload->savePath  = date("Y-m",time())."/";
+			}else{
+				$result=$entryDB->field("title")->where("id=%d",(int)$_POST["postid"])->select();
+				if($result){
+					$upload->savePath  = $result[0]["title"]."/";
+				}
 			}
 			$info   =   $upload->upload();
 		    if(!$info) {// 上传错误提示错误信息
@@ -381,7 +386,12 @@ class IndexController extends Controller{
 			break;
 
 			case "new";
-			$upload->savePath  = $_POST["newTitle"]."/";
+			$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
+			if($newFileDir[0]['value']=='upload'){
+				$upload->savePath  = date("Y-m",time())."/";
+			}else{
+				$upload->savePath  = $_POST["newTitle"]."/";
+			}
 			$info   =   $upload->upload();
 		    if(!$info) {// 上传错误提示错误信息
 		        $this->error($upload->getError());
@@ -579,7 +589,9 @@ class IndexController extends Controller{
   //       fwrite($fp2,'abc');
   //       fclose($fp2);
 		
-		echo date("Y-m-d H:m:s",time()-3600*24);
+		echo date("Y-m",time());
+		// $newFileDir=M('options')->where('op = "newuploaddir" and user = 0')->select();
+		// dump($newFileDir[0]['value']);
 
 
 	}

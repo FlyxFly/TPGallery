@@ -344,7 +344,7 @@ h1, h2, h3, h4, h5, h6 {
 		font-weight: bold;
 		display: block;
 		float: none!important;
-		width: 200px;
+		//width: 200px;
 		margin: 0 auto;
 		text-transform: uppercase;
 		letter-spacing: 2px;
@@ -1053,5 +1053,16 @@ a > img {
 		display: block;
 		margin-left: auto;
 		margin-right: auto
+	}
+}
+
+.pagenumber{
+	text-align:center;
+	li{
+		display: inline-block;
+		text-align: center;
+		a{
+			width: 4rem;
+		}
 	}
 }
