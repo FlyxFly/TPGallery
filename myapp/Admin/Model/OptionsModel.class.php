@@ -26,8 +26,8 @@ class OptionsModel extends Model{
 				return $content['sysconfig'];
 			}
 		}else{
-			self:generateCache();
-			self:getCachedSysConfig();
+			self::generateCache();
+			self::getCachedSysConfig();
 		}
 	}
 
