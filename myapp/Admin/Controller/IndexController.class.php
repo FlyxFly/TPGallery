@@ -356,21 +356,23 @@ class IndexController extends Controller{
 	    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg', 'pdf');// 设置附件上传类型
 	    $upload->rootPath  =     C("uploadDir"); // 设置附件上传根目录
 	    $upload->autoSub=false;
-
+		$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
 	    //根据操作类型确定上传目录
 		switch($_POST["action"]){
 			case "add":
 			if(!isset($_POST["postid"])){
 				msg(0,"未指定日志ID");
 			}
-			$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
-			if($newFileDir[0]['value']=='upload'){
-				$upload->savePath  = date("Y-m",time())."/";
-			}else{
+			
+			if($_POST["postid"]<142){
 				$result=$entryDB->field("title")->where("id=%d",(int)$_POST["postid"])->select();
 				if($result){
 					$upload->savePath  = $result[0]["title"]."/";
+				}else{
+					$upload->savePath  = date("Y-m",time())."/";
 				}
+			}else{
+				$upload->savePath  = date("Y-m",time())."/";
 			}
 			$info   =   $upload->upload();
 		    if(!$info) {// 上传错误提示错误信息
@@ -386,12 +388,11 @@ class IndexController extends Controller{
 			break;
 
 			case "new";
-			$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
-			if($newFileDir[0]['value']=='upload'){
-				$upload->savePath  = date("Y-m",time())."/";
-			}else{
+			// if($newFileDir[0]['value']=='upload'){
+			// 	$upload->savePath  = date("Y-m",time())."/";
+			// }else{
 				$upload->savePath  = $_POST["newTitle"]."/";
-			}
+			// }
 			$info   =   $upload->upload();
 		    if(!$info) {// 上传错误提示错误信息
 		        $this->error($upload->getError());
