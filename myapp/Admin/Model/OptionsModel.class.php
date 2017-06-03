@@ -10,7 +10,7 @@ class OptionsModel extends Model{
 		$fromDB= $this->_db->where('user=0')->select();
 		$result=array();
 		foreach ($fromDB as $key => $value) {
-			$result[$value['option']]=$value['value'];
+			$result[$value['op']]=$value['value'];
 		}
 		return $result;
 	}
@@ -35,7 +35,7 @@ class OptionsModel extends Model{
 		$fromDB= $this->_db->where('user=%d',$userid)->select();
 		$result=array();
 		foreach ($fromDB as $key => $value) {
-			$result[$value['option']]=$value['value'];
+			$result[$value['op']]=$value['value'];
 		}
 		return $result;
 	}
@@ -44,14 +44,14 @@ class OptionsModel extends Model{
 		if($userid || !$data){
 			return 0;
 		}else{
-			$allOptions=$this->_db->field("option")->select();$availableOption=array();
+			$allOptions=$this->_db->field("op")->select();$availableOption=array();
 			foreach ($allOptions as $i => $v) {
-				array_push($availableOption, $v["option"]);
+				array_push($availableOption, $v["op"]);
 			}
 			$result=array();
 			foreach ($data as $key => $value) {
 				if(in_array($key, $availableOption)){
-					$result[$key]=$this->_db->where("user=%d and `option`='%s'",$userid,$key)->setField("value",$value);
+					$result[$key]=$this->_db->where("user=%d and `op`='%s'",$userid,$key)->setField("value",$value);
 				}
 			}
 			self::generateCache();
