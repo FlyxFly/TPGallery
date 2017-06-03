@@ -6613,4 +6613,12 @@ a > img.fh5co-align-center {
     .pagenumber li a {
       width: 4rem; }
 
+.previous-item {
+  display: inline-block;
+  float: left; }
+
+.next-item {
+  display: inline-block;
+  float: right; }
+
 /*# sourceMappingURL=style.css.map */

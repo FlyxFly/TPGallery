@@ -145,6 +145,10 @@ class IndexController extends Controller {
             $imgUrls=$imgsDB->where($where1)->order("id desc")->page($p,$this->options['imgsperpage'])->select();
             $result=array("info"=>$entryInfo[0],"content"=>$imgUrls);
             //图片分页
+            $next=$entryDB->where('postid>%d',array($pid))->limit(1)->select();
+            $prev=$entryDB->where('postid<%d',array($pid))->order('postid desc')->limit(1)->select();
+            $prevAndNext=array($prev[0],$next[0]);
+            // dump($prevAndNext);
             $imgCount=$imgsDB->where($where1)->count();
             $paging= new  \Think\Page($imgCount, C("imgPerPage"));
             $pageShow=$paging->show();
@@ -155,6 +159,7 @@ class IndexController extends Controller {
 		
         $metaDB=M("meta");
         $tags = $metaDB->where("type= 'category'")->select();
+        $this->assign('PrevAndNext',$prevAndNext);
         $this->assign("AllTags",$tags);
         $this->assign("page",$pageShow);
 		$this->assign("data",$result);

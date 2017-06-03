@@ -76,7 +76,20 @@
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
 					<a class="navbar-brand" href="{:U('Home/Index/index')}">{$data.info.title}</a>	
-					<p class="help-block">{$data.info.createdate}</p>	
+					<p class="help-block">{$data.info.createdate}</p>
+					<p class="help-block">
+						<if condition="PrevAndNext[0] neq null">
+						<a class="previous-item" href="{:U('post',array('pid'=>$PrevAndNext[0]['postid']))}">{$PrevAndNext[0]['title']}</a>
+						<else/>
+						<span class="previous-item">前面没有了</span>
+						</if>
+
+						<if condition="PrevAndNext[1] neq null">
+						<a class="next-item" href="{:U('post',array('pid'=>$PrevAndNext[1]['postid']))}">{$PrevAndNext[1]['title']}</a>
+						<else/>
+						<span class="next-item">后面没有了</span>
+						</if>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -144,7 +157,7 @@
 	<script src="__PUBLIC__/js/jquery.lazyload.js"></script>
 
 	<script src="__PUBLIC__/IndexHydrogen/js/main.js"></script>
-	$options['statcode']}
+	{$options['statcode']}
 	</body>
 </html>
 <!-- More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> -->
