@@ -380,6 +380,7 @@ class IndexController extends Controller{
 		    }else{// 上传成功
 		    	foreach ($info as $key => $value) {
 		    		$data["postid"]=$_POST["postid"];
+		    		$data["filepath"]=C("uploadDir").$value["savepath"].$value["savename"];
 		    		$data["url"]=C("fileHostDomain")."/".$value["savepath"].$value["savename"];
 		    		$imgsDB->data($data)->add();
 		    	}
@@ -412,6 +413,7 @@ class IndexController extends Controller{
 		    	
 		    	foreach ($info as $key => $value) {
 		    		$data["postid"]=$newPostId;
+		    		$data["filepath"]=C("uploadDir").$value["savepath"].$value["savename"];
 		    		$data["url"]=C("fileHostDomain")."/".$value["savepath"].$value["savename"];
 		    		$imgsDB->data($data)->add();
 		    	}
@@ -436,7 +438,7 @@ class IndexController extends Controller{
 
 		switch($_POST['action']){
 			case 'new':
-			$dirName=$_POST['newTitle'];
+			$dirName=date("Y-m",time());
 			$savePath  = C("uploadDir").date("Y-m",time())."/";
 			if(!is_dir($savePath)){
 				mkdir($savePath);
@@ -457,6 +459,7 @@ class IndexController extends Controller{
 				$info=self::getImage($value,$savePath,$fileName);
 				array_push($result, array("source"=>$value,"saveto"=>$savePath.$fileName,"size"=>filesize($savePath.$fileName),"url"=>C("fileHostDomain")."/".$dirName."/".$fileName));
 				$data["postid"]=$newPostId;
+				$data["filepath"]=$savePath.$fileName;
 	    		$data["url"]=C("fileHostDomain")."/".$dirName."/".$fileName;
 	    		$imgsDB->data($data)->add();
 			}
@@ -473,7 +476,7 @@ class IndexController extends Controller{
 				if($_POST["postid"]<142){
 					$dirName=$titleResult[0]["title"];
 				}else{
-					$dirName=date("Y-m",time())
+					$dirName=date("Y-m",time());
 				}
 				
 				$savePath  = C("uploadDir").$dirName."/";
@@ -488,6 +491,7 @@ class IndexController extends Controller{
 				$info=self::getImage($value,$savePath,$fileName);
 				array_push($result, array("source"=>$value,"saveto"=>$savePath.$fileName,"size"=>filesize($savePath.$fileName),"url"=>C("fileHostDomain")."/".$dirName."/".$fileName));
 				$data["postid"]=$_POST["postid"];
+				$data["filepath"]=C("uploadDir")."/".$dirName."/".$fileName;
 	    		$data["url"]=C("fileHostDomain")."/".$dirName."/".$fileName;
 	    		$imgsDB->data($data)->add();
 			}
