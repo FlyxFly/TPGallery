@@ -141,10 +141,10 @@
    <div class="content">
 
     <div class="description" id="addpicbody">
-   		<div class="field">
        	<label for=""><a href="#" id="addinputbox">[+]</a></label>
-      	<input type="text" class="addpic ">
-	  </div>
+	    <div class="field">
+	      	<input type="text" class="addpic ">
+		</div>
     </div>
     </div>
 
@@ -265,7 +265,7 @@
 
 
 	$("#addinputbox").click(function(){
-		$("#addpicbody").append("<input type='text' class='addpic'>")
+		$("#addpicbody").append("<div class='field'><input type='text' name='new-url' class='addpic'></div>")
 	})
 
 	$("#saveaddedimg").click(function(){

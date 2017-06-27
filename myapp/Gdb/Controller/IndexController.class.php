@@ -26,7 +26,8 @@ class IndexController extends Controller{
 					$actorInfo['age']=round((strtotime(date('Y-m-d'))-strtotime($actorInfo['birthday']))/3600/24/365);
 			}
 			$imgFileSuffix=explode('.', $actorInfo['localcover']);
-			$actorInfo['localcover']=U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
+			// $actorInfo['localcover']=U('Gdb/Index/img',array('url'=>$actorInfo['officialcover'],'type'=>'avatar','compId'=>$actorInfo['companyid']));
+			$actorInfo['localcover']=self::urlQuery(array('url'=>$actorInfo['officialcover'],'type'=>'avatar','companyId'=>$actorInfo['companyid']));
 			$imgSubDirRet=M('company')->field('img_sub_dir')->where('id=%d',array($actorInfo['companyid']))->select();
 			$imgSubDir=$imgSubDirRet[0]['img_sub_dir'];
 			$actorVideoIDs=D('relation')->getVideosByActorID($actorInfo['internalid'],$actorInfo['companyid']);
@@ -36,7 +37,8 @@ class IndexController extends Controller{
 			}
 			$actorVideoInfos=D('video')->getVideosByID($actorVideoIDsArr,$actorInfo['companyid']);
 			foreach ($actorVideoInfos as $key => $value) {
-				$actorVideoInfos[$key]['localcover']=U('img',array('type'=>'video','compId'=>$value['companyid'],'url'=>$value['listcover']));
+				// $actorVideoInfos[$key]['localcover']=U('img',array('type'=>'video','compId'=>$value['companyid'],'url'=>$value['listcover']));
+				$actorVideoInfos[$key]['localcover']=self::urlQuery(array('type'=>'video','companyId'=>$value['companyid'],'url'=>$value['listcover']));
 				$actorVideoInfos[$key]['actorInfo']=array();
 				$actorsId=D('relation')->getActorsIdByVideoId($value['internalid'],$value['companyid']);
 				foreach ($actorsId as $k => $v) {
@@ -58,7 +60,8 @@ class IndexController extends Controller{
 		//封面图处理和年龄计算
 		
 		foreach ($actorsInfo as $key => $value) {
-			$actorsInfo[$key]['localcover']=U('img',array('url'=>$value['officialcover'],'type'=>'avatar','compId'=>$value['companyid']));
+			// $actorsInfo[$key]['localcover']=U('img',array('url'=>$value['officialcover'],'type'=>'avatar','compId'=>$value['companyid']));
+			$actorsInfo[$key]['localcover']=self::urlQuery(array('url'=>$value['officialcover'],'type'=>'avatar','companyId'=>$value['companyid']));
 			if(!$value['birthday']==null){
 				$actorsInfo[$key]['age']=round((strtotime(date("Y-m-d"))-strtotime($value['birthday']))/3600/24/365);
 			}
@@ -271,6 +274,18 @@ class IndexController extends Controller{
 		echo $image;
 	}
 
+	private function urlQuery($param=array()){
+		$url="http://gg.d-hl.com/img";
+		if($url==null || $param==array()){
+			return false;
+		}
+		$url.="?";
+		foreach ($param as $key => $value) {
+			$url.=$key."=".$value."&";
+		}
+		return $url;
+	}
+
 
 	public function imgtest(){
 		$url='http://sm.staxus.com/content/contentthumbs/74489.jpg';
@@ -306,16 +321,17 @@ class IndexController extends Controller{
 	}
 
 	public function test(){
-		$videoid=4186;
-		$compid=1;
-		$tagidResult=M('tag_relation')->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
-		$result=array();
-		if($ret){
-			foreach ($tagidResult as $key => $value) {
-				$tagNameResult=M('tag')->where('tag_id=%d and company_id=%d',array($value['tag_id'],$value['company_id']))->select();
-				array_push($result, $tagNameResult);
-			}
-		}
-		echo json_encode($tagidResult)  ;
+		// $videoid=4186;
+		// $compid=1;
+		// $tagidResult=M('tag_relation')->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
+		// $result=array();
+		// if($ret){
+		// 	foreach ($tagidResult as $key => $value) {
+		// 		$tagNameResult=M('tag')->where('tag_id=%d and company_id=%d',array($value['tag_id'],$value['company_id']))->select();
+		// 		array_push($result, $tagNameResult);
+		// 	}
+		// }
+		// echo json_encode($tagidResult)  ;
+		echo self::urlQuery("http://xx.com",array("id"=>123,"type"=>"kek"));
 	}
 }

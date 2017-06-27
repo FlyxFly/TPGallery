@@ -208,4 +208,8 @@ class IndexController extends Controller {
   [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
 ]';  
     }
+
+    public function Landing(){
+        $this->display();
+    }
 }

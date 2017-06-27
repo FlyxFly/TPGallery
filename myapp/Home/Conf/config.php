@@ -4,5 +4,6 @@ return array(
 	'entryPerPage'=>20,
 	'imgPerPage'=>24,
 	'URL_HTML_SUFFIX'=>'',
-	'title'=>'My Collection'
+	'title'=>'My Collection',
+	'DEFAULT_ACTION'=>'landing',
 );
