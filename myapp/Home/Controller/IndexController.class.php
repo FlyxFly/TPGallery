@@ -93,7 +93,7 @@ class IndexController extends Controller {
         if($tagid==null){
             $entryQty=$entryDB->count();
             $entrys=self::getEntry(null,$p);
-            $this->assign("pagetitle","首页");
+            $this->assign("pagetitle","Home");
         }else{
             $thisTagEntryId=$relationshipDB->where("mid = '$tagid'")->select();
             $tagChinese=$metaDB->where("mid = '$tagid'")->select();
@@ -207,5 +207,9 @@ class IndexController extends Controller {
   [5397108001189,1001470003,"可睿心Creation+幼儿配方奶粉800克",228,1.08333333333333,0.002840112],
   [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
 ]';  
+    }
+
+    public function landing(){
+        $this->display();
     }
 }

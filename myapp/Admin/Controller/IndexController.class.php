@@ -16,7 +16,7 @@ class IndexController extends Controller{
 		}
 	}
 
-	public function Index($p=1){
+	public function index($p=1){
 		$entryDB=M("entry");
 		$metaDB=M("meta");
 		$relationshipDB=M("relationship");
