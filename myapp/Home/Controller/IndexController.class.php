@@ -209,7 +209,8 @@ class IndexController extends Controller {
 ]';  
     }
 
-    public function landing(){
+
+    public function Landing(){
         $this->display();
     }
 }
