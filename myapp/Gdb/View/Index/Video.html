@@ -8,7 +8,7 @@
 	<volist name='videosInfo' id='item'>
 	<div class="card">
 		<div class="image">
-			<img src="{:U('img',array('url'=>$item['listcover'],'type'=>'video',compId=>$item['companyid']))}" alt="">
+			<img src="http://gg.d-hl.com/img?url={$item['listcover']}&type=avatar&companyId={$item['companyid']}">
 		</div>
 		<div class="content">
 			<i class="icon right floated like {$item['have']==1?'red':''}"></i>
@@ -20,7 +20,9 @@
 			<volist name="videoDetail['actorsInfo']" id="actor">
 			<div style='display:inline-block'>
 	     		<a href="{:U('Actor',array('id'=>$actor['id']))}">
-		    		<img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> {$actor.name}
+	     			<img src="http://gg.d-hl.com/img?url={$item['officialcover']}&type=avatar&companyId={$item['companyid']}">
+
+		    		<!-- <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> --> {$actor.name}
 		    	</a>
 		    </div>
 			</volist>
@@ -60,7 +62,8 @@
 			<volist name="videoDetail['actorsInfo']" id="actor">
 			  <div style='display:inline-block;padding:1em'>
 		      	<a href="{:U('Actor',array('id'=>$actor['id']))}">
-			      <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> {$actor.name}
+					<img src="http://gg.d-hl.com/img?url={$actor['officialcover']}&type=avatar&companyId=$actor['companyid'])">
+			       <!--  <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> --> {$actor.name}
 			     </a>
 			     </div>
 			</volist>
@@ -69,7 +72,8 @@
 	</div>
 	</div>
 		<div class="image">
-			<img class="ui image" src="{:U('img',array('url'=>$videoDetail['detailcover'],'type'=>'video','compId'=>$videoDetail['companyid']))}" alt="">
+			<img src="http://gg.d-hl.com/img?url={$item['detailcover']}&type=video&companyId={$item['companyid']}">
+			<!-- <img class="ui image" src="{:U('img',array('url'=>$videoDetail['detailcover'],'type'=>'video','compId'=>$videoDetail['companyid']))}" alt=""> -->
 		</div>
 	</div>
 	<div class="description">
@@ -114,7 +118,9 @@ $(document).ready(function(){
 </div>
 <div class="ui small images gallery-thumb" id="gallery-thumb">
 	<volist name="videoGallery" id="item" key="k">
-		<a href="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" data-lightbox="actor-picture"><img style="cursor:pointer" data-index={$k}  src="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" alt=""></a>
+		<a href="http://gg.d-hl.com/img?url={$item}&type=gallery&companyId={$videoDetail['companyid']}" data-lightbox="actor-picture">
+		<img style="cursor:pointer" data-index={$k} src="http://gg.d-hl.com/img?url={$item}&type=gallery&companyId={$videoDetail['companyid']}">
+		<!-- <img style="cursor:pointer" data-index={$k}  src="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" alt=""></a> -->
 	}
 	</volist>
 </div>
