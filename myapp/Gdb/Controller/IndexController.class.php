@@ -275,7 +275,7 @@ class IndexController extends Controller{
 	}
 
 	private function urlQuery($param=array()){
-		$url="http://gg.d-hl.com/img";
+		$url="https://gg.d-hl.com/img";
 		if($url==null || $param==array()){
 			return false;
 		}
