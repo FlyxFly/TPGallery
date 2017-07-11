@@ -55,6 +55,7 @@ class UserController extends Controller{
 	}
 
 	public function saveAPI(){
+		header("Content-type:application/json");
 		$userDB=M("users");
 		if(!$_POST["token"]==session("user.token")){
 			msg(0,"token不匹配");
@@ -63,14 +64,14 @@ class UserController extends Controller{
 			msg(0,"id不匹配");
 		}
 		$condition=$_POST;
-		if(!session("user.editmail")==$condition["email"]){
-			$emailtest=$userDB->where("email='%s'",$condition["email"])->select();
-			if($emailtest){
-				msg(0,"邮箱重复");
-			}
-		}else{
-			unset($condition["email"]);
-		}
+		// if(!session("user.editmail")==$condition["email"]){
+		// 	$emailtest=$userDB->where("email='%s'",$condition["email"])->select();
+		// 	if($emailtest){
+		// 		msg(0,"邮箱重复");
+		// 	}
+		// }else{
+		// 	unset($condition["email"]);
+		// }
 		if($_POST["password"]==""){
 			unset($condition["password"]);
 		}else{

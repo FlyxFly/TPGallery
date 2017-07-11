@@ -16,11 +16,20 @@ class IndexController extends Controller{
 		}
 	}
 
-	public function index($p=1){
+	public function index($p=1,$keywords=null){
 		$entryDB=M("entry");
 		$metaDB=M("meta");
 		$relationshipDB=M("relationship");
-		$allEntry=$entryDB->order("postid desc")->page($p,C("entryPerPage"))->select();
+		// dump(!$keywords==null);
+		if(!$keywords==null){
+			$allEntry=$entryDB->where("title like '%s'","%".$keywords."%")->order("postid desc")->page($p,C("entryPerPage"))->select();
+			$totalEntryQty=$entryDB->where("title like '%s'","%".$keywords."%")->count();
+			
+		}else{
+			$allEntry=$entryDB->order("postid desc")->page($p,C("entryPerPage"))->select();
+			$totalEntryQty=$entryDB->count();
+		}
+		// dump($allEntry);
 		$entryInfo=array();
 		foreach ($allEntry as $key => $value) {
 			$postid=$value["postid"];
@@ -31,7 +40,7 @@ class IndexController extends Controller{
 				foreach ($thisEntryTagId as $key => $value2) {
 					$thisEntryMid=$value2['mid'];
 					$tagChinese=$metaDB->where("mid= $thisEntryMid")->select();
-					array_push($value["category"],$tagChinese[0][name]);
+					array_push($value["category"],$tagChinese[0]['name']);
 				}
 			}else{
 				$value["category"]=null;
@@ -42,9 +51,11 @@ class IndexController extends Controller{
 		// dump($entryInfo);
 		$this->assign("entryinfo",$entryInfo);
 
-		$totalEntryQty=$entryDB->count();
 		$totalpage=ceil($totalEntryQty/C("entryPerPage"));
-        $this->assign("pagecode",semanticPage($totalpage,$p,"Admin/Index/index?p="));
+		$this->assign("keywords",$keywords);
+		$pageLink=$keywords==null?"Admin/Index/index?p=":"Admin/Index/index?keywords={$keywords}&p=";
+		// dump($totalEntryQty);
+        $this->assign("pagecode",semanticPage($totalpage,$p,$pageLink));
         $this->assign("pagename","后台首页");
         $this->assign("currModule","index");
         $this->assign("userinfo",session("user"));

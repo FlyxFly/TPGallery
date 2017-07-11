@@ -53,7 +53,7 @@ $("#save").click(function(){
 	var createdate=new Date($("#createdate").val());
 	data=data+"&createdate="+Math.round(createdate.getTime()/1000);
 	$.post("{:U('Admin/User/saveAPI')}",data,function(res){
-		console.log(res)
+		alert(res.message)
 	})
 	return false;
 })

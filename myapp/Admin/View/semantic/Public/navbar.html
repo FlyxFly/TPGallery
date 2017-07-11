@@ -36,11 +36,13 @@
   <a href="{:U('Home/Index/index')}" class="item">查看网站</a>
   <div class="right menu">
     <div class="item">
+    <form method="get" action="{:U('Admin/Index/index')}">
       <div class="ui action left icon input">
+        <input name="keywords" type="text" placeholder="" value="{$keywords}">
         <i class="search icon"></i>
-        <input type="text" placeholder="">
-        <button class="ui button">搜索</button>
+        <button class="ui button" type="submit" >搜索</button>
       </div>
+      </form>
     </div>
     <a href="{:U('Admin/Index/logout')}" class="item">退出登陆</a>
   </div>
@@ -68,6 +70,15 @@
   </div>  
   <a href="{:U('Admin/Index/upload')}" class="item {$currModule == 'upload'?'active':''}">文件上传</a>
   <a href="{:U('Home/Index/index')}" class="item">查看网站</a>
+  <div class="item">
+  <form method="get" action="{:U('Admin/Index/index')}">
+      <div class="ui action left icon input">
+        <input name="keywords" type="text" placeholder="" value="{$keywords}">
+        <i class="search icon"></i>
+        <button class="ui button" type="submit" ">搜索</button>
+      </div>
+   </form>
+  </div>
 </div>
 <div class="pusher">
 <!-- 顶部导航栏开始 -->
@@ -80,10 +91,11 @@
     <div class="menu">
       <a class="item"><i class="user icon"></i>个人中心</a>
       <a class="item"><i class="icon sign out"></i>退出登陆</a>
-    </div
+    </div>
   </div>
   </div>
   </div>
+</div>
 </div>
 </div>
 <div class="ui container">
