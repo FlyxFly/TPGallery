@@ -16,18 +16,25 @@ class IndexController extends Controller{
 		}
 	}
 
-	public function index($p=1,$keywords=null){
+	public function index($p=1,$q=null,$cid=null){
+		//p=页码，q=搜索关键字,$cid=分类id
 		$entryDB=M("entry");
 		$metaDB=M("meta");
 		$relationshipDB=M("relationship");
-		// dump(!$keywords==null);
-		if(!$keywords==null){
-			$allEntry=$entryDB->where("title like '%s'","%".$keywords."%")->order("postid desc")->page($p,C("entryPerPage"))->select();
-			$totalEntryQty=$entryDB->where("title like '%s'","%".$keywords."%")->count();
-			
+		// dump(!$q==null);
+		if(!$q==null){
+			$allEntry=$entryDB->where("title like '%s'","%".$q."%")->order("postid desc")->page($p,C("entryPerPage"))->select();
+			$totalEntryQty=$entryDB->where("title like '%s'","%".$q."%")->count();
+		}else if(!$cid==null && (int)$cid){
+			$dataSQL="select * from entry where postid in (select pid from relationship where mid={$cid})";
+			$countSQL="select count(postid) from entry where postid in (select pid from relationship where mid={$cid})";
+			$allEntry=M()->query($dataSQL);
+			$totalEntryQtyRet=M()->query($countSQL);
+			$totalEntryQty=$totalEntryQtyRet[0]["count(postid)"];
 		}else{
 			$allEntry=$entryDB->order("postid desc")->page($p,C("entryPerPage"))->select();
 			$totalEntryQty=$entryDB->count();
+			
 		}
 		// dump($allEntry);
 		$entryInfo=array();
@@ -40,7 +47,8 @@ class IndexController extends Controller{
 				foreach ($thisEntryTagId as $key => $value2) {
 					$thisEntryMid=$value2['mid'];
 					$tagChinese=$metaDB->where("mid= $thisEntryMid")->select();
-					array_push($value["category"],$tagChinese[0]['name']);
+					// array_push($value["category"],$tagChinese[0]['name']);
+					$value["category"][$value2['mid']]=$tagChinese[0]['name'];
 				}
 			}else{
 				$value["category"]=null;
@@ -50,10 +58,10 @@ class IndexController extends Controller{
 		}
 		// dump($entryInfo);
 		$this->assign("entryinfo",$entryInfo);
-
+		// dump($totalEntryQty);
 		$totalpage=ceil($totalEntryQty/C("entryPerPage"));
-		$this->assign("keywords",$keywords);
-		$pageLink=$keywords==null?"Admin/Index/index?p=":"Admin/Index/index?keywords={$keywords}&p=";
+		$this->assign("q",$q);
+		$pageLink=$q==null?"Admin/Index/index?p=":"Admin/Index/index?q={$q}&p=";
 		// dump($totalEntryQty);
         $this->assign("pagecode",semanticPage($totalpage,$p,$pageLink));
         $this->assign("pagename","后台首页");
@@ -348,7 +356,7 @@ class IndexController extends Controller{
 
 	public function upload(){
 		$entryDB=M("entry");
-		$ret=$entryDB->field("postid,title")->select();
+		$ret=$entryDB->field("postid,title")->order("postid desc")->select();
 		$this->assign("allEntry",$ret);
 		$this->assign("currModule","upload");
 		$this->assign("pagename","文件上传");
@@ -610,11 +618,13 @@ class IndexController extends Controller{
   //       fwrite($fp2,'abc');
   //       fclose($fp2);
 		
-		echo date("Y-m",time());
+		// echo date("Y-m",time());
 		// $newFileDir=M('options')->where('op = "newuploaddir" and user = 0')->select();
 		// dump($newFileDir[0]['value']);
-
-
+		$a=[];
+		$a[0]=44;
+		$a[]=33;
+		dump($a);
 	}
 
 }

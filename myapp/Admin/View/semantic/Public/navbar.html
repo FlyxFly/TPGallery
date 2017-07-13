@@ -22,7 +22,7 @@
 <div class="ui container">
   <div class="header item">后台</div>
   <a href="{:U('Admin/Index/index')}" class="item {$currModule == 'index'?'active':''}">日志管理</a>
-  <a href="" class="item {$currModule == 'setting'?'active':''}">基础设定</a>
+  <a href="{:U('Admin/Index/editconf')}" class="item {$currModule == 'setting'?'active':''}">基础设定</a>
   <a href="{:U('Admin/Tag/index')}" class="item {$currModule == 'tag'?'active':''}">分类管理</a>
   <div class="ui dropdown item" tabindex="0">
     用户管理

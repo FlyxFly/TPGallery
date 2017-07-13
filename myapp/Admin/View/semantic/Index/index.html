@@ -24,7 +24,7 @@
 							<td>{$item["authorid"]}</td>
 							<td>{$item["createdate"]}</td>
 							<td>
-								<volist name="item['category']" id="ct">{$ct},</volist>
+								<volist name="item['category']" id="ct" ><a href="{:U('Admin/Index/index',array('cid'=>$key))}">{$ct}</a>,</volist>
 							</td>
 							<td>{$item["private"]==1?"是":""}</td>
 							<!-- <td><a class="btn btn-primary" href="{:U('/Admin/Index/edit?pid='.$item['postid'])}">编辑</a></td> -->
