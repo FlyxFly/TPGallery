@@ -108,7 +108,7 @@
         <foreach name="data.content" item="entry">
         	<div class="item">
         		<div class="animate-box">
-	        		<a href="<?php echo str_replace('http','https',$entry['url']); ?>" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="<?php echo str_replace('http','https',$entry['url']); ?>" alt="此处应有图片，然而并没有"></a>
+	        		<a href="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" alt="此处应有图片，然而并没有"></a>
         		</div>
         		
         	</div>

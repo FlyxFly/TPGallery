@@ -95,7 +95,7 @@ $(document).ready(function(){
 			if(result.code==200){
 				layer.msg(result.message,{"icon":1});
 				setTimeout(function(){
-					location.href="{:U('Admin/Index/Index')}"
+					location.href="{:U('Admin/Index/index')}"
 				},2000)
 			}else{
 				layer.msg(result.message,{"icon":2})

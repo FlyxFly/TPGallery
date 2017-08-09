@@ -384,6 +384,7 @@ class IndexController extends Controller{
 			}
 			
 			if($_POST["postid"]<142){
+				$upload->rootPath = "/home/wwwroot/ggimg/imgs/";
 				$result=$entryDB->field("title")->where("id=%d",(int)$_POST["postid"])->select();
 				if($result){
 					$upload->savePath  = $result[0]["title"]."/";

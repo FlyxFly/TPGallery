@@ -82,22 +82,29 @@ class IndexController extends Controller {
         return $entrys;
     }
 
-    public function index($tagid=null){
-        
-        $p=$_GET["p"]?$_GET["p"]:1;
+    public function index($tagid=null,$p=1){
     	self::testIfInt($p);
     	$entryDB=M("entry");
     	$imgsDB=M("imgs");
         $metaDB=M("meta");
         $relationshipDB=M("relationship");
         if($tagid==null){
-            $entryQty=$entryDB->count();
+            if(session('user')){
+                $entryQty=$entryDB->count();
+            }else{
+                $entryQty=$entryDB->where("private=1")->count();
+            }
+            
             $entrys=self::getEntry(null,$p);
             $this->assign("pagetitle","Home");
         }else{
-            $thisTagEntryId=$relationshipDB->where("mid = '$tagid'")->select();
+            if(session('user')){
+                $thisTagEntryId=$relationshipDB->where("mid = '$tagid'")->select();
+            }else{
+                $thisTagEntryId=$relationshipDB->where("mid = '$tagid' and private=0")->select();
+            }
+            
             $tagChinese=$metaDB->where("mid = '$tagid'")->select();
-
             $entryQty=count($thisTagEntryId);
             $entrys=array();
             foreach ($thisTagEntryId as $key => $value) {
@@ -110,7 +117,7 @@ class IndexController extends Controller {
         }
         $this->assign("title",C("title"));
     	$this->assign("data",$entrys);
-        // dump($entrys);
+        dump($entrys);
         // dump($this->options);
         //分页
         $paging= new  \Think\Page($entryQty, $this->options['entrysperpage']);
@@ -190,23 +197,25 @@ class IndexController extends Controller {
     }
 
     public function test(){
-        header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求  
-        header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
-        header('Content-type: application/json; charset=UTF-8');
-        echo '[
-  [5397108000014,1001150002,"1千克贝因美绿爱+较大婴儿配方奶粉",335,1.347,0.003445],
-  [5397108000021,1001150003,"1千克贝因美绿爱+幼儿配方奶粉",325,1.347,0.003445],
-  [5397108000069,1001380001,"贝因美爱+red婴儿配方奶粉800克",328,1.083333333333,0.002840112],
-  [5397108000076,1001380002,"贝因美爱+red较大婴儿配方奶粉800克",318,1.083333333333,0.002840112],
-  [5397108000083,1001380003,"贝因美爱+red幼儿配方奶粉800克",308,1.083333333333,0.002840112],
-  [5397108000786,1001150004,"贝因美绿爱+婴儿配方奶粉800克",288,1.083333333333,0.002840112],
-  [5397108000793,1001150005,"贝因美绿爱+较大婴儿配方奶粉800克",288,1.083333333333,0.002840112],
-  [5397108000809,1001150006,"贝因美绿爱+幼儿配方奶粉800克",288,1.083333333333,0.002840112],
-  [5397108001165,1001470001,"可睿心Creation+婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
-  [5397108001172,1001470002,"可睿心Creation+较大婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
-  [5397108001189,1001470003,"可睿心Creation+幼儿配方奶粉800克",228,1.08333333333333,0.002840112],
-  [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
-]';  
+//         header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求  
+//         header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
+//         header('Content-type: application/json; charset=UTF-8');
+//         echo '[
+//   [5397108000014,1001150002,"1千克贝因美绿爱+较大婴儿配方奶粉",335,1.347,0.003445],
+//   [5397108000021,1001150003,"1千克贝因美绿爱+幼儿配方奶粉",325,1.347,0.003445],
+//   [5397108000069,1001380001,"贝因美爱+red婴儿配方奶粉800克",328,1.083333333333,0.002840112],
+//   [5397108000076,1001380002,"贝因美爱+red较大婴儿配方奶粉800克",318,1.083333333333,0.002840112],
+//   [5397108000083,1001380003,"贝因美爱+red幼儿配方奶粉800克",308,1.083333333333,0.002840112],
+//   [5397108000786,1001150004,"贝因美绿爱+婴儿配方奶粉800克",288,1.083333333333,0.002840112],
+//   [5397108000793,1001150005,"贝因美绿爱+较大婴儿配方奶粉800克",288,1.083333333333,0.002840112],
+//   [5397108000809,1001150006,"贝因美绿爱+幼儿配方奶粉800克",288,1.083333333333,0.002840112],
+//   [5397108001165,1001470001,"可睿心Creation+婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
+//   [5397108001172,1001470002,"可睿心Creation+较大婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
+//   [5397108001189,1001470003,"可睿心Creation+幼儿配方奶粉800克",228,1.08333333333333,0.002840112],
+//   [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
+// ]';
+    $result=M('imgs')->query('select * from imgs where postid=50');
+    dump($result);
     }
 
 

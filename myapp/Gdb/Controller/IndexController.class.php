@@ -68,7 +68,7 @@ class IndexController extends Controller{
 		}
 		// 封面图处理和年龄计算结束
 		// dump($actorsInfo);
-		
+		$this->assign('gdbImgServer',C('gdb_img_server'));
 		$this->assign('actorsInfo',$actorsInfo);
 		$this->display();
 
@@ -114,7 +114,7 @@ class IndexController extends Controller{
 			$this->assign('videosInfo',$pageInfo['data']);
 			// dump($pageInfo['data']);
 		}
-
+		$this->assign('gdbImgServer',C('gdb_img_server'));
 		$this->assign('companyIdtoName',$companyIdtoName);
 		// dump($pageInfo['data']);
 		$this->display();
@@ -186,7 +186,7 @@ class IndexController extends Controller{
 			$result['actorDB']=M('actor')->add($po);
 			$companyid=$po['companyid'];
 			$videoid=$po['internalid'];
-			if(len($po['actors'])>1){
+			if(count($po['actors'])>1){
 				foreach ($po['actors'] as $key => $value) {
 					$relationData=array(
 					'internalactorid'=>$value,
@@ -275,7 +275,8 @@ class IndexController extends Controller{
 	}
 
 	private function urlQuery($param=array()){
-		$url="https://gg.d-hl.com/img";
+		$url=C("gdb_img_server");
+		// $url="https://gg.d-hl.com/img";
 		if($url==null || $param==array()){
 			return false;
 		}
@@ -332,6 +333,6 @@ class IndexController extends Controller{
 		// 	}
 		// }
 		// echo json_encode($tagidResult)  ;
-		echo self::urlQuery("http://xx.com",array("id"=>123,"type"=>"kek"));
+		echo C("gdb_img_server");
 	}
 }

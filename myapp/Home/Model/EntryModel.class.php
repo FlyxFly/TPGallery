@@ -19,4 +19,9 @@ class EntryModel extends Model{
 	public function getPostImgCount($postid){
 		return $this->imgsDB->where('postid=%d',$postid)->count();
 	}
+
+	public function getEntry($postid){
+		$result=[];
+		$imgs=$this->imgDB->query
+	}
 }

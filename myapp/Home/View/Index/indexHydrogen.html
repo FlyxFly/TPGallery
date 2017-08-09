@@ -45,6 +45,7 @@
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
+		<p><a href="{:U('Admin/Login/index')}">登陆</a></p>
 		<ul>
 		<foreach name="AllTags" item="tag">
 			<li><a href="{:U('/Home/Index/index?tagid='.$tag['mid'])}" title="{$tag.slug}" <if condition="$thisMid neq null and $thisMid eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>

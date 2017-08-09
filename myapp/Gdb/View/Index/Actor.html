@@ -146,9 +146,9 @@
 	      	<volist name="video['actorInfo']" id='actor'>
 	      	<div style='display:inline-block'>
 	      	<a href="{:U('Actor',array('id'=>$actor['id']))}">
-		      <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> {$actor.name}
-		     </a>
-		     </div>
+	      		<img class="ui avatar image" src="{$gdbImgServer}?type=avatar&url={$actor['officialcover']}&companyId={$actor['companyid']}" alt="">
+		    </a>
+		    </div>
 	   		</volist>
 	      </span>
 	    </div>
