@@ -33,6 +33,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/style.css">
 	<!-- Modernizr JS -->
 	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/fonts.css">
+
+	<!-- video.JS -->
+	<link href="http://vjs.zencdn.net/6.2.4/video-js.css" rel="stylesheet">
+
 	<script src="__PUBLIC__/IndexHydrogen/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
@@ -49,8 +53,8 @@
 		}
 	</style>
 	</head>
+
 	<body>
-		
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
@@ -72,7 +76,22 @@
 	</div>
 	<header id="fh5co-header" role="banner">
 		<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div style="width:100%;height: auto">
+				  <video id="my-video" class="video-js" controls preload="auto" width="100%" height="auto"
+				  poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+				    <source src="http://127.0.0.1/ob.mp4" type='video/mp4'>
+				    <p class="vjs-no-js">
+				      To view this video please enable JavaScript, and consider upgrading to a web browser that
+				      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+				    </p>
+				  </video>
+				</div>
+			</div>
+		</div>
 			<div class="row">
+
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
 					<a class="navbar-brand" href="{:U('Home/Index/index')}">{$data.info.title}</a>	
@@ -157,6 +176,9 @@
 	<script src="__PUBLIC__/js/jquery.lazyload.js"></script>
 
 	<script src="__PUBLIC__/IndexHydrogen/js/main.js"></script>
+
+	<!-- video js -->
+	<script src="http://vjs.zencdn.net/6.2.4/video.js"></script>
 	{$options['statcode']}
 	</body>
 </html>
