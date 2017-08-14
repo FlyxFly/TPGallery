@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh">
+	<head>
+		<meta Content-type='text/html'>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+		<import type="css" file="semantic/semantic"/>
+		<css href="__PUBLIC__/Lightbox/css/lightbox.min.css" />
+		<script src="__PUBLIC__/lib/js/jquery-3.1.1.min.js"></script>
+		<js href="__PUBLIC__/Lightbox/js/lightbox.min.js" />
+		<import type="js" file="semantic/semantic,js/masonrypkgdmin"/>
+		<link href="http://vjs.zencdn.net/6.2.4/video-js.css" rel="stylesheet">
+		<!-- If you'd like to support IE8 -->
+		<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+		<title>{$data.info.title}</title>
+		<style type="text/css">
+			video{
+				object-fit: scale-down;
+			}
+			@media only screen and (max-width: 768px){
+				.hide-on-mobile{
+					display: none!important;
+				}
+				
+			}
+			@media only screen and (min-width:769px){
+				.hide-on-mobile{
+					display: block;
+				}
+				.sidebar-btn{
+					display: none!important;
+				}
+
+			}
+			.img-gallery-item{
+				width: 300px;
+				border: 1px solid #ccc;
+				border-radius: 10px;
+				padding: 5px;
+			}
+			.pagination > li{
+				list-style: none;
+				display: inline-block;
+			}
+			.pagination > li > a, .pagination > li > span {
+			    position: relative;
+			    float: left;
+			    padding: 14px 12px;
+			    line-height: 1.42857;
+			    text-decoration: none;
+			    color: #EF5353;
+			    background-color: #fff;
+			    border: 1px solid #ddd;
+			    margin-left: -1px;
+			}
+			.pagenumber li a {
+			    width: 4rem;
+			}
+			.pagenumber{
+				display: inline-block;
+			}
+			.txt-center{
+				text-align: center
+			}
+			li.active a{
+				background-color: #EF5353;
+				color: white
+			}
+		</style>
+		<title>{$pagetitle}-{$title}</title>
+	</head>
+	<body>
+		<!-- navbar -->
+		<div class="ui menu top-navbar">
+			<a class="item sidebar-btn"><i class="icon list"></i></a>
+			<if condition="PrevAndNext[0] neq null">
+				<a class="item" href="{:U('post',array('pid'=>$PrevAndNext[0]['postid']))}"><i class="icon angle double left"></i>{$PrevAndNext[0]['title']}</a>
+				<else/>
+				<span class="item">前面没有了</span>
+			</if>
+			<a class="item" href="{:U('Home/Index/index')}">
+				<i class="icon home"></i>Home
+			</a>
+			<a class="item" onclick="javascript:history.back()"><i class="icon arrow left"></i>Back</a>
+			<div class="item">
+				<i class="icon cube"></i><b>{$data.info.title}</b>
+			</div>
+			<div class="right menu hide-on-mobile">
+				<div class="item">
+					<div class="ui action left icon input">
+						<i class="search icon"></i>
+						<input type="text" class="searchbox" placeholder="Search">
+						<button class="ui button dark teal">Submit</button>
+					</div>
+				</div>
+				<if condition="PrevAndNext[1] neq null">
+					<a class="item" href="{:U('post',array('pid'=>$PrevAndNext[1]['postid']))}">{$PrevAndNext[1]['title']}<i class="icon angle double right"></i></a>
+					<else/>
+					<span class="item">后面没有了</span>
+				</if>
+			</div>
+			
+		</div>
+		<!-- navbar end -->
+		<!-- sidebar -->
+		<div class="ui sidebar vertical menu">
+			<div class="item">
+				<div class="ui tiny form action left icon input">
+					<i class="search icon"></i>
+					<input type="text" class="searchbox" placeholder="Search">
+					<button class="ui button dark teal">Submit</button>
+				</div>
+				
+			</div>
+			<a class="item">Previous</a>
+			<div class="item">
+				aaabbbccc
+			</div>
+			<a class="item">Next</a>
+		</div>
+		<!-- sidebar end -->
+
+
+		<!-- container -->
+		<div class="ui progress" id="imgProgress" data-progress=22>
+				<div class="bar"></div>
+		</div>
+		<div class="container pusher">
+			
+			<div class="ui stackable grid">
+				<div class="row">
+					<div class="ten wide column centered" id="videodiv">
+						<if condition="count($data['content']['video']) neq 0">
+							<video class="video-js vjs-16-9" data-setup='{"fluid":true}' controls preload="auto" poster="{$data['content']['img'][0]['url']}">
+								<source src="{$data['content']['video'][0]['url']}" type="video/mp4">
+							</video>
+						<else />
+						<div class="img-gallery">
+							<foreach name="data.content.img" item="entry">
+							<a href="{$entry.url}" data-lightbox="gallery" ><img class="img-gallery-item" src="{$entry.url}" alt="" ></a>
+							</foreach>
+						</div>
+						</if> 
+						
+					</div>
+					
+				</div>
+			</div>
+			<div class="column txt-center">
+			<div class="pagenumber">
+				<ul class="pagenavi container">
+					{$page}
+				</ul>
+			</div>
+			</div>
+		</div>
+		
+		<!-- container end -->
+		<script src="http://vjs.zencdn.net/6.2.4/video.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".sidebar-btn").click(function(){
+				$('.ui.sidebar').sidebar('toggle')
+			})
+			function videoSize(){
+				$("video").parent().toggleClass("vjs-4-3").toggleClass("vjs-16-9")
+			}
+			var $imgGallery=$(".img-gallery");
+			$imgGalleryItems=$imgGallery.find('img');
+			$progressBar=$(".progress");
+			var count=0;
+			$imgGalleryItems.on('load',function(){
+				$progressBar.progress({
+					percent:Math.ceil(count/($imgGalleryItems.length-1)*100)
+				})
+				console.log(Math.ceil(count/($imgGalleryItems.length-1)*100),$imgGalleryItems.length)
+				if(count==$imgGalleryItems.length-1){
+					$imgGallery.masonry({
+						itemSelector:".img-gallery-item",
+						columnWidth:300,
+						horizontalOrder:true
+					})
+					$progressBar.fadeOut();
+				}
+				console.log(count)
+				count++
+			}).each(function(){
+			    this.complete && $(this).trigger('load');
+			});
+			
+		})
+		</script>
+	</body>
+</html>

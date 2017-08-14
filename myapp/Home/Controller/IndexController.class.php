@@ -128,7 +128,8 @@ class IndexController extends Controller {
         $tags = $metaDB->where("type= 'category'")->select();
         $this->assign("AllTags",$tags);
         $this->assign("options",$this->options);
-    	$this->display("indexHydrogen");      
+    	$this->display("indexHydrogen"); 
+           
     }   
 
     public function post($pid){
@@ -150,7 +151,16 @@ class IndexController extends Controller {
         //判断日期和pid是否合法
         if($entryInfo){
             $imgUrls=$imgsDB->where($where1)->order("id desc")->page($p,$this->options['imgsperpage'])->select();
-            $result=array("info"=>$entryInfo[0],"content"=>$imgUrls);
+            $seperateUrls=['video'=>[],'img'=>[]];
+            foreach ($imgUrls as $key => $value) {
+                if($value['type']==1){
+                    array_push($seperateUrls['video'], $value);
+                }else{
+                    array_push($seperateUrls['img'], $value);
+                }
+                
+            }
+            $result=array("info"=>$entryInfo[0],"content"=>$seperateUrls);
             //图片分页
             $next=$entryDB->where('postid>%d',array($pid))->limit(1)->select();
             $prev=$entryDB->where('postid<%d',array($pid))->order('postid desc')->limit(1)->select();
@@ -171,7 +181,8 @@ class IndexController extends Controller {
         $this->assign("page",$pageShow);
 		$this->assign("data",$result);
         $this->assign("options",$this->options);
-		$this->display("postHydrogen");
+		// $this->display("postHydrogen");
+        $this->display("test");  
 		
     	
     }
@@ -214,8 +225,9 @@ class IndexController extends Controller {
 //   [5397108001189,1001470003,"可睿心Creation+幼儿配方奶粉800克",228,1.08333333333333,0.002840112],
 //   [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
 // ]';
-    $result=M('imgs')->query('select * from imgs where postid=50');
-    dump($result);
+    // $result=M('imgs')->query('select * from imgs where postid=50');
+    // dump($result);
+        $this->display();
     }
 
 

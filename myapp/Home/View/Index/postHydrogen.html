@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-	<head>
+<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>{$data.info.title} - {$options['sitename']} </title>
@@ -12,11 +11,9 @@
 	<meta name="description" content="{$options['sitedesc']}" />
 	<meta name="keywords" content="{$options['keywords']}" />
 	<meta name="author" content="FREEHTML5.CO" />
-  <!-- Facebook and Twitter integration -->
-
+	<!-- Facebook and Twitter integration -->
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 	<link rel="shortcut icon" href="__PUBLIC__/indexassets/img/favicon.ico">
-
 	<!-- Google Webfonts -->
 	<link href='https://fonts.fly2x.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.fly2x.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -33,10 +30,8 @@
 	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/style.css">
 	<!-- Modernizr JS -->
 	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/fonts.css">
-
 	<!-- video.JS -->
 	<link href="http://vjs.zencdn.net/6.2.4/video-js.css" rel="stylesheet">
-
 	<script src="__PUBLIC__/IndexHydrogen/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
@@ -52,21 +47,18 @@
 			float:right
 		}
 	</style>
-	</head>
-
-	<body>
+</head>
+<body>
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
 		<ul>
-		<foreach name="AllTags" item="tag">
+			<foreach name="AllTags" item="tag">
 			<li><a href="{:U('/Home/Index/index?tagid='.$tag['mid'])}" title="{$tag.slug}" <if condition="$thisMid eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>
-		</foreach>
+			</foreach>
 		</ul>
-
 		<h3 class="fh5co-lead">Connect with us</h3>
 		<p class="fh5co-social-icons">
-
 			<a href="#"><i class="icon-twitter"></i></a>
 			<a href="#"><i class="icon-facebook"></i></a>
 			<a href="#"><i class="icon-instagram"></i></a>
@@ -76,25 +68,17 @@
 	</div>
 	<header id="fh5co-header" role="banner">
 		<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div style="width:100%;height: auto">
-				  <video id="my-video" class="video-js" controls preload="auto" width="100%" height="auto"
-				  poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
-				    <source src="http://127.0.0.1/ob.mp4" type='video/mp4'>
-				    <p class="vjs-no-js">
-				      To view this video please enable JavaScript, and consider upgrading to a web browser that
-				      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-				    </p>
-				  </video>
+			<div class="row">
+				<div class="col-md-12">
+					<div style="width:100%;height: auto">
+						
+					</div>
 				</div>
 			</div>
-		</div>
 			<div class="row">
-
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
-					<a class="navbar-brand" href="{:U('Home/Index/index')}">{$data.info.title}</a>	
+					<a class="navbar-brand" href="{:U('Home/Index/index')}">{$data.info.title}</a>
 					<p class="help-block">{$data.info.createdate}</p>
 					<p class="help-block">
 						<if condition="PrevAndNext[0] neq null">
@@ -102,7 +86,6 @@
 						<else/>
 						<span class="previous-item">前面没有了</span>
 						</if>
-
 						<if condition="PrevAndNext[1] neq null">
 						<a class="next-item" href="{:U('post',array('pid'=>$PrevAndNext[1]['postid']))}">{$PrevAndNext[1]['title']}</a>
 						<else/>
@@ -114,33 +97,41 @@
 		</div>
 	</header>
 	<!-- END .header -->
-    
-<!--     <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >手机网站模板</a></div> -->
+	
+	<!--     <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >手机网站模板</a></div> -->
 	
 	
 	<div id="fh5co-main">
 		<div class="container">
-
+		<div class="row">
+			<video id="my-video" class="video-js" controls preload="auto" width="800px" height="600px"
+				poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+				<source src="http://127.0.0.1/ob.mp4" type='video/mp4'>
+				<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser that
+					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+				</p>
+			</video>
+		</div>
 			<div class="row">
-
-        <div id="fh5co-board" data-columns>
-        <foreach name="data.content" item="entry">
-        	<div class="item">
-        		<div class="animate-box">
-	        		<a href="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" alt="此处应有图片，然而并没有"></a>
-        		</div>
-        		
-        	</div>
-        	</foreach>
-        </div>
-        </div>
-       </div>
+				<div id="fh5co-board" data-columns>
+					<foreach name="data.content.img" item="entry">
+					<div class="item">
+						<div class="animate-box">
+							<a href="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="<?php echo stristr($entry['url'],'https:')?$entry['url']:str_replace('http','https',$entry['url']); ?>" alt="此处应有图片，然而并没有"></a>
+						</div>
+						
+					</div>
+					</foreach>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="pagenumber">
-        <ul class="pagenavi container">
-            {$page}
-        </ul>
-	 </div>
+		<ul class="pagenavi container">
+			{$page}
+		</ul>
+	</div>
 	<footer id="fh5co-footer">
 		
 		<div class="container">
@@ -158,8 +149,6 @@
 			</div>
 		</div>
 	</footer>
-
-
 	<!-- jQuery -->
 	<script src="__PUBLIC__/IndexHydrogen/js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
@@ -174,12 +163,10 @@
 	<script src="__PUBLIC__/IndexHydrogen/js/salvattore.min.js"></script>
 	<!-- Main JS -->
 	<script src="__PUBLIC__/js/jquery.lazyload.js"></script>
-
 	<script src="__PUBLIC__/IndexHydrogen/js/main.js"></script>
-
 	<!-- video js -->
 	<script src="http://vjs.zencdn.net/6.2.4/video.js"></script>
 	{$options['statcode']}
-	</body>
+</body>
 </html>
 <!-- More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> -->
