@@ -153,6 +153,7 @@ class IndexController extends Controller {
             $imgUrls=$imgsDB->where($where1)->order("id desc")->page($p,$this->options['imgsperpage'])->select();
             $seperateUrls=['video'=>[],'img'=>[]];
             foreach ($imgUrls as $key => $value) {
+                $value["url"]=str_replace("http://", "https://", $value["url"]);
                 if($value['type']==1){
                     array_push($seperateUrls['video'], $value);
                 }else{
@@ -227,7 +228,22 @@ class IndexController extends Controller {
 // ]';
     // $result=M('imgs')->query('select * from imgs where postid=50');
     // dump($result);
-        $this->display();
+        // $this->display();
+
+
+        $auth=0;
+        $keyset=explode(",", 'takenoverbyfear,takenoverbyfear');
+        foreach ($keyset as $sinkey) {
+            dump($keyset);
+            dump($sinkey);
+            if ($key==$sinkey) {
+                $auth=true;
+                break;
+            }
+        }
+        dump($keyset);
+        dump($auth);
+
     }
 
 
