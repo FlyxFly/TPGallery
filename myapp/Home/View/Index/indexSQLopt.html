@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{$pagetitle} - {$options['sitename']} </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{$options['sitedesc']}" />
+	<meta name="keywords" content="{$options['keywords']}" />
+	<meta name="author" content="FREEHTML5.CO" />
+  <!-- Facebook and Twitter integration -->
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="__PUBLIC__/indexassets/img/favicon.ico">
+
+	<!-- Google Webfonts -->
+	<link href='https://fonts.fly2x.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.fly2x.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/icomoon.css">
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/magnific-popup.css">
+	<!-- Salvattore -->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/salvattore.css">
+	<!-- Theme Style -->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/style.css">
+	<!-- Modernizr JS -->
+	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/fonts.css">
+	<script src="__PUBLIC__/IndexHydrogen/js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="__PUBLIC__/IndexHydrogen/js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div id="fh5co-offcanvass">
+		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
+		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
+		<p><a href="{:U('Admin/Login/index')}">Login</a></p>
+		<ul>
+		<foreach name="AllTags" item="tag">
+			<li><a href="{:U('/Home/Index/index',['tagid'=>$tag['mid']])}" title="{$tag.slug}" <if condition="$tagInfo['mid'] eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>
+		</foreach>
+		</ul>
+
+		<h3 class="fh5co-lead">Connect with us</h3>
+		<p class="fh5co-social-icons">
+			<a href="mailto:g@d-hl.com"><i class="icon-mail"></i>  G@d-hl.com </a>
+		</p>
+	</div>
+	<header id="fh5co-header" role="banner">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
+					<a class="navbar-brand" href="{:U('Home/Index/index')}">Home</a>		
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- END .header -->
+    
+    <!-- <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >手机网站模板</a></div> -->
+	
+	
+	<div id="fh5co-main">
+		<div class="container">
+
+			<div class="row">
+
+        <div id="fh5co-board" data-columns>
+        <foreach name="data" item="entry">
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="{$entry.url}" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="{$entry.url}" alt="此处应有图片，然而并没有"></a>
+        		</div>
+        		<div class="fh5co-desc"><a href="{:U('Home/Index/post/',['pid'=>$entry['postid']])}">{$entry.title} ({$imgCount[$entry['postid']]}P)</a></div>
+        	</div>
+        	</foreach>
+        </div>
+        </div>
+       </div>
+	</div>
+	<div class="pagenumber">
+        <ul class="pagenavi">
+            {$page}
+        </ul>
+	 </div>
+	<footer id="fh5co-footer">
+		
+		<div class="container">
+			<div class="row row-padded">
+				<div class="col-md-12 text-center">
+					<p class="fh5co-social-icons">
+						
+<!-- 						<a href="#"><i class="icon-facebook"></i></a>
+						<a href="#"><i class="icon-instagram"></i></a>
+						<a href="#"><i class="icon-dribbble"></i></a>
+						<a href="#"><i class="icon-youtube"></i></a> -->
+					</p>
+					<p><small>&copy; Xiaoming' Collection. Some Rights Reserved. <br></small><a href="mailto:G@d-hl.com"><i class="icon-mail"></i></a></p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+	<!-- jQuery -->
+	<script src="__PUBLIC__/IndexHydrogen/js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="__PUBLIC__/IndexHydrogen/js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="__PUBLIC__/IndexHydrogen/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="__PUBLIC__/IndexHydrogen/js/jquery.waypoints.min.js"></script>
+	<!-- Magnific Popup -->
+	<script src="__PUBLIC__/IndexHydrogen/js/jquery.magnific-popup.min.js"></script>
+	<!-- Salvattore -->
+	<script src="__PUBLIC__/IndexHydrogen/js/salvattore.min.js"></script>
+	<!-- LazyLoad -->
+	<script src="__PUBLIC__/js/jquery.lazyload.js"></script>
+	<!-- Main JS -->
+	<script src="__PUBLIC__/IndexHydrogen/js/main.js"></script>
+	{$options['statcode']}
+	</body>
+</html>

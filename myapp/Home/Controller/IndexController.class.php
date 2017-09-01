@@ -82,7 +82,7 @@ class IndexController extends Controller {
         return $entrys;
     }
 
-    public function index($tagid=null,$p=1){
+    public function oldindex($tagid=null,$p=1){
     	self::testIfInt($p);
     	$entryDB=M("entry");
     	$imgsDB=M("imgs");
@@ -172,7 +172,7 @@ class IndexController extends Controller {
             $pageShow=$paging->show();
             //分类 
         }else{
-            E("页面不存在",404);
+            E("Forbidden! You are NOT allowed to view this page.",403);
         }
 		
         $metaDB=M("meta");
@@ -180,6 +180,7 @@ class IndexController extends Controller {
         $this->assign('PrevAndNext',$prevAndNext);
         $this->assign("AllTags",$tags);
         $this->assign("page",$pageShow);
+        // dump($result);
 		$this->assign("data",$result);
         $this->assign("options",$this->options);
 		// $this->display("postHydrogen");
@@ -208,7 +209,7 @@ class IndexController extends Controller {
         $this->redirect("Home/Index/index");
     }
 
-    public function test(){
+    public function test($page=1,$tagid=0,$private=0){
 //         header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求  
 //         header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
 //         header('Content-type: application/json; charset=UTF-8');
@@ -229,25 +230,57 @@ class IndexController extends Controller {
     // $result=M('imgs')->query('select * from imgs where postid=50');
     // dump($result);
         // $this->display();
-
-
-        $auth=0;
-        $keyset=explode(",", 'takenoverbyfear,takenoverbyfear');
-        foreach ($keyset as $sinkey) {
-            dump($keyset);
-            dump($sinkey);
-            if ($key==$sinkey) {
-                $auth=true;
-                break;
-            }
-        }
-        dump($keyset);
-        dump($auth);
+        // $ret=M('entry')->join('left join imgs on entry.postid=imgs.postid')->where('imgs.cover=1')->order('entry.postid desc')->page(1,10)->;
+        // dump($ret);
+        $ret=D('entry')->getPost($page,$tagid,$private);
+        dump($ret);
 
     }
 
 
     public function Landing(){
         $this->display();
+    }
+
+    public function index($tagid=0,$p=1){
+        $legalTagId=D('entry')->getCategoryIds();
+        $this->assign("pagetitle",'Home');
+        if(!$tagid==0 and !in_array($tagid,$legalTagId)){
+            $msg='tid not exist: '.$tagid;
+            E($msg,44);
+        }else if(in_array($tagid,$legalTagId)){
+            $tagInfo=D('entry')->getTagInfoById($tagid);
+            $this->assign("tagInfo",$tagInfo);
+            $this->assign("pagetitle",$tagInfo['name']);
+        }
+        $entryModel=D('entry');
+        $entryDB=M('entry');
+        $login=session('user')?true:false;
+        $p=(int)$p?(int)$p:1;
+        if($login){
+            $result=$entryModel->getPost($p,$tagid,1);
+        }else{
+            $result=$entryModel->getPost($p,$tagid,0);
+        }
+        foreach ($result['data'] as $key => $value) {
+            $result['data'][$key]['url']=str_replace('http://', 'https://', $value['url']);
+            // dump($result['data'][$key]['url']);
+
+        }
+        // dump($result['data']);
+        $this->assign("title",C("title"));
+        $this->assign("data",$result['data']);
+        $imgCount=D('entry')->getImgCount();
+        // dump($imgCount);
+        $paging= new  \Think\Page($result['count'], C("entryPerPage"));
+        $show=$paging->show();
+        $this->assign("imgCount",$imgCount);
+        $this->assign("page",$show);
+
+        //tag
+        $tags = M('meta')->where("type= 'category'")->select();
+        $this->assign("AllTags",$tags);
+        $this->assign("options",$this->options);
+        $this->display("indexSQLopt"); 
     }
 }
