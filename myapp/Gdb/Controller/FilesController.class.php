@@ -26,6 +26,6 @@ class FilesController extends Controller{
 		}
 		$this->assign("data",json_encode($ret));
 		$this->assign("pageCode",semanticPage(ceil($count/$itemPerPage),$p,$pageGeneratorParam));
-		$this->display("list");
+		$this->display("List");
 	}
 }
