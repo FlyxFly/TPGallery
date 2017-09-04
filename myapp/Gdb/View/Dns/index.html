@@ -1,0 +1,46 @@
+<include file='Public/Header' /> 	
+<include file='Public/Navbar' keywords='keywords' searchAPI='Gdb/Index/Actor/keywords' />
+<div class="ui container">
+<div class="ui grid">
+	<div class="row">
+		<div class="ui one column stackable center aligned page grid">
+		   <div class="column twelve wide">
+		    	<form method="get" class="ui form">
+		    	<div class="fields">
+		    		<div class="six wide field">
+		    			<input type="text" name="domain" value="{$query}" autofocus="true" placeholder="请输入域名">
+		    		</div>
+		    		<div class="two wide field">
+		    			<button class="ui button submit">查询</button>
+		    		</div>
+		    	</div>		
+		    	</form>
+		   </div>
+		   <present name='data'>
+		   <table class="ui table">
+		   	<thead>
+		   		<tr>
+		   			<th>Host</th>
+		   			<th>Type</th>
+		   			<th>IP</th>
+		   			<th>TTL</th>
+		   			<th></th>
+		   		</tr>
+		   	</thead>
+		   	<tbody>
+		   		<volist name='data' id='item'>
+		   			<tr>
+		   				<td>{$item.host}</td>
+		   				<td>{$item.type}</td>
+		   				<td>{$item.target}{$item.ip}{$item.ipv6}</td>
+		   				<td>{$item.ttl}</td>
+		   			</tr>
+		   		</volist>
+		   	</tbody>
+		   </table>
+		   </present>
+		</div>
+	</div>
+</div>
+</div>
+<include file='Public/Footer' />
