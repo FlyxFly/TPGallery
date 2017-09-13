@@ -140,13 +140,13 @@ class IndexController extends Controller {
 		$imgsDB=M("imgs");
 		$where1=array("postid"=>$pid);
         if(session('user')){
-                $$where1=array(
-                    'postid'=>$pid);
-            }else{
-                $where1=array(
-                    'postid'=>$pid,
-                    'private'=>$this->options['showhiddenentry']);
-            }
+            $where1=array(
+                'postid'=>$pid);
+        }else{
+            $where1=array(
+                'postid'=>$pid,
+                'private'=>$this->options['showhiddenentry']);
+        }
         $entryInfo=$entryDB->field(array("title","createdate"))->where($where1)->where("createdate < '%s'",date("Y-m-d h:i:s"))->select();
         //判断日期和pid是否合法
         if($entryInfo){
@@ -165,8 +165,12 @@ class IndexController extends Controller {
             //图片分页
             $next=$entryDB->where('postid>%d',array($pid))->limit(1)->select();
             $prev=$entryDB->where('postid<%d',array($pid))->order('postid desc')->limit(1)->select();
+            $next[0]=$next[0]?$next[0]:['postid'=>$pid,'title'=>'后面没有了'];
+            $prev[0]=$prev[0]?$prev[0]:['postid'=>$pid,'title'=>'后面没有了'];
             $prevAndNext=array($prev[0],$next[0]);
-            // dump($prevAndNext);
+            // dump($prev);
+            
+
             $imgCount=$imgsDB->where($where1)->count();
             $paging= new  \Think\Page($imgCount, C("imgPerPage"));
             $pageShow=$paging->show();
@@ -278,6 +282,8 @@ class IndexController extends Controller {
         $this->assign("page",$show);
 
         //tag
+        // dump(session('user'));
+        $this->assign('user',session('user'));
         $tags = M('meta')->where("type= 'category'")->select();
         $this->assign("AllTags",$tags);
         $this->assign("options",$this->options);

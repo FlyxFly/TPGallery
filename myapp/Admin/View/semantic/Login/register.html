@@ -17,13 +17,13 @@
 			<div class="field">
 				<div class="ui left icon input">
 					<i class="user icon"></i>
-					<input name="email" type="text" id="username" placeholder="请输入用户名">
+					<input name="username" type="text" id="username" placeholder="请输入用户名">
 				</div>
 			</div>
 			<div class="field">
 				<div class="ui left icon input">
 					<i class="lock icon"></i>
-					<input name="email" type="password" id="password" placeholder="请输入密码">
+					<input name="password" type="password" id="password" placeholder="请输入密码">
 				</div>
 			</div>
 			<div class="field">
@@ -32,7 +32,7 @@
 					<input type="password" name="repassword" id="repassword" placeholder="请再次输入密码">
 				</div>
 			</div>
-			<div class="ui fluid large teal submit button">注册</div>
+			<div class="ui fluid large teal  button" id="reg">注册</div>
 			<div class="ui error message"></div>
 		</div>
 	</form>
@@ -43,6 +43,7 @@
 </div>
 <script>
 $(document).ready(function(){
+	$("#reg").on('click',login);
 	$(".ui.form").form({
 		fields:{
 			email:{
@@ -50,45 +51,61 @@ $(document).ready(function(){
 				rules:[
 				{
 					type:'empty',
-					promopt:'请输入邮箱'
+					promopt:'Email required.'
 				},
 				{
 					type:'email',
-					prompt:'请输入正确的邮箱'
+					prompt:'Email required.'
 				}]
 			},
 			username:{
 				identifier:'username',
 				rules:[{
 					type:'empty',
-					prompt:'用户名不能为空'
+					prompt:'Username required.'
 				},{
 					type:'minLength[4]',
-					prompt:'用户名最少需要四个字符'
+					prompt:'Should more than four letters.'
 				}]
 			},
 			password:{
 				identifier:'password',
 				rules:[{
 					type:'length[6]',
-					prompt:'密码应该多于六位数'
+					prompt:'Should more than six letter or digis.'
 				},
 				{
 					type:'empty',
-					prompt:'请填写密码'
+					prompt:'Please set password'
 				}]	
 			},
 			repassword:{
 				identifier:'repassword',
 				rules:[{
 					type:'match[password]',
-					prompt:'两次输入的密码不一致'
+					prompt:'Please input same password in both password fields.'
 				}]
 			}
 		}
 	},{onSuccess:function(){
-		console.log("验证成功")
+		console.log("success!")
 	}})
+
+
+function login(){
+		$.post("{:U('register')}",$("form").serialize(),function(data,status){
+			var result=JSON.parse(data);
+			if(result.code==200){
+				layer.msg(result.message,{"icon":1});
+				setTimeout(function(){
+					location.href="{:U('Admin/Login/index')}"
+				},2000)
+			}else{
+				layer.msg(result.message,{"icon":2})
+			}
+		})
+		return false;
+	}
 })
 
 </script>

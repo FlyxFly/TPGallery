@@ -8,15 +8,14 @@ class LoginController extends Controller{
 		parent::__construct();
 		if(session("?user")){
 			if(session("user.type")==1){
-				$this->redirect("Admin/Index/index",null,3,"你已经登录，3秒后跳转到后台首页...");
+				$this->redirect("Admin/Index/index",null,3,"You are logged in. Redirecting to Admin Panel in 3s.");
 			}else{
-				$this->redirect("Home/Index/index",null,3,"你已经登录，3秒后跳转到首页...");
+				$this->redirect("Home/Index/index",null,3,"You are logged in. Redirecting to Home in 3s.");
 			}
 		}
 	}
 
 	public function index(){
-		
 		$this->assign("pagename","登陆");
 		$this->display("index");
 	}
@@ -52,17 +51,17 @@ class LoginController extends Controller{
 
 	public function login(){
 		if(!isset($_POST['email']) || !isset($_POST['password'])){
-			msg(0,"请求参数不完整");
+			msg(0,"Please input both email and password.");
 		}
 		$passcheck=self::checkUserPass($_POST['email'],$_POST['password']);
 		if($passcheck){
 			session(["start"]);
 			session("user",$passcheck[0]);
 			M("users")->where("id = %d",$passcheck[0]['id'])->setField(array("lastlogindate"=>time(),"lastloginip"=>getIp()));
-			msg(200,"登陆成功");
+			msg(200,"Login success!");
 			
 		}else{
-			msg(0,"用户名密码错误");
+			msg(0,"Username or password wrong!");
 		}
 		
 		
@@ -70,34 +69,34 @@ class LoginController extends Controller{
 
 	public function register(){
 		if(!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['email'])){
-			msg(0,"请求参数不完整");
+			msg(0,"Please input username password and email.");
 		}
 		$data['email']=$_POST['email'];
 		$data['password']=getSaltedMD5($_POST['password']);
 		$data['username']=$_POST['username'];
 
 		if(self::getByUsername($data['username'])){
-			msg(0,"用户名不可用");
+			msg(0,"Username was taken.");
 		}
 		if(self::getByEmail($data['email'])){
-			msg(0,"邮箱已被占用");
+			msg(0,"Email was taken.");
 		}
 		$data['createip']=getIp();
 		$data['createdate']=time();
-		$data['type']=0;
+		$data['type']=2;
 		$usersDB=M('users');
 		$result=$usersDB->data($data)->add();
 		if($result){
-			msg(200,"注册成功！");
+			msg(200,"Success! Please login.");
 		}else{
-			msg(0,"注册失败！");
+			msg(0,"FAIL! Please retry!");
 		}
 	}
 
 
 	private function getByUsername($username=null){
 		if($username==null){
-			msg(0,"用户名为空");
+			msg(0,"Username can not be null");
 		}
 		$usersDB=M('users');
 		$result=$usersDB->where("username='%s'",$username)->select();
@@ -110,7 +109,7 @@ class LoginController extends Controller{
 
 	private function getByEmail($email=null){
 		if($email==null){
-			msg(0,"邮箱地址为空");
+			msg(0,"Email can't be empty.");
 		}
 		$usersDB=M('users');
 		$result=$usersDB->where("email='%s'",$email)->select();
@@ -124,7 +123,7 @@ class LoginController extends Controller{
 
 	private function checkUserPass($email=null,$password=null){
 		if($email==null || $password==null){
-			msg(0,"用户名和密码不完整");
+			msg(0,"Please input both email and password");
 		}
 		$usersDB=M('users');
 		$saltedPwd=getSaltedMD5($password);

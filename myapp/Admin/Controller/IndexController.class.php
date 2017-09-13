@@ -7,12 +7,10 @@ import("ORG\Util\Page");
 class IndexController extends Controller{
 	public function __construct(){
 		parent::__construct();
-		if(!session("?user")){
+		if(!session("?user") and session("user")["type"]==1){
 			$this->redirect("Admin/Login/index");
 		}else{
-			if(!session("user")["type"]==1){
-				$this->redirect("Home/Index/index");
-			}
+			$this->redirect("Home/Index/index");
 		}
 	}
 

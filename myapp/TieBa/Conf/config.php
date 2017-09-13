@@ -1,8 +1,7 @@
 <?php
 return array(
-	//'配置项'=>'配置值'
-	'entryPerPage'=>20,
-	'imgPerPage'=>24,
-	'URL_HTML_SUFFIX'=>'',
-	'title'=>'My Collection'
+'DB_NAME'   => 'tieba',// 数据库名
+'img_url_prefix' => 'https://gg.d-hl.com/tieba/',
+'index_item_per_page'=>21,
+'search_type'=>['userName','userId','content']
 );

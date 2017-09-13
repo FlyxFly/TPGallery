@@ -118,7 +118,7 @@
 
 
 		<!-- container -->
-		<div class="ui tiny progress" id="imgProgress" data-progress=22>
+		<div class="ui indicating progress" id="imgProgress" data-progress=22>
 				<div class="bar">
 					<div class="progress"></div>
 				</div>
@@ -175,25 +175,30 @@
 			var $imgGallery=$(".img-gallery");
 			$imgGalleryItems=$imgGallery.find('img');
 			$progressBar=$(".progress");
-			var count=0;
-			$imgGalleryItems.on('load',function(){
-				$progressBar.progress({
-					percent:Math.ceil(count/($imgGalleryItems.length-1)*100)
-				})
-				console.log(Math.ceil(count/($imgGalleryItems.length-1)*100),$imgGalleryItems.length)
-				if(count==$imgGalleryItems.length-1){
-					$imgGallery.masonry({
-						itemSelector:".img-gallery-item",
-						columnWidth:285,
-						horizontalOrder:true
+			if($imgGalleryItems.length>1){
+				
+				var count=0;
+				$imgGalleryItems.on('load',function(){
+					$progressBar.progress({
+						percent:Math.ceil(count/($imgGalleryItems.length-1)*100)
 					})
-					$progressBar.fadeOut();
-				}
-				console.log(count)
-				count++
-			}).each(function(){
-			    this.complete && $(this).trigger('load');
-			});
+					console.log(Math.ceil(count/($imgGalleryItems.length-1)*100),$imgGalleryItems.length)
+					if(count==$imgGalleryItems.length-1){
+						$imgGallery.masonry({
+							itemSelector:".img-gallery-item",
+							columnWidth:285,
+							horizontalOrder:true
+						})
+						
+					}
+					console.log(count)
+					count++
+				}).each(function(){
+				    this.complete && $(this).trigger('load');
+				});
+			}else{
+				$progressBar.fadeOut();
+			}
 			
 		})
 		</script>

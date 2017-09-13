@@ -45,7 +45,13 @@
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
-		<p><a href="{:U('Admin/Login/index')}">Login</a></p>
+		<p>
+			<if condition="$user eq null">
+			<a href="{:U('Admin/Login/index')}">Login</a> <a href="{:U('Admin/Login/reg')}">Register</a>
+			<else/>
+			Hello,{$user.username} <a href="{:U('Home/Index/logout')}">Log out</a>.
+			</if>
+		</p>
 		<ul>
 		<foreach name="AllTags" item="tag">
 			<li><a href="{:U('/Home/Index/index',['tagid'=>$tag['mid']])}" title="{$tag.slug}" <if condition="$tagInfo['mid'] eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>
