@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My GV DB</title>
+<link rel="stylesheet" href="__PUBLIC__/semantic/semantic.min.css">
+<link rel="stylesheet" href="__PUBLIC__/Lightbox/css/lightbox.min.css">
+<script src="__PUBLIC__/lib/js/jquery-3.1.1.min.js"></script>
+<script src="__PUBLIC__/semantic/semantic.min.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.2.6/vue.js"></script>
+<style type="text/css">
+    .no-padding{
+        padding: 0!important
+    }
+    .no-margin{
+        margin:0!important;
+    }
+    .BDE_Image{
+        max-height: 300px;
+/*        max-width: 400px*/
+    }
+</style>
+</head>
+<body>
+<div id="shuaibi">
+    <!-- 导航栏开始 -->
+<div class="ui menu navbar">
+<div class="ui container">
+    <div class="item header">贴吧爆照</div>
+    <div class="ui item fitted form">
+        <div class="field ">
+            <select>
+                <option>直男吧</option>
+                <option>腿毛吧</option>
+                <option>运动白袜吧</option>
+                <option>肩上的脚丫吧</option>
+                <option>随便看看</option>
+            </select>
+        </div>
+    </div>
+    <div class="right menu">
+        <div class="item fitted ">
+        <form method="get" action="{:U('Tieba/Index/index')}" class="ui form">
+        <div class="fields no-margin">
+            <div class="field ">
+                <select name="searchType" v-model="searchType">
+                <option v-for="(typeName,type) in searchTypes" :value="type">{{typeName}}</option>
+                </select>
+            </div>  
+            <div class="field">
+                <div class="ui action left icon input">
+                    <i class="icon search"></i>
+                    <input type="text" :placeholder="searchBoxPlaceHolder" name="keywords" id="searchKeywords" value=''>
+                    <button class="ui button " id="searchBtn" type="submit">搜索</button>
+                </div>
+            </div>
+        </div>
+        </form action="post" >
+        </div>
+    </div>
+</div>
+</div>
+    <!-- 导航栏结束 -->
+<div class="ui container">
+<div class="ui comments">
+  <div v-for="item in posts" class="comment">
+    <div class="content">
+      <a class="author" :href="'Tieba/Index/index?searchType=userId&keywords='+item.user_id">{{item.user_name}}</a>
+      <div class="metadata">
+        <span class="date">{{item.timestamp}}</span>
+      </div>
+      <div class="text">
+        <div v-html="item.content"></div>
+      </div>
+      <div class="actions">
+        <a class="reply">Reply</a>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+  </div>
+  
+ </div>
+</div>
+</div>
+<script>
+  var myapp=new Vue({
+    el:'#shuaibi',
+    data:{
+      posts:{$data},
+      searchType:'userName',
+      searchTypes:{
+        'userName':'用户名',
+        'userId':'用户数字ID',
+        'content':'发帖'}
+    },
+    computed:{
+      searchBoxPlaceHolder:function(){
+        return '搜索'+this.searchTypes[this.searchType]
+    }
+    }
+    }
+  )
+</script>
+</body>
+</html>
