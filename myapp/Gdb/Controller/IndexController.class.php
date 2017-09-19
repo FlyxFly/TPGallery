@@ -122,7 +122,9 @@ class IndexController extends Controller{
 
 	public function Mark($id,$message){
 		header('Content-type: application/json; charset=urf-8',true);
-
+		if(!session('user')){
+			msg(0,'无权限')
+		}
 		if($id>0){
 			switch($message){
 				case 'downloaded':
@@ -177,6 +179,9 @@ class IndexController extends Controller{
 	}
 
 	public function add(){
+		if(!session('user')){
+			msg(0,'无权限')
+		}
 		$po=$_POST;
 		if($po['type']=='video'){
 			$ret=M('video')->add($po);

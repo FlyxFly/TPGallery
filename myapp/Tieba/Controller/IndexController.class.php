@@ -4,7 +4,7 @@ namespace Tieba\Controller;
 use Think\Controller;
 
 class IndexController extends Controller{
-    public function index($p=1,$keywords=null,$searchType=null){
+    public function index($p=1,$keywords=null,$searchType=null,$ba=null){
     	if($keywords && in_array($searchType,C('search_type'))){
             $pageUrlParam="Tieba/Index/index?searchType=${searchType}&keywords=${keywords}&p=";
     		$ret=D('post')->imageList($p,$keywords,$searchType);
@@ -12,7 +12,7 @@ class IndexController extends Controller{
     		$ret=D('post')->imageList($p);
             $pageUrlParam="Tieba/Index/index?p=";
     	}
-    	dump($ret);
+    	// dump($ret);
     	$this->assign('data',$ret['data']);
         // dump(ceil($ret['total']/C('index_item_per_page')));
     	$this->assign('pageCode',semanticPage(ceil($ret['total']/C('index_item_per_page')),$p,$pageUrlParam));
@@ -25,7 +25,8 @@ class IndexController extends Controller{
         }
         $ret=D('post')->threadInfo($tid);
         // dump($ret);
-        $this->assign('data',json_encode($ret));
+        $this->assign('pageCode',semanticPage(ceil($ret['total']/C('post_per_page')),$p,$pageUrlParam));
+        $this->assign('data',json_encode($ret['data']));
         $this->display();
     }
 }

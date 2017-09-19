@@ -35,21 +35,25 @@ class PostModel extends Model{
 
     	}
     	
-        $ret=$resultObj->join('left join post on img.post_id=post.post_id')->join('left join forum on post.forum_id = forum.forum_id')->join('left join user on post.user_id=user.id')->page($p,C('index_item_per_page'))->select();
+        $ret=$resultObj->join('left join post on img.post_id=post.post_id')->join('left join forum on post.forum_id = forum.forum_id')->join('left join user on post.user_id=user.id')->page($p,C('index_item_per_page'))->order('img.id desc')->select();
     	$totalItem=M()->query($countSQL);
+
         foreach ($ret as $key=>$value) {
         	$ret[$key]['file_name']=$this->urlConvert($value['file_name']);
         }
         return ['total'=>$totalItem[0]['count(img.id)'],'data'=>$ret];
     }
 
-    public function threadInfo($threadId=null){
+    public function threadInfo($threadId=null,$p=1){
         if($threadId==null){
             return null;
         }
-
-        $ret=M('post')->where('thread_id=%f',$threadId)->join('left join user on user.id=post.user_id')->order('post_index')->select();
-        return $ret;
+        $total=M('post')->where('thread_id=%f',$threadId)->count();
+        $ret=M('post')->where('thread_id=%f',$threadId)->page($p,C('post_per_page'))->join('left join user on user.id=post.user_id')->join('left join img on post.post_id=img.post_id')->join('left join forum on forum.forum_id=post.forum_id')->order('post_index')->select();
+        // foreach ($ret as $key=>$value) {
+        //     $ret[$key]['content']=preg_replace($, replace, subject)
+        // }
+        return ['total'=>$total,'data'=>$ret];
     }
 
 
