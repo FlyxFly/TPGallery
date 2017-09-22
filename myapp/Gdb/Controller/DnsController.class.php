@@ -3,13 +3,13 @@
 namespace Gdb\Controller;
 use Think\Controller;
 class DnsController extends Controller{
-	public function Index(){
+	public function index(){
 		if(isset($_GET['domain']) && $_GET['domain']!=''){
 			$this->assign('data',dns_get_record($_GET['domain']));
 			$this->assign('query',$_GET['domain']);
 		}
 
-		$this->display('Index');
+		$this->display();
 	}
 
 	public function GetRecord($domain=null){

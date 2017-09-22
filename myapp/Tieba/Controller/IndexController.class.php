@@ -17,7 +17,7 @@ class IndexController extends Controller{
             $pageUrlParam="Tieba/Index/index?p=";
             $searchParams=['searchType'=>null,'keywords'=>null];
     	}
-    	// dump($searchType);
+    	// dump($ret['data']);
         
         // dump(in_array($searchType,C('search_type')));
     	$this->assign('data',$ret['data']);
@@ -32,7 +32,7 @@ class IndexController extends Controller{
             $this->redirect("Home/Index/index");
         }
         $ret=D('post')->threadInfo($tid);
-        dump($ret);
+        echo(json_encode($ret['data']));
         $this->assign('pageCode',semanticPage(ceil($ret['total']/C('post_per_page')),$p,$pageUrlParam));
         $this->assign('data',json_encode($ret['data']));
         $this->display();

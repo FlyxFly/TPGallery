@@ -14,7 +14,7 @@ class NovelController extends Controller{
 		$this->redirect('Catalog');
 	}
 
-	public function Catalog($p=1,$keywords=null,$authorID=null){
+	public function catalog($p=1,$keywords=null,$authorID=null){
 		if($authorId){
 			$totalItem=$this->i->where('authorid=%d',$authorId)->count('threadid');
 		}else{
@@ -36,7 +36,7 @@ class NovelController extends Controller{
 		$this->display();
 	}
 
-	public function Content($tid=null,$p=1){
+	public function content($tid=null,$p=1){
 		$threadInfo=$this->i->where('threadid=%d',$tid)->select();
 		$threadInfo=$threadInfo[0];
 		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid')->select();
