@@ -123,7 +123,7 @@ class IndexController extends Controller{
 	public function Mark($id,$message){
 		header('Content-type: application/json; charset=urf-8',true);
 		if(!session('user')){
-			msg(0,'无权限')
+			msg(0,'无权限');
 		}
 		if($id>0){
 			switch($message){
@@ -175,12 +175,12 @@ class IndexController extends Controller{
 		$this->assign('companyName',json_encode($companyName));
 		$this->assign('pagingCode',semanticPage($videosInfo['totalPage'],$p,"Gdb/Index/VideoList?p="));
 		// dump($videosInfo);
-		$this->display('List');
+		$this->display('list');
 	}
 
 	public function add(){
 		if(!session('user')){
-			msg(0,'无权限')
+			msg(0,'无权限');
 		}
 		$po=$_POST;
 		if($po['type']=='video'){

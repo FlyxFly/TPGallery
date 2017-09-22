@@ -25,7 +25,7 @@ class PostModel extends Model{
     			break;
 
     			case 'userId':
-    			$countSQL.=" where user.user_id=${keywords}";
+    			$countSQL.=" where user.id=${keywords}";
     			$resultObj=$resultObj->where('user.id=%d',$keywords);
     			break;
 
