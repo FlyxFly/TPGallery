@@ -92,14 +92,14 @@ class NovelController extends Controller{
 		
 		$this->assign('searchKeywords',$keywords);
 		$this->assign('novelList',$ret);
-		$this->display('Catalog');
+		$this->display('catalog');
 	}
 
 	public function Random(){
 		$ret=$this->i->order('rand()')->limit(20)->select();
 		$this->assign('novelList',$ret);
 		$this->assign('pageCode','<a class="ui button primary" href="javascript:window.scrollTo(0,0);location.reload()">刷新</a>');
-		$this->display('Catalog');
+		$this->display('catalog');
 	}
 
 	public function Mark($tid){
