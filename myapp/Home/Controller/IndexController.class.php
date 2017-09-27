@@ -236,8 +236,8 @@ class IndexController extends Controller {
         // $this->display();
         // $ret=M('entry')->join('left join imgs on entry.postid=imgs.postid')->where('imgs.cover=1')->order('entry.postid desc')->page(1,10)->;
         // dump($ret);
-        $ret=D('entry')->getPost($page,$tagid,$private);
-        dump($ret);
+        // $ret=D('entry')->getPost($page,$tagid,$private);
+        // dump($ret);
 
     }
 

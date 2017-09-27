@@ -48,14 +48,15 @@ class PostModel extends Model{
         if($threadId==null){
             return null;
         }
+        $imgTagPattern='/<img([\w\W]+?)>/';
         $total=M('post')->where('thread_id=%f',$threadId)->count();
         $ret=M('post')->where('thread_id=%f',$threadId)->page($p,C('post_per_page'))->join('left join user on user.id=post.user_id')->join('left join img on post.post_id=img.post_id')->join('left join forum on forum.forum_id=post.forum_id')->order('post_index')->select();
+        
         foreach ($ret as $key => $value) {
             $ret[$key]['file_name']=$this->urlConvert($value['file_name']);
+            $ret[$key]['content']=preg_replace($imgTagPattern, '', $value['content']);
+            $ret[$key]['content']=$ret[$key]['content']."<img src='".$ret[$key]['file_name']."'>";
         }
-        // foreach ($ret as $key=>$value) {
-        //     $ret[$key]['content']=preg_replace($, replace, subject)
-        // }
         return ['total'=>$total,'data'=>$ret];
     }
 
