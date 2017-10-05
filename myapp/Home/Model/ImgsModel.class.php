@@ -1,5 +1,5 @@
 <?php
-namespace Common\Model;
+namespace Home\Model;
 use Think\Model;
 class ImgsModel extends Model{
 	private $_db='';

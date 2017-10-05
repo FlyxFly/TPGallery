@@ -11,7 +11,7 @@ class IndexController extends Controller{
 		$this->redirect('Index/Actor');
 	}
 
-	public function Actor($p=1){
+	public function actor($p=1){
 		// dump($_GET);
 		$imageHostPrefix=C('image_host_prefix');
 		$imageDir=C('image_dir');
@@ -79,7 +79,7 @@ class IndexController extends Controller{
 		dump(D('tag')->getAllTags());
 	}
 
-	public function Video($p=1){
+	public function video($p=1){
 		$companyIdtoName=D('company')->getCompName();
 		if(isset($_GET['id']) && $_GET['id']!==''){
 			$ret=D('video')->getVideoByUniqueId($_GET['id']);
@@ -154,7 +154,7 @@ class IndexController extends Controller{
 		
 	}
 
-	public function VideoList($p=1){
+	public function videoList($p=1){
 		$videosInfo=D('video')->getVideosByPage($p);
 		// $videosInfo['data'][$key]['actorsInfo']=D('video')->getActorsByVideo($value['internalid'],$value['companyid']);
 		foreach ($videosInfo['data'] as $key => $value) {

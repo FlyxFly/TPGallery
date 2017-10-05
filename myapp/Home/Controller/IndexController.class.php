@@ -133,6 +133,7 @@ class IndexController extends Controller {
     }   
 
     public function post($pid){
+        D('entry')->addLog('view','post',$pid);
         $p=$_GET['p']?$_GET['p']:1;
         self::testIfInt($p);
     	self::testIfInt($pid);
@@ -213,32 +214,9 @@ class IndexController extends Controller {
         $this->redirect("Home/Index/index");
     }
 
-    public function test($page=1,$tagid=0,$private=0){
-//         header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求  
-//         header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
-//         header('Content-type: application/json; charset=UTF-8');
-//         echo '[
-//   [5397108000014,1001150002,"1千克贝因美绿爱+较大婴儿配方奶粉",335,1.347,0.003445],
-//   [5397108000021,1001150003,"1千克贝因美绿爱+幼儿配方奶粉",325,1.347,0.003445],
-//   [5397108000069,1001380001,"贝因美爱+red婴儿配方奶粉800克",328,1.083333333333,0.002840112],
-//   [5397108000076,1001380002,"贝因美爱+red较大婴儿配方奶粉800克",318,1.083333333333,0.002840112],
-//   [5397108000083,1001380003,"贝因美爱+red幼儿配方奶粉800克",308,1.083333333333,0.002840112],
-//   [5397108000786,1001150004,"贝因美绿爱+婴儿配方奶粉800克",288,1.083333333333,0.002840112],
-//   [5397108000793,1001150005,"贝因美绿爱+较大婴儿配方奶粉800克",288,1.083333333333,0.002840112],
-//   [5397108000809,1001150006,"贝因美绿爱+幼儿配方奶粉800克",288,1.083333333333,0.002840112],
-//   [5397108001165,1001470001,"可睿心Creation+婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
-//   [5397108001172,1001470002,"可睿心Creation+较大婴儿配方奶粉800克",228,1.08333333333333,0.002840112],
-//   [5397108001189,1001470003,"可睿心Creation+幼儿配方奶粉800克",228,1.08333333333333,0.002840112],
-//   [6904591000521,1001040001,"(08版)450g金装贝因美初生婴儿配方奶粉",56.6,0.53133333,0.001925625]
-// ]';
-    // $result=M('imgs')->query('select * from imgs where postid=50');
-    // dump($result);
-        // $this->display();
-        // $ret=M('entry')->join('left join imgs on entry.postid=imgs.postid')->where('imgs.cover=1')->order('entry.postid desc')->page(1,10)->;
-        // dump($ret);
-        // $ret=D('entry')->getPost($page,$tagid,$private);
-        // dump($ret);
-
+    public function test($id=1){
+        $ret=0;
+        dump($ret);
     }
 
 
@@ -247,6 +225,7 @@ class IndexController extends Controller {
     }
 
     public function index($tagid=0,$p=1){
+        D('entry')->addLog('view','index');
         $legalTagId=D('entry')->getCategoryIds();
         $this->assign("pagetitle",'Home');
         if(!$tagid==0 and !in_array($tagid,$legalTagId)){
@@ -289,4 +268,6 @@ class IndexController extends Controller {
         $this->assign("options",$this->options);
         $this->display("indexSQLopt"); 
     }
+
+
 }

@@ -7,9 +7,9 @@ import("ORG\Util\Page");
 class IndexController extends Controller{
 	public function __construct(){
 		parent::__construct();
-		if(!session("?user") and session("user")["type"]==1){
+		if(!session("?user")){
 			$this->redirect("Admin/Login/index");
-		}else{
+		}else if(session("user")["type"]!=1){
 			$this->redirect("Home/Index/index");
 		}
 	}
@@ -592,38 +592,33 @@ class IndexController extends Controller{
 		}
 		
 	}
+
+	public function log($p=1,$type=null,$keywords=null,$api=0){
+		if($api==0){
+			$ret=D('log')->getLog($p,$type,$keywords);
+			$this->assign('data',json_encode($ret['data']));
+			$this->assign('total',round($ret['total']/20));
+			$this->display();
+		}else{
+			$availableType=["user_id", "user_name", "ip", "action", "target_type", "target_id", "memo"];
+			if($keywords && !in_array($type, $availableType)){
+				msg(0,'Illegal search type:'.$type);
+			}
+			if($keywords){
+				$ret=D('log')->getLog($p,$type,$keywords);
+			}else{
+				$ret=D('log')->getLog($p);
+			}
+			echo(json_encode($ret));
+			
+		}
+
+
+	}
+
+
 	public function test(){
-		// // $data=array('name'=>'小明','desc'=>'小明是一个中国人');
-		// // F('info',$data);
-		// // if(!F('confCache')){
-		// // 	echo 'yes';
-		// // }else{
-		// // 	echo 'no';
-		// // }
 
-		// $url='http://vip1.bdimg.com/icon/viplogo_618_2.png';
-		// $fileName=randomStr(13,'f');
-		// $fileExt=substr($url,-3);
-
-		// echo $fileName;
-		// dump(self::getImage($url,'D:\wamp64\www\thinkphp\myapp\Runtime\Temp'),$fileName.'.'.$fileExt);
-		// $path='D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\';
-		// $filename='cd5fepjoec7rk.txt';
-		// if(!is_dir($path)){
-		// 	mkdir($path);
-		// }
-
-		// $fp2=@fopen('D:\\wamp64\\www\\TestProjects\\uploadtest\\201604\\cd5fepjoec7rk.txt','a');
-  //       fwrite($fp2,'abc');
-  //       fclose($fp2);
-		
-		// echo date("Y-m",time());
-		// $newFileDir=M('options')->where('op = "newuploaddir" and user = 0')->select();
-		// dump($newFileDir[0]['value']);
-		$a=[];
-		$a[0]=44;
-		$a[]=33;
-		dump($a);
 	}
 
 }

@@ -1,0 +1,140 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Public/navbar.html"/>
+<script src="__PUBLIC__/js/vue-resource.min.js"></script>
+<style>
+	.width-2-em{
+		width:4em!important;
+	}
+</style>
+<div class="ui container" id="myapp">
+	<div class="ui grid">
+		<div class="ui row">
+			<div class="five wide column">
+				<a href="#" class="ui small blue button" @click=pageSwitch(-1)>上一页</a>
+				当前第{{currentPage}}页，共{{totalPage}}页
+				<a class="ui small blue button" href="#" @click=pageSwitch(1)>下一页</a>
+			</div>
+			<div class="two wide column">
+				<div class="ui inline tiny form">
+					<div class="inline field">
+						<label for="">跳转</label>
+						<input type="text" class="width-2-em" v-model.laay="inputPage">
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<table class="ui small compact green table" >
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>ID</th>
+				<th>用户名</th>
+				<th>IP</th>
+				<th>归属地</th>
+				<th>操作</th>
+				<th>模块</th>
+				<th>模块ID</th>
+				<th>说明</th>
+				<th>时间</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="(item,key) in logs">
+				<td></td>
+				<td>{{item.id}}</td>
+				<td><a href="#" @click=getNewData('user_name',item.user_name) >{{item.user_name}}</a></td>
+				<td><a href="#" @click=getNewData('ip',item.ip) >{{item.ip}}</a></td>
+				<td>{{item.address}}</td>
+				<td><a href="#" @click=getNewData('action',item.action) >{{item.action}}</a></td>
+				<td><a href="#" @click=getNewData('target_type',item.target_type) >{{item.target_type}}</a></td>
+				<td>{{item.target_id}}</td>
+				<td><a href="#" @click=getNewData('memo',item.memo) >{{item.memo}}</a></td>
+				<td>{{item.timestamp}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+
+var myapp=new Vue({
+	el:"#myapp",
+	data:{
+		inputPage:'',
+		currentPage:1,
+		totalPage:{$total},
+		logs:{$data},
+		allLogs:{$data},
+		fieldsTranslation:{
+			'user_id':'用户ID',
+			'action':'操作',
+			'target_type':'模块',
+			'user_name':'用户名'
+		},
+		searchType:'',
+		searchKeywords:'',
+		searchPage:0,
+		filterBy:{}
+	},
+	methods:{
+		getNewData:function(type,keywords,p){
+			this.searchType=type;
+			this.searchKeywords=keywords;
+			this.Page=p;
+			this.filterBy[type]=keywords;
+			var url=`?m=Admin&c=Index&a=log&type=${type}&keywords=${keywords}&api=1`;
+			this.$http.get(url).then(function(data){
+				this.logs=data.body.data
+			},function(err){
+				alert(err)
+				console.log(err)
+			})
+		},
+		pageSwitch:function(flag){
+			if(flag>0){
+				if(this.currentPage>=this.totalPage){
+					this.currentPage=this.totalPage
+				}else{
+					this.currentPage++
+				}
+			}else{
+				if(this.currentPage>=1){
+					this.currentPage=1
+				}else{
+					this.currentPage--
+				}
+			}
+		}
+	},
+	computed:{
+		filterTip:function(){
+			var result='';
+			console.log(this.filterBy)
+			for(key in this.filterBy){
+				console.log(key)
+				if(this.filterBy[key]){
+					result+=this.fieldsTranslation[key]+':'+this.filterBy[key]+',';
+				}
+			}
+			return result;
+		}
+	},
+	watch:{
+		currentPage:function(val,oldval){
+			this.getNewData(this.searchType,this.searchKeywords,val);
+		},
+		inputPage:function(val,oldval){
+			if(val<=this.totalPage && val>0){
+				this.currentPage=val;
+			}else{
+				this.inputPage=oldval
+			}
+
+		}
+	}
+
+})
+</script>
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

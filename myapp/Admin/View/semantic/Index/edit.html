@@ -255,10 +255,12 @@
 		$("#modaltitle").text("图片ID: "+imgId);
 		$("#modalbody").html(imgtemplate);
 		layer.load();
-		setTimeout(function(){
+		$('#viewimage').on('load',function(){
 			layer.closeAll("loading");
 			$("#displaypic").modal("show");
-		},700)
+		})
+		// setTimeout(function(){
+		// },700)
 
 	})
 		

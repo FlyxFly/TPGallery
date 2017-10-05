@@ -50,17 +50,21 @@ class LoginController extends Controller{
 	}
 
 	public function login(){
+		$log=D('Home/Entry');
 		if(!isset($_POST['email']) || !isset($_POST['password'])){
 			msg(0,"Please input both email and password.");
 		}
 		$passcheck=self::checkUserPass($_POST['email'],$_POST['password']);
 		if($passcheck){
+
 			session(["start"]);
 			session("user",$passcheck[0]);
 			M("users")->where("id = %d",$passcheck[0]['id'])->setField(array("lastlogindate"=>time(),"lastloginip"=>getIp()));
+			$log->addLog('login','admin',1,'登录成功,用户:'.$passcheck[0]['username']);
 			msg(200,"Login success!");
 			
 		}else{
+			$log->addLog('login','admin',0,'登录失败,用户:'.$_POST['email'].',密码:'.$_POST['password']);
 			msg(0,"Username or password wrong!");
 		}
 		
@@ -68,6 +72,7 @@ class LoginController extends Controller{
 	}
 
 	public function register(){
+		$log=D('Home/Entry');
 		if(!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['email'])){
 			msg(0,"Please input username password and email.");
 		}
@@ -87,8 +92,10 @@ class LoginController extends Controller{
 		$usersDB=M('users');
 		$result=$usersDB->data($data)->add();
 		if($result){
+			$log->addLog('reg',null,1,'注册成功');
 			msg(200,"Success! Please login.");
 		}else{
+			$log->addLog('reg',null,0,'注册失败');
 			msg(0,"FAIL! Please retry!");
 		}
 	}
@@ -139,8 +146,12 @@ class LoginController extends Controller{
 
 
 	public function test(){
-		echo("此处应有时间");
-		dump(time());
+		$qqwry=new \Common\Lib\qqwry('./Public/qqwry.dat');
+		$ret=$qqwry->getlocation('3.4.5.7');
+		dump($ret);
+		dump(iconv('GB2312','UTF-8',$ret['country']));
+		dump(iconv('GB2312','UTF-8',$ret['area']));
+
 	}
 
 

@@ -1,5 +1,5 @@
 <?php
-namespace Common\Model;
+namespace Home\Model;
 use Think\Model;
 class EntryModel extends Model{
 	private $entryDB='';
@@ -63,5 +63,35 @@ class EntryModel extends Model{
 		$tagid=(int)$tagid;
 		$ret=M('meta')->where("mid='%d'",$tagid)->select();
 		return $ret[0];
+	}
+
+	public function addView($id){
+		self::addLog('view','post',$id,null);
+		$ret=M('entry')->where('postid=%d',$id)->field('view')->select();
+		M('entry')->where('postid=%d',$id)->setField('view',$ret[0]['view']+1);
+	}
+
+	public function  addLike($id){
+		self::addLog('like','post',$id,null);
+		$ret=M('entry')->where('postid=%d',$id)->field('like')->select();
+		M('entry')->where('postid=%d',$id)->setField('like',$ret[0]['like']+1);
+	}
+
+	public function addLog($action,$target_type,$target_id=null,$memo=null){
+		$userInfo=session('user');
+		$data=[
+			'ip'=>getIp(),
+			'action'=>$action,
+			'target_type'=>$target_type,
+			'target_id'=>$target_id,
+			'memo'=>$memo,
+			'timestamp'=>date('Y-m-d H:i:s')
+		];
+		if($userInfo){
+			$data['user_id']=$userInfo['id'];
+			$data['user_name']=$userInfo['username'];
+		}
+		$ret=M('log')->data($data)->add();
+		return $ret;
 	}
 }
