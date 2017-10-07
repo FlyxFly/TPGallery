@@ -133,7 +133,7 @@ class IndexController extends Controller {
     }   
 
     public function post($pid){
-        D('entry')->addLog('view','post',$pid);
+        
         $p=$_GET['p']?$_GET['p']:1;
         self::testIfInt($p);
     	self::testIfInt($pid);
@@ -177,9 +177,12 @@ class IndexController extends Controller {
             $pageShow=$paging->show();
             //分类 
         }else{
+            D('entry')->addLog('view','post',$pid,'无权限的访问');
             E("Forbidden! You are NOT allowed to view this page.",403);
         }
-		
+        //成功访问后添加记录
+		D('entry')->addLog('view','post',$pid);
+        D('entry')->addView($pid);
         $metaDB=M("meta");
         $tags = $metaDB->where("type= 'category'")->select();
         $this->assign('PrevAndNext',$prevAndNext);

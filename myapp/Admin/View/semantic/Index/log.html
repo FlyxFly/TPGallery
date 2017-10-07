@@ -21,8 +21,11 @@
 						<input type="text" class="width-2-em" v-model.laay="inputPage">
 					</div>
 				</div>
-				
 			</div>
+			<div class="four wide column">
+				<a href="#" @click=NoFilter() class="ui button blue small">清除筛选</a>
+			</div>
+			<p>{{filterTip}}</p>
 		</div>
 	</div>
 	<table class="ui small compact green table" >
@@ -71,12 +74,15 @@ var myapp=new Vue({
 			'user_id':'用户ID',
 			'action':'操作',
 			'target_type':'模块',
-			'user_name':'用户名'
+			'user_name':'用户名',
+			'ip':'IP地址',
+			'memo':'详细信息',
 		},
 		searchType:'',
 		searchKeywords:'',
 		searchPage:0,
-		filterBy:{}
+		filterBy:{},
+		filterTip:''
 	},
 	methods:{
 		getNewData:function(type,keywords,p){
@@ -84,7 +90,8 @@ var myapp=new Vue({
 			this.searchKeywords=keywords;
 			this.Page=p;
 			this.filterBy[type]=keywords;
-			var url=`?m=Admin&c=Index&a=log&type=${type}&keywords=${keywords}&api=1`;
+			this.makeFilterTip();
+			var url=`?m=Admin&c=Index&a=log&type=${type}&keywords=${keywords}&p=${this.currentPage}&api=1`;
 			this.$http.get(url).then(function(data){
 				this.logs=data.body.data
 			},function(err){
@@ -106,20 +113,24 @@ var myapp=new Vue({
 					this.currentPage--
 				}
 			}
-		}
-	},
-	computed:{
-		filterTip:function(){
+		},
+		NoFilter:function(){
+			this.logs=this.allLogs;
+			this.filterBy={};
+			this.filterTip='';
+		},
+		makeFilterTip:function(){
 			var result='';
-			console.log(this.filterBy)
 			for(key in this.filterBy){
-				console.log(key)
 				if(this.filterBy[key]){
 					result+=this.fieldsTranslation[key]+':'+this.filterBy[key]+',';
 				}
 			}
-			return result;
+			this.filterTip=result;
 		}
+
+	},
+	computed:{
 	},
 	watch:{
 		currentPage:function(val,oldval){
@@ -131,7 +142,6 @@ var myapp=new Vue({
 			}else{
 				this.inputPage=oldval
 			}
-
 		}
 	}
 

@@ -4,42 +4,65 @@
 <div class="ui container">
 <form class="ui form">
 	<div class="ui grid">
-		<div class="six wide column">
-		<div class="field">
-			<label for="title">标题</label>
-	        <input id="title" name="title" type="text" value="{$entryinfo[0]['title']}">
-	        <input id="pid" name="pid" type="hidden" value="{$entryinfo[0]['postid']}">
-		</div>
-        </div>
-		<div class="three wide column">
-		<div class="field">
-			<label for="datetime">时间</label>
-			 <div class="ui calendar" id="time">
-			    <div class="ui input left icon">
-			       <i class="calendar icon"></i>
-			       <input type="text" name="publishdate" value="{$entryinfo[0]['createdate']}" placeholder="发布日期">
-			</div>
-			</div>
-		</div>
-		</div>
-		<div class="three wide column">
+		<div class="ui row">
+			<div class="six wide column">
 			<div class="field">
-			<div class="ui checkbox toggle">
+				<label for="title">标题</label>
+		        <input id="title" name="title" type="text" value="{$entryinfo[0]['title']}">
+		        <input id="pid" name="pid" type="hidden" value="{$entryinfo[0]['postid']}">
+			</div>
+	        </div>
+			<div class="three wide column">
+			<div class="field">
+				<label for="datetime">时间</label>
+				 <div class="ui calendar" id="time">
+				    <div class="ui input left icon">
+				       <i class="calendar icon"></i>
+				       <input type="text" name="publishdate" value="{$entryinfo[0]['createdate']}" placeholder="发布日期">
+				</div>
+				</div>
+			</div>
+			</div>
+			<div class="three wide column">
+				<div class="field">
 				<label>隐藏</label>
-				<input type="checkbox" name="private" tabindex="0" value="1" {$entryinfo[0]['private']==1?'checked':''}>
+				<div class="ui checkbox toggle">
+					
+					<input type="checkbox" name="private" tabindex="0" value="1" {$entryinfo[0]['private']==1?'checked':''}>
+					</div>
+					
 				</div>
-				
+			</div>
+			<div class="three wide column">
+				<div class="field">
+					<label for="">操作</label>
+					<div class="ui buttons">
+					  <a class="ui primary button" id="infosave">保存</a>
+					  <div class="or" data-text=""></div>
+					  <a class="ui button" href="window.history.back()">返回</a>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="three wide column">
-			<div class="field">
-				<label for="">操作</label>
-				<div class="ui buttons">
-				  <a class="ui primary button" id="infosave">保存</a>
-				  <div class="or" data-text=""></div>
-				  <a class="ui button" href="window.history.back()">返回</a>
+		<div class="ui row" >
+			<div class="three wide column">
+				<div class="field">
+					<label >网名</label>
+			        <input name="nickname" type="text" value="{$entryinfo[0]['nickname']}">
 				</div>
 			</div>
+			<div class="three wide column">
+				<div class="field">
+					<label >本名</label>
+			        <input name="original_name" type="text" value="{$entryinfo[0]['original_name']}">
+				</div>
+			</div>
+			<div class="ten wide column">
+				<div class="field">
+					<label >备注</label>
+			        <input name="profile" type="text" value="{$entryinfo[0]['profile']}">
+				</div>
+			</div>			
 		</div>
 	
 		<!-- 分类列表开始 -->

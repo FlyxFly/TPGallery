@@ -55,7 +55,7 @@ class IndexController extends Controller{
 			array_push($entryInfo, $value);
 		}
 		// dump($entryInfo);
-		$this->assign("entryinfo",$entryInfo);
+		$this->assign("entryinfo",json_encode($entryInfo));
 		// dump($totalEntryQty);
 		$totalpage=ceil($totalEntryQty/C("entryPerPage"));
 		$this->assign("q",$q);
@@ -69,7 +69,9 @@ class IndexController extends Controller{
 
 	}
 
+	public function quickedit($postid,$field,$value){
 
+	}
 	public function edit(){
 		$entryDB=M("entry");
 		$imgsDB=M("imgs");
