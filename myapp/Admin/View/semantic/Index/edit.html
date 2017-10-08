@@ -59,10 +59,19 @@
 			</div>
 			<div class="ten wide column">
 				<div class="field">
-					<label >备注</label>
-			        <input name="profile" type="text" value="{$entryinfo[0]['profile']}">
+					<label >网址</label>
+					<div class="ui action input">
+				        <input name="profile" type="text" value="{$entryinfo[0]['profile']}">
+				        <a class="ui icon button" target="_blank" href="{$entryinfo[0]['profile']}"><i class="ui icon link arrow right"></i></a>
+					</div>
 				</div>
 			</div>			
+		</div>
+		<div class="row">
+			<div class="sixteeen wide column">
+				<label>内容</label>
+				<textarea name="content" rows="2">{$entryinfo[0]['content']}</textarea>
+			</div>
 		</div>
 	
 		<!-- 分类列表开始 -->
@@ -234,7 +243,12 @@
 			"title":$("#title").val(),
 			"pid":$("#pid").val(),
 			"cover":$("input[name='cover']:checked").val(),
-			"private":$("input[name='private']:checked").val() || 0
+			"private":$("input[name='private']:checked").val() || 0,
+			"nickname":$("input[name='nickname']").val(),
+			"original_name":$("input[name='original_name']").val(),
+			"memo":$("textarea[name='memo']").val(),
+			"profile":$("input[name='profile']").val(),
+			"content":$("textarea[name='content']").val()
 		}
 		console.log(alldata);//所有数据
 

@@ -166,8 +166,13 @@ class IndexController extends Controller{
 				"title"=>$_POST['title'],
 				"authorid"=>session("user")["id"],
 				"createdate"=>date("Y-m-d"),
-				"private"=>$_POST['private']);
-
+				"private"=>$_POST['private'],
+				"nickname"=>$_POST['nickname'],
+				"original_name"=>$_POST['original_name'],
+				"url"=>$_POST['url'],
+				"profile"=>$_POST['profile'],
+				"content"=>$_POST['content']
+			);
 			$new_entry_id=$entryDB->data($entryinfo)->add();
 			//添加标签meta
 			$meta_info = array();
@@ -213,7 +218,15 @@ class IndexController extends Controller{
 			//更新文章
 			
 			//更新标题
-			$titleupdate=$entryDB->where("postid=%d",$pid)->setField(array("title"=>$_POST['title'],"private"=>$_POST['private']));
+			$titleupdate=$entryDB->where("postid=%d",$pid)->setField(array(
+				"title"=>$_POST['title'],
+				"private"=>$_POST['private'],
+				"nickname"=>$_POST['nickname'],
+				"original_name"=>$_POST['original_name'],
+				"url"=>$_POST['url'],
+				"profile"=>$_POST['profile'],
+				"content"=>$_POST['content']
+			));
 
 			//更新分类
 			$relationshipDB->where("pid=%d",$pid)->delete();
