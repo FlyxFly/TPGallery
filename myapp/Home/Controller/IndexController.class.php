@@ -181,7 +181,6 @@ class IndexController extends Controller {
             E("Forbidden! You are NOT allowed to view this page.",403);
         }
         //成功访问后添加记录
-		D('entry')->addLog('view','post',$pid);
         D('entry')->addView($pid);
         $metaDB=M("meta");
         $tags = $metaDB->where("type= 'category'")->select();
