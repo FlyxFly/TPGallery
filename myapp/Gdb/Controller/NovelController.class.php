@@ -37,13 +37,18 @@ class NovelController extends Controller{
 	}
 
 	public function content($tid=null,$p=1){
+		dump($this->i->query('show variables like "%character%"'));
 		$threadInfo=$this->i->where('threadid=%d',$tid)->select();
 		$threadInfo=$threadInfo[0];
 		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid')->select();
+		dump($content);
 		foreach ($content as $key => $value) {
+
+			// $value=mb_convert_encoding($value, "UTF-8", "ASCII");
 			$addNewline=str_replace('\r\n', '<br/>', $value);
 			$nonbsp=preg_replace('/\&nbsp;{3,}/', '<br/>&nbsp;&nbsp;', $addNewline);
 			$content[$key]=preg_replace('/\s{3,}/', '<br/>', $nonbsp);
+
 			// $content[$key]=nl2br($value);
 
 		}

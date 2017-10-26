@@ -8,7 +8,7 @@ class DnsController extends Controller{
 			$this->assign('data',dns_get_record($_GET['domain']));
 			$this->assign('query',$_GET['domain']);
 		}
-
+		// dump(dns_get_record($_GET['domain']));
 		$this->display();
 	}
 

@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="__PUBLIC__/Lightbox/css/lightbox.min.css">
     <script src="__PUBLIC__/lib/js/jquery-3.1.1.min.js"></script>
     <script src="__PUBLIC__/semantic/semantic.min.js"></script>
-    <script src="__PUBLIC__/lib/js/vue.js"></script>
+    <script src="__PUBLIC__/js/vue.js"></script>
+    <script src="__PUBLIC__/js/vue-resource.min.js"></script>
+    <script src="__PUBLIC__/js/layer.js"></script>
     <style type="text/css">
     .no-padding {
         padding: 0!important
@@ -117,33 +119,34 @@
         <!-- 侧边栏导航结束 -->
         <div class="ui container pusher">
             <div class="ui five stackable cards">
-                <foreach name="data" item="one">
-                    <div class="ui card">
+
+                    <div class="ui card" v-for="(card,index) in cards">
                         <div class="image">
                             <php>
-                                $urlArr=explode('/',explode('.',explode('=',$one['original_url'])[1])[0]); $fileName=$urlArr[count($urlArr)-1]; $url="http://tieba.baidu.com/photo/p?kw=${urlencode($one['forum_name'])}&flux=1&tid=${one['thread_id']}&pic_id=${fileName}&pn=1&fp=1&see_lz=1";
+            
                             </php>
-                            <img class="ui tiny image" src="{$one.file_name}">
+                            <img class="ui tiny image" :src="card.file_name">
                         </div>
                         <div class="content">
-                            <a class="header" href="{:U('Tieba/Index/index',['searchType'=>'userName','keywords'=>$one['user_name']])}">{$one.user_name}</a>
+                            <a class="header" :href="'index.php?m=tieba&c=index&a=index&searchType=userName&keywords='+card.user_name">{{card.user_name}}</a>
                             <div class="meta">
-                                {$one.timestamp}
+                                {{card.timestamp}}
                             </div>
                             <div class="description">
                                 <i class="talk outline icon"></i> 发表在
-                                <a href="{:U('Tieba/Index/thread',['tid'=>$one['thread_id']])}" target="_blank">{$one.forum_name}</a>吧
+                                <a href="{:U('Tieba/Index/thread',['tid'=>$one['thread_id']])}" target="_blank">{{card.forum_name}}</a>吧
                             </div>
                         </div>
                         <div class="extra content">
-                            <a href="{$url}" target="_blank">查看原图</a>
+                            <a :href=originalPic(card.original_url,card.thread_id,card.forum_name) target="_blank">查看原图</a>
+                            <a v-if="isLogin" href="javascript:void(0)" @click=deleteImg(card.id,index) class="right floated">删除</a>
                             <!--             <div class="ui large transparent left icon input">
                                 <i class="heart outline icon"></i>
                                 <input type="text" placeholder="Add Comment...">
                             </div> -->
                         </div>
                     </div>
-                </foreach>
+
             </div>
             {$pageCode}
         </div>
@@ -151,17 +154,53 @@
     <div class="footer">
     </div>
     <script>
+    Vue.http.options.emulateJSON = true;
     var searchParams={$searchParams};
     var myapp = new Vue({
         el: '#shuaibi',
         data: {
+            isLogin:{$isLogin},
             searchType: '',
             searchTypes: {
                 'userName': '用户名',
                 'userId': '用户数字ID',
                 'content': '发帖'
             },
-            keywords: '{$keywords}'
+            keywords: '{$keywords}',
+            cards:{$data}
+        },
+        methods:{
+            deleteImg:function(id,index){
+                var animateId=layer.load();
+                this.$http.post('index.php?m=tieba&c=index&a=api',{action:'delete',item:'img',id:id}).then(function(response){
+                    let res=response.body;
+                    layer.close(animateId);
+                    console.log(res.message);
+                    if(res.code==0){
+                        layer.msg(res.message,{icon:4});
+                        return;
+                    }
+                    if(res.code==1){
+                        layer.msg(res.message,{icon:2})
+                        return;
+                    }
+                    if(res.code==200){
+                        this.cards.splice(index,1);
+                        layer.msg(res.message,{icon:1});
+                        return;
+                    }
+                    layer.msg('未知响应',{icon:2});
+                    
+                },function(response){
+                    layer.cloae(animateId);
+                    alert('请求出错',response)
+                })
+            },
+            originalPic:function(url,threadId,forumName){
+                let originalFileName=url.split('/')[6].split('.')[0];
+                let originalUrl=`http://tieba.baidu.com/photo/p?kw=${encodeURI(forumName)}&flux=1&tid=${threadId}&pic_id=${originalFileName}&pn=1&fp=1&see_lz=1`;
+                return originalUrl;
+            }
         },
         computed: {
             searchBoxPlaceHolder: function() {
