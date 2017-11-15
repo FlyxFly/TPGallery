@@ -609,6 +609,7 @@ class IndexController extends Controller{
 	}
 
 	public function log($p=1,$type=null,$keywords=null,$api=0){
+		$this->assign('pagename','Logs');
 		if($api==0){
 			$ret=D('log')->getLog($p,$type,$keywords);
 			$this->assign('data',json_encode($ret['data']));

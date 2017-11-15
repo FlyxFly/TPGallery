@@ -6110,6 +6110,11 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07); }
   #fh5co-board .item a {
     display: block; }
+  #fh5co-board .item .info {
+    display: block;
+    width: 100%; }
+    #fh5co-board .item .info p, #fh5co-board .item .info a, #fh5co-board .item .info span, #fh5co-board .item .info div {
+      display: inline-block; }
   #fh5co-board .item .fh5co-desc {
     padding: 20px;
     float: left;

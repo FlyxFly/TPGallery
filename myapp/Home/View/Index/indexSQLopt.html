@@ -38,7 +38,6 @@
 	<!--[if lt IE 9]>
 	<script src="__PUBLIC__/IndexHydrogen/js/respond.min.js"></script>
 	<![endif]-->
-
 	</head>
 	<body>
 		
@@ -89,7 +88,10 @@
         		<div class="animate-box">
 	        		<a href="{$entry.url}" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="{$entry.url}" alt="此处应有图片，然而并没有"></a>
         		</div>
-        		<div class="fh5co-desc"><a href="{:U('Home/Index/post/',['pid'=>$entry['postid']])}">{$entry.title} ({$imgCount[$entry['postid']]}P)</a></div>
+        		<div class="fh5co-desc">
+        			<a href="{:U('Home/Index/post/',['pid'=>$entry['postid']])}">{$entry.title} ({$imgCount[$entry['postid']]}P)   &nbsp;&nbsp;<i class="icon-eye"></i>{$entry.view}</a>
+					
+        		</div>
         	</div>
         	</foreach>
         </div>
@@ -113,7 +115,7 @@
 						<a href="#"><i class="icon-dribbble"></i></a>
 						<a href="#"><i class="icon-youtube"></i></a> -->
 					</p>
-					<p><small>&copy; Xiaoming' Collection. Some Rights Reserved. <br></small><a href="mailto:G@d-hl.com"><i class="icon-mail"></i></a></p>
+					<p><small>&copy; Xiaoming' Collection. Some Rights Reserved. <br></small><a href="mailto:G@d-hl.com"><i class="icon-mail"></i>Request Removal or Contact me</a>  <a href="#"><i class="icon-message"></i>Leave a message</a></p>
 				</div>
 			</div>
 		</div>

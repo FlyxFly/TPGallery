@@ -7,6 +7,53 @@
 	}
 </style>
 <div class="ui container" id="myapp">
+	<div class="ui segment">
+		<div class="ui form">
+			<div class="row">
+				<div class="fields">
+					<div class="four field">
+						<label for="">IP</label>
+						<input type="text" v-model="search.ip">
+					</div>
+					<div class="four field">
+						<label for="">用户名</label>
+						<input type="text" v-model="search.username">
+					</div>
+					<div class="four field">
+						<label for="">操作</label>
+						<input type="text" v-model="search.action">
+					</div>
+					<div class="four field">
+						<label for="">模块</label>
+						<input type="text" v-model="search.module">
+					</div>
+					<div class="four field">
+						<label for="">说明</label>
+						<input type="text" v-model="search.description">
+					</div>
+				</div>
+				<div class="fields">
+					<div class="four field">
+						<label for="">开始日期</label>
+						<input type="text" v-model="search.startDate">
+					</div>
+					<div class="four field">
+						<label for="">结束日期</label>
+						<input type="text" v-model="search.endDate">
+					</div>
+
+				</div>
+				<div class="fields">
+					<div class="field">
+						<a href="javascript:void(0)" class="ui button primary" @click="search">搜索</a>
+					</div>
+					<div class="field">
+						<a href="javascript:void(0)" class="ui button primary" @click="clearSearch">清空</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="ui grid">
 		<div class="ui row">
 			<div class="five wide column">
@@ -82,7 +129,8 @@ var myapp=new Vue({
 		searchKeywords:'',
 		searchPage:0,
 		filterBy:{},
-		filterTip:''
+		filterTip:'',
+		search:{ip:'',username:'',action:'',module:'',description:'',startDate:'',endDate:''}
 	},
 	methods:{
 		getNewData:function(type,keywords,p){
@@ -127,6 +175,13 @@ var myapp=new Vue({
 				}
 			}
 			this.filterTip=result;
+		},
+		clearSearch:function(){
+			this.search={ip:'',username:'',action:'',module:'',description:'',startDate:'',endDate:''};
+		},
+		search:function(){
+			var self=this;
+			console.log(self.search);
 		}
 
 	},

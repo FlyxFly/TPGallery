@@ -9,6 +9,7 @@ class NovelController extends Controller{
 		parent::__construct();
 		$this->i=D('stnovel_info');
 		$this->c=D('stnovel_content');
+		$this->fav=D('stnovel_fav');
 	}
 	public function Index(){
 		$this->redirect('Catalog');
@@ -37,11 +38,13 @@ class NovelController extends Controller{
 	}
 
 	public function content($tid=null,$p=1){
-		dump($this->i->query('show variables like "%character%"'));
+		// dump(session('user')['id']);
+		// dump($this->i->query('show variables like "%character%"'));
 		$threadInfo=$this->i->where('threadid=%d',$tid)->select();
+		// dump($threadInfo);
 		$threadInfo=$threadInfo[0];
 		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid')->select();
-		dump($content);
+		// dump($content);
 		foreach ($content as $key => $value) {
 
 			// $value=mb_convert_encoding($value, "UTF-8", "ASCII");
@@ -61,8 +64,16 @@ class NovelController extends Controller{
 		if($keywords=='' && $authorId==null && $fav==0){
 			$ret=array(array('title'=>'关键字为空'));
 		}else if($fav==1){
-			$totalItem=$this->i->where('fav=1')->count('threadid');
-			$ret=$this->i->where('fav=1')->page($p,30)->select();
+			if(session('?user')){
+				$userInfo=session('user');
+				$userId=$userInfo['id'];
+				$totalItem=$this->fav->where('user_id=%d',$userId)->count('thread_id');
+				$ret=$this->fav->where('user_id=%d',$userId)->join('left join stnovel_info on stnovel_info.threadid = stnovel_fav.thread_id')->page($p,30)->select();
+			}else{
+				$totalItem=$this->fav->count('thread_id');
+				$ret=$this->fav->join('left join stnovel_info on stnovel_info.threadid = stnovel_fav.thread_id')->page($p,30)->select();
+			}
+			
 		}else{
 			$sqlLike='%'.$keywords.'%';
 			switch($type){
@@ -108,16 +119,22 @@ class NovelController extends Controller{
 	}
 
 	public function Mark($tid){
-		$ret=$this->i->where('threadid = %d',$tid)->select();
 		header('Content-type:application/json');
-		if($ret[0]['fav']!=1){
-			$this->i->where('threadid = %d',$tid)->setField('fav','1');
+		if(!session('?user')){
+			msg(0,'登陆了才能收藏哦');
+		}
+		$userInfo=session('user');
+
+		$ret=$this->fav->where('thread_id = %d and user_id = %d',[$tid,$userInfo['id']])->select();
+		$ret=$ret[0];
+		if(count($ret)<1){
+			$this->fav->data(['thread_id'=>$tid,'user_id'=>$userInfo['id'],'add_date'=>date("Y-m-d H:i:s")])->add();
 			msg(200,'加入收藏成功');
 		}else{
-			$this->i->where('threadid = %d',$tid)->setField('fav','0');
+			$sql=$this->fav->delete($ret['id']);
+			// msg(0,json_encode($sql));
 			msg(200,'取消收藏成功');
 		}
-		
 	}
 
 

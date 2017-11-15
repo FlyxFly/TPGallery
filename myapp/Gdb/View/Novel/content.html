@@ -1,22 +1,35 @@
 <include file='Public/Header' />
-<include file='Public/Navbar' keywords='keywords' searchapi='Gdb/Novel/Search' />
+<include file='Public/Navbar' keywords='{{$keywords}}' searchapi='Gdb/Novel/Search' />
 <div class="ui container">
 <div class="segment">
 	<h4 class="ui header">{$threadInfo.title}</h4>
-	<div class="meta"><a id="addFav" data-tid='{$threadInfo.threadid}'>加入收藏</a></div>
+	<div class="meta">
+		<a class="ui label">作者:{$threadInfo.authorname}</a>
+		<a class="ui label">发布日期:{$threadInfo.createdate}</a> 
+		<a id="addFav" class="ui teal label" data-tid='{$threadInfo.threadid}'>加入收藏</a>
+		<a href="{$threadInfo.url}" class="ui green label">原帖地址</a>
+	</div>
 </div>
 	<volist name="novelTheads" id="thread">
-		<div class="segment">
+		<div class="ui segment">
 			{$thread.content}
 		</div>
 	</volist>
 </div>
 <script>
-$("#addFav").on('click',function(){
-	var that=$(this);
-	$.post('{:U("Mark")}',{tid:that.data('tid')},function(res){
+var addFav=document.getElementById('addFav');
+addFav.addEventListener('click',markFav)
+
+
+function markFav(){
+	$.post('{:U("Mark")}',{tid:addFav.dataset['tid']},function(res){
+		if(res.message=='加入收藏成功'){
+			addFav.innerText='已加入收藏';
+			addFav.removeEventListener('click',markFav)
+		}
 		alert(res.message)
 	})
-})
+}
+
 </script>
 <include file='Public/Footer' />

@@ -451,6 +451,14 @@ h1, h2, h3, h4, h5, h6 {
     		display: block;
     	}
 
+    	.info{
+    		display: block;
+    		width: 100%;
+    		p,a,span,div{
+    			display: inline-block
+    		}
+    	}
+
     	.fh5co-desc {
     		padding: 20px;
     		float: left;
