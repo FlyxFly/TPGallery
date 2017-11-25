@@ -62,4 +62,12 @@ class IndexController extends Controller{
         $ret=M('post')->where('thread_id=%s',$id)->select();
         dump($ret);
     }
+
+    public function fileDelete($path){
+        if(!session('?user')){
+            msg(0,'非法操作');
+        }
+        $result=unlink($path);
+        echo $result;
+    }
 }

@@ -1,5 +1,6 @@
-<div class="ui menu navbar">
+<div class="ui menu navbar" id="navbar">
 <div class="ui container">
+	<div id="sidebarBtn" class="item"><i class="icon list"></i>	</div>
 	<div class="item header">GVDB</div>
 	<div class="ui dropdown item">
 		演员
@@ -31,12 +32,23 @@
 			
 		</div>
 	</div>
-	<div class="right menu">
+	<div class="right menu hide-below-tablet">
 		<div class="item">
+		<div class="ui selection dropdown fluid">
+			<input type="hidden" name="type" v-model="searchType">
+			<i class="dropdown icon"></i>
+			<div class="default text">片名</div>
+			<div class="menu">
+				<div class="item" data-value="video">片名</div>
+				<div class="item" data-value="actor">演员</div>
+				<div class="item" data-value="novel">小说</div>
+				<div class="item" data-value="tag">标签</div>
+			</div>
+		</div>
 		<div class="ui action left icon input">
 			<i class="icon search"></i>
-			<input type="text" placeholder="演员或片名" name="keywords" id="searchKeywords" value='[keywords]'>
-			<a class="ui button " id="searchBtn">搜索</a>
+			<input type="text" placeholder="演员或片名" name="keywords" id="searchKeywords" v-model="keywords" @keyup.enter=gotoSearch>
+			<a class="ui button" @click=gotoSearch href="javascript:void(0)">搜索</a>
 		</div>
 		</div>
 		<div class="ui dropdown item">
@@ -53,16 +65,29 @@
 
 <style>
 #sidebarBtn{
-display:none;
+/*display:none;*/
 }
 @media (max-width:749px){
-.right.menu{
+.hide-below-tablet{
 	display: none!important;
 }
 
 }
 </style>
 <script>
+var app=new Vue({
+	el:'#navbar',
+	data:{
+		searchType:'video',
+		keywords:''
+	},
+	methods:{
+		gotoSearch:function(){
+			let a=window.open();
+			a.location.href=`?m=gdb&c=index&a=search&type=${this.searchType}&content=${this.keywords}`;
+		}
+	}
+})
 $(document).ready(function(){
 	$('#searchKeywords').on('keydown',function(event){
 		if(event.keyCode==13){

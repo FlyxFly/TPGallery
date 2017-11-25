@@ -292,6 +292,38 @@ class IndexController extends Controller{
 		return $url;
 	}
 
+	public function search($type=null,$content=null,$p=1){
+		if(!in_array($type, ['video','actor','tag','novel'])){
+			msg(1,'无法找到搜索结果');
+		}
+		if($content==null){
+			msg(1,'未找到搜索结果');
+		}
+
+		switch($type){
+			case 'video':
+			$total=M('video')->where('name like "%s"','%'.$content.'%')->count('id');
+			$ret=M('video')->where('name like "%s"','%'.$content.'%')->page($p,30)->select();
+			break;
+
+			case 'actor':
+			$total=M('actor')->where('name like "%s"','%'.$content.'%')->count('id');
+			$ret=M('actor')->where('name like "%s"','%'.$content.'%')->page($p,30)->select();
+			break;
+
+			case 'tag':
+
+			break;
+
+			case 'novel':
+			$total=M('stnovel_info')->where('title like "%s"','%'.$content.'%')->count('threadid');
+			$ret=M('actor')->where('title like "%s"','%'.$content.'%')->page($p,30)->select();
+			break;
+		}
+		dump($total);
+		dump($ret);
+	}
+
 
 	public function imgtest(){
 		$url='http://sm.staxus.com/content/contentthumbs/74489.jpg';
