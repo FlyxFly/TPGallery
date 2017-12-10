@@ -72,29 +72,32 @@
 	<body>
 		<!-- navbar -->
 		<div class="ui menu top-navbar">
-			<a class="item sidebar-btn"><i class="icon list"></i></a>
-			<if condition="PrevAndNext[0] neq null">
-				<a class="item" href="{:U('post',array('pid'=>$PrevAndNext[0]['postid']))}" title="{$PrevAndNext[0]['title']}"><i class="icon angle double left"></i>Previous</a>
-				<else/>
-				<span class="item">前面没有了</span>
-			</if>
-			<a class="item" href="{:U('Home/Index/index')}">
-				<i class="icon home"></i>Home
-			</a>
-<!-- 			<a class="item" onclick="javascript:history.back()"><i class="icon arrow left"></i>Back</a> -->
-			<if condition="PrevAndNext[1] neq null">
-				<a class="item" href="{:U('post',array('pid'=>$PrevAndNext[1]['postid']))}" title="{$PrevAndNext[1]['title']}">Next<i class="icon angle double right"></i></a>
-				<else/>
-				<span class="item">后面没有了</span>
-			</if>
+			<div class="ui container">
+				<a class="item sidebar-btn"><i class="icon list"></i></a>
+				<if condition="PrevAndNext[0] neq null">
+					<a class="item" href="{$PrevAndNext[0]['postid'] | postURL}" title="{$PrevAndNext[0]['title']}"><i class="icon angle double left"></i>Previous</a>
+					<else/>
+					<span class="item">前面没有了</span>
+				</if>
+				<a class="item" href="{:U('Home/Index/index')}">
+					<i class="icon home"></i>Home
+				</a>
+	<!-- 			<a class="item" onclick="javascript:history.back()"><i class="icon arrow left"></i>Back</a> -->
+				<if condition="PrevAndNext[1] neq null">
+					<a class="item" href="{$PrevAndNext[1]['postid'] | postURL}" title="{$PrevAndNext[1]['title']}">Next<i class="icon angle double right"></i></a>
+					<else/>
+					<span class="item">后面没有了</span>
+				</if>
 
-			<div class="right menu hide-on-mobile">
-				<div class="item">
-					<div class="ui action left icon input">
-						<i class="search icon"></i>
-						<input type="text" class="searchbox" placeholder="Search">
-						<button class="ui button dark teal">Submit</button>
+				<div class="right menu hide-on-mobile">
+					<div class="item">
+						<div class="ui action left icon input">
+							<i class="search icon"></i>
+							<input type="text" class="searchbox" placeholder="Search">
+							<button class="ui button dark teal">Submit</button>
+						</div>
 					</div>
+					
 				</div>
 				
 			</div>
@@ -176,7 +179,6 @@
 			$imgGalleryItems=$imgGallery.find('img');
 			$progressBar=$(".progress");
 			if($imgGalleryItems.length>1){
-				
 				var count=0;
 				$imgGalleryItems.on('load',function(){
 					$progressBar.progress({
@@ -184,6 +186,7 @@
 					})
 					console.log(Math.ceil(count/($imgGalleryItems.length-1)*100),$imgGalleryItems.length)
 					if(count==$imgGalleryItems.length-1){
+						$progressBar.fadeOut();
 						$imgGallery.masonry({
 							itemSelector:".img-gallery-item",
 							columnWidth:285,

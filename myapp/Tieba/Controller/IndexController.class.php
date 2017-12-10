@@ -8,6 +8,7 @@ class IndexController extends Controller{
 
 
     public function index($p=1,$keywords=null,$searchType=null,$ba=null){
+        // dump(I('request.'));
     	if($keywords && in_array($searchType,C('search_type'))){
             $pageUrlParam="Tieba/Index/index?searchType=${searchType}&keywords=${keywords}&p=";
     		$ret=D('post')->imageList($p,$keywords,$searchType);

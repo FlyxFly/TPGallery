@@ -89,7 +89,7 @@
 	        		<a href="{$entry.url}" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="{$entry.url}" alt="此处应有图片，然而并没有"></a>
         		</div>
         		<div class="fh5co-desc">
-        			<a href="{:U('Home/Index/post/',['pid'=>$entry['postid']])}">{$entry.title} ({$imgCount[$entry['postid']]}P)   &nbsp;&nbsp;<i class="icon-eye"></i>{$entry.view}</a>
+        			<a href="{$entry['postid'] | postURL}">{$entry.title} ({$imgCount[$entry['postid']]}P)   &nbsp;&nbsp;<i class="icon-eye"></i>{$entry.view}</a>
 					
         		</div>
         	</div>

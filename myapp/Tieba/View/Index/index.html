@@ -39,7 +39,7 @@
         <div class="ui menu navbar">
             <div class="ui container">
                 <a href="#" class="item sidebar-trigger"><i class="sidebar icon"></i></a>
-                <div class="item header">贴吧爆照</div>
+                <div class="item header"><a href="/tieba">贴吧爆照</a></div>
                 <div class="ui item fitted form">
                     <div class="field hide-on-mobile">
                         <select>
@@ -128,13 +128,13 @@
                             <img class="ui tiny image" :src="card.file_name">
                         </div>
                         <div class="content">
-                            <a class="header" :href="'index.php?m=tieba&c=index&a=index&searchType=userName&keywords='+card.user_name">{{card.user_name}}</a>
+                            <a class="header" :href=userNameUrl(card.user_name) >{{card.user_name}}</a>
                             <div class="meta">
                                 {{card.timestamp}}
                             </div>
                             <div class="description">
                                 <i class="talk outline icon"></i> 发表在
-                                <a href="{:U('Tieba/Index/thread',['tid'=>$one['thread_id']])}" target="_blank">{{card.forum_name}}</a>吧
+                                <a :href=threadUrl(card.thread_id) target="_blank">{{card.forum_name}}</a>吧
                             </div>
                         </div>
                         <div class="extra content">
@@ -200,6 +200,12 @@
                 let originalFileName=url.split('/')[6].split('.')[0];
                 let originalUrl=`http://tieba.baidu.com/photo/p?kw=${encodeURI(forumName)}&flux=1&tid=${threadId}&pic_id=${originalFileName}&pn=1&fp=1&see_lz=1`;
                 return originalUrl;
+            },
+            threadUrl:function(threadId){
+                return `${window.origin}/tieba/thread/${threadId}`;
+            },
+            userNameUrl:function(userName){
+                return `${window.origin}/tieba/boy/name/${userName}`;
             }
         },
         computed: {

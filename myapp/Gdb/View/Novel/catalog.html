@@ -17,7 +17,7 @@
 			<volist name="novelList" id="novel">
 			<tr>
 				<td><a href="{:U('Search',array('keywords'=>$novel['category'],'type'=>'category'))}">{$novel.category}</a></td>
-				<td><a href="{:U('Content?tid='.$novel['threadid'])}">{$novel.title}</a></td>
+				<td><a href="novel/{$novel['threadid']}">{$novel.title}</a></td>
 				<td><a href="{:U('Search',array('authorId'=>$novel['authorid'],'type'=>'author'))}">{$novel.authorname}</a></td>
 				<td>{$novel.createdate}</td>
 				<td>{$novel.view}</td>

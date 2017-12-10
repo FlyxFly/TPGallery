@@ -317,7 +317,7 @@ class IndexController extends Controller{
 
 			case 'novel':
 			$total=M('stnovel_info')->where('title like "%s"','%'.$content.'%')->count('threadid');
-			$ret=M('actor')->where('title like "%s"','%'.$content.'%')->page($p,30)->select();
+			$ret=M('stnovel_info')->where('title like "%s"','%'.$content.'%')->page($p,30)->select();
 			break;
 		}
 		dump($total);

@@ -76,7 +76,7 @@ class IndexController extends Controller {
             $coverURL=$imgsDB->field("url")->where($where)->select();
             $pid=$value["postid"];
             $entrys[$key]["cover"]=$coverURL[0]["url"];
-            $entrys[$key]["entryurl"]=U("Home/Index/post?pid=".$pid);
+            $entrys[$key]["entryurl"]=U("boy/".$pid);
             $entrys[$key]["imgcount"]=$imgsDB->where("postid=%d",$pid)->count();
         }
         return $entrys;
@@ -133,7 +133,6 @@ class IndexController extends Controller {
     }   
 
     public function post($pid){
-        
         $p=$_GET['p']?$_GET['p']:1;
         self::testIfInt($p);
     	self::testIfInt($pid);
@@ -174,11 +173,13 @@ class IndexController extends Controller {
 
             $imgCount=$imgsDB->where($where1)->count();
             $paging= new  \Think\Page($imgCount, C("imgPerPage"));
+            $paging->urlPrefix=C('site_url').'boy/'.$pid.'/p/'.urlencode('[PAGE]');
             $pageShow=$paging->show();
             //分类 
         }else{
             D('entry')->addLog('view','post',$pid,'无权限的访问');
-            E("Forbidden! You are NOT allowed to view this page.",403);
+            $result['info']['title']="Need Login";
+            $result['info']['needlogin']=1;
         }
         //成功访问后添加记录
         D('entry')->addView($pid);
@@ -258,6 +259,7 @@ class IndexController extends Controller {
         $imgCount=D('entry')->getImgCount();
         // dump($imgCount);
         $paging= new  \Think\Page($result['count'], C("entryPerPage"));
+        $paging->urlPrefix=C('site_url').'boys/p/'.urlencode('[PAGE]');
         $show=$paging->show();
         $this->assign("imgCount",$imgCount);
         $this->assign("page",$show);

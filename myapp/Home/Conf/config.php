@@ -6,4 +6,5 @@ return array(
 	'URL_HTML_SUFFIX'=>'',
 	'title'=>'My Collection',
 	'DEFAULT_ACTION'=>'landing',
+	'short_url'=>1,
 );
