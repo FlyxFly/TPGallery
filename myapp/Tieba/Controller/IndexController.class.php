@@ -5,10 +5,18 @@ use Think\Controller;
 
 class IndexController extends Controller{
 
+    public function __construct() {
+        parent::__construct();
+        $optionsModel = new \Admin\Model\OptionsModel();
+        $this->options=$optionsModel->getCachedSysConfig();
+    }
+
 
 
     public function index($p=1,$keywords=null,$searchType=null,$ba=null){
-        // dump(I('request.'));
+        // dump($keywords);
+        // dump($searchType);
+        
     	if($keywords && in_array($searchType,C('search_type'))){
             $pageUrlParam="Tieba/Index/index?searchType=${searchType}&keywords=${keywords}&p=";
     		$ret=D('post')->imageList($p,$keywords,$searchType);
@@ -20,6 +28,7 @@ class IndexController extends Controller{
     	}
     	// dump($ret['data']);
         $isLogin=session('?user')?1:0;
+        $this->assign('statCode',$this->options['statcode']);
         $this->assign('isLogin',$isLogin);
         // dump(in_array($searchType,C('search_type')));
     	$this->assign('data',json_encode($ret['data']));
@@ -35,6 +44,7 @@ class IndexController extends Controller{
         }
         $ret=D('post')->threadInfo($tid);
         // dump($ret['data']);
+        $this->assign("statCode",$this->options['statcode']);
         $this->assign('pageCode',semanticPage(ceil($ret['total']/C('post_per_page')),$p,$pageUrlParam));
         $this->assign('data',json_encode($ret['data']));
         $this->display();
@@ -70,5 +80,9 @@ class IndexController extends Controller{
         }
         $result=unlink($path);
         echo $result;
+    }
+
+    public function routerExplain(){
+        dump(I('request.'));
     }
 }

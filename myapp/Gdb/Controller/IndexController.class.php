@@ -5,6 +5,8 @@ import("ORG\Util\Page");
 class IndexController extends Controller{
 	public function __construct(){
 		parent::__construct();
+		$optionsModel = new \Admin\Model\OptionsModel();
+    $this->options=$optionsModel->getCachedSysConfig();
 	}
 
 	public function Index(){
@@ -68,6 +70,7 @@ class IndexController extends Controller{
 		}
 		// 封面图处理和年龄计算结束
 		// dump($actorsInfo);
+		$this->assign("statCode",$this->options['statcode']);
 		$this->assign('gdbImgServer',C('gdb_img_server'));
 		$this->assign('actorsInfo',$actorsInfo);
 		$this->display();
@@ -114,6 +117,7 @@ class IndexController extends Controller{
 			$this->assign('videosInfo',$pageInfo['data']);
 			// dump($pageInfo['data']);
 		}
+		$this->assign("statCode",$this->options['statcode']);
 		$this->assign('gdbImgServer',C('gdb_img_server'));
 		$this->assign('companyIdtoName',$companyIdtoName);
 		// dump($pageInfo['data']);
@@ -168,6 +172,7 @@ class IndexController extends Controller{
 			// }
 		}
 		// dump($videosInfo);
+		$this->assign("statCode",$this->options['statcode']);
 		$this->assign('videosInfo',json_encode($videosInfo));
 		$companyName=D('company')->getCompName();
 		// dump($companyName);
@@ -359,17 +364,16 @@ class IndexController extends Controller{
 	}
 
 	public function test(){
-		// $videoid=4186;
-		// $compid=1;
-		// $tagidResult=M('tag_relation')->where('video_id=%d and company_id=%d',array($videoid,$compid))->select();
-		// $result=array();
-		// if($ret){
-		// 	foreach ($tagidResult as $key => $value) {
-		// 		$tagNameResult=M('tag')->where('tag_id=%d and company_id=%d',array($value['tag_id'],$value['company_id']))->select();
-		// 		array_push($result, $tagNameResult);
-		// 	}
-		// }
-		// echo json_encode($tagidResult)  ;
-		echo C("gdb_img_server");
+		$connection = array(
+    'db_type'    =>   'mysql',
+    'db_host'    =>   '127.0.0.1',
+    'db_user'    =>   'root',
+    'db_pwd'     =>   '33893389',
+    'db_port'    =>    3306,
+    'db_name'    =>    'gg', 
+    'db_charset' =>    'utf8',
+);
+		$a=new \Admin\Model\Options('options','',$connection);
+		dump($a->getCachedSysConfig());
 	}
 }

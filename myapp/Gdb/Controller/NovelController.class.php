@@ -10,6 +10,8 @@ class NovelController extends Controller{
 		$this->i=D('stnovel_info');
 		$this->c=D('stnovel_content');
 		$this->fav=D('stnovel_fav');
+    $optionsModel = new \Admin\Model\OptionsModel();
+    $this->options=$optionsModel->getCachedSysConfig();
 	}
 	public function Index(){
 		$this->redirect('Catalog');
@@ -33,6 +35,7 @@ class NovelController extends Controller{
 		}else{
 			$ret=array(array('title'=>'非法页码'));
 		}
+		$this->assign("statCode",$this->options['statcode']);
 		$this->assign('novelList',$ret);
 		$this->display();
 	}
@@ -55,6 +58,7 @@ class NovelController extends Controller{
 			// $content[$key]=nl2br($value);
 
 		}
+		$this->assign("statCode",$this->options['statcode']);
 		$this->assign('threadInfo',$threadInfo);
 		$this->assign('novelTheads',$content);
 		$this->display();

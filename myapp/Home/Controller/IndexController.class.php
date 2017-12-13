@@ -185,6 +185,7 @@ class IndexController extends Controller {
         D('entry')->addView($pid);
         $metaDB=M("meta");
         $tags = $metaDB->where("type= 'category'")->select();
+        $this->assign("statCode",$this->options['statcode']);
         $this->assign('PrevAndNext',$prevAndNext);
         $this->assign("AllTags",$tags);
         $this->assign("page",$pageShow);
@@ -218,12 +219,13 @@ class IndexController extends Controller {
     }
 
     public function test($id=1){
-        $ret=0;
-        dump($ret);
+        $a=$this->options['statcode'];
+        dump($a);
     }
 
 
     public function Landing(){
+        $this->assign("statCode",$this->options['statcode']);
         $this->display();
     }
 
@@ -243,7 +245,7 @@ class IndexController extends Controller {
         $entryDB=M('entry');
         $login=session('user')?true:false;
         $p=(int)$p?(int)$p:1;
-        if($login){
+        if($login || $this->options['showhiddenentry']){
             $result=$entryModel->getPost($p,$tagid,1);
         }else{
             $result=$entryModel->getPost($p,$tagid,0);
@@ -263,6 +265,7 @@ class IndexController extends Controller {
         $show=$paging->show();
         $this->assign("imgCount",$imgCount);
         $this->assign("page",$show);
+        $this->assign("statCode",$this->options['statcode']);
 
         //tag
         // dump(session('user'));

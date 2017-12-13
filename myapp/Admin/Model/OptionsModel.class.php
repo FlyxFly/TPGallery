@@ -4,7 +4,7 @@ use Think\Model;
 class OptionsModel extends Model{
 	private $_db='';
 	public function __construct(){
-		$this->_db=M('options');
+		$this->_db=M('gg.options');
 	}
 	public function getSysConfig(){
 		$fromDB= $this->_db->where('user=0')->select();

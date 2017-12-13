@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="extra content">
-                            <a :href=originalPic(card.original_url,card.thread_id,card.forum_name) target="_blank">查看原图</a>
+                            <a :href=originalPic(card.original_url,card.thread_id,card.forum_name) v-if=originalPic(card.original_url,card.thread_id,card.forum_name) target="_blank">查看原图</a>
                             <a v-if="isLogin" href="javascript:void(0)" @click=deleteImg(card.id,index) class="right floated">删除</a>
                             <!--             <div class="ui large transparent left icon input">
                                 <i class="heart outline icon"></i>
@@ -197,15 +197,19 @@
                 })
             },
             originalPic:function(url,threadId,forumName){
-                let originalFileName=url.split('/')[6].split('.')[0];
-                let originalUrl=`http://tieba.baidu.com/photo/p?kw=${encodeURI(forumName)}&flux=1&tid=${threadId}&pic_id=${originalFileName}&pn=1&fp=1&see_lz=1`;
-                return originalUrl;
+                if(url){
+                    let originalFileName=url.split('/')[6].split('.')[0];
+                    let originalUrl=`http://tieba.baidu.com/photo/p?kw=${encodeURI(forumName)}&flux=1&tid=${threadId}&pic_id=${originalFileName}&pn=1&fp=1&see_lz=1`;
+                    return originalUrl;
+                }else{
+                    return false
+                }
             },
             threadUrl:function(threadId){
-                return `${window.origin}/tieba/thread/${threadId}`;
+                return `${window.origin}/t/thread/${threadId}`;
             },
             userNameUrl:function(userName){
-                return `${window.origin}/tieba/boy/name/${userName}`;
+                return `${window.origin}/t/name/${userName}`;
             }
         },
         computed: {
@@ -228,6 +232,7 @@
         $('.sidebar').removeClass('visible')
     })
     </script>
+    {$statCode}
 </body>
 
 </html>

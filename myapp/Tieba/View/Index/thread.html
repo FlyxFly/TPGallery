@@ -64,20 +64,20 @@
     <!-- 导航栏结束 -->
 <div class="ui container">
 <div class="ui comments">
-  <div v-for="item in posts" class="comment">
+  <div v-for="item in posts" class="comment ui segment">
     <div class="content">
-      <a class="author" :href="'Tieba/Index/index?searchType=userId&keywords='+item.user_id">{{item.user_name}}</a>
-      <div class="metadata">
-        <span class="date">{{item.timestamp}}</span>
+      <a class="author ui label blue" :href="'Tieba/Index/index?searchType=userId&keywords='+item.user_id">{{item.user_name}}</a>
+      <div class="metadata ui grid row">
+        <span class="date ui label">{{item.timestamp}}</span>
       </div>
-      <div class="text">
+      <div class="text ui segment">
         <div v-html="item.content"></div>
       </div>
 <!--       <div class="actions">
         <a class="reply">Reply</a>
       </div> -->
     </div>
-    <div class="ui divider"></div>
+    <!-- <div class="ui divider"></div> -->
   </div>
   
  </div>
@@ -103,5 +103,6 @@
     }
   )
 </script>
+{$statCode}
 </body>
 </html>
