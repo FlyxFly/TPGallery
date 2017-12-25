@@ -17,21 +17,21 @@ class NovelController extends Controller{
 		$this->redirect('Catalog');
 	}
 
+
 	public function catalog($p=1,$keywords=null,$authorID=null){
 		if($authorId){
-			$totalItem=$this->i->where('authorid=%d',$authorId)->count('threadid');
+			$totalItem=$this->i->where('del is null')->where('authorid=%d',$authorId)->count('threadid');
 		}else{
-			$totalItem=$this->i->count('threadid');
+			$totalItem=$this->i->where('del is null')->count('threadid');
 		}
 		$totalPage=ceil($totalItem/30);
 		if($p<$totalPage){
 			if($authorid){
-				$ret=$this->i->where('authorid=%d',$authorid)->page($p,30)->select();
+				$ret=$this->i->where('del is null')->where('authorid=%d',$authorid)->page($p,30)->select();
 			}else{
-				$ret=$this->i->page($p,30)->select();
+				$ret=$this->i->where('del is null')->page($p,30)->order('threadid desc')->select();
 			}
-			
-			$this->assign('pageCode',semanticPage($totalPage,$p,'Gdb/Novel/Catalog?p='));
+			$this->assign('pageCode',semanticPageDirect($totalPage,$p,'/novels/p/'));
 		}else{
 			$ret=array(array('title'=>'非法页码'));
 		}
@@ -52,6 +52,7 @@ class NovelController extends Controller{
 
 			// $value=mb_convert_encoding($value, "UTF-8", "ASCII");
 			$addNewline=str_replace('\r\n', '<br/>', $value);
+			$addNewline=str_replace('/\s{3,}/', '<br/>', $addNewline);
 			$nonbsp=preg_replace('/\&nbsp;{3,}/', '<br/>&nbsp;&nbsp;', $addNewline);
 			$content[$key]=preg_replace('/\s{3,}/', '<br/>', $nonbsp);
 
@@ -107,7 +108,20 @@ class NovelController extends Controller{
 		$totalPage=ceil($totalItem/30);
 		// dump($totalPage);
 		if($totalPage){
-			$this->assign('pageCode',semanticPage($totalPage,$p,'Gdb/Novel/Search?$type='.$type."&keywords=".$keywords.'&p='));
+			// $this->assign('pageCode',semanticPage($totalPage,$p,'Gdb/Novel/Search?$type='.$type."&keywords=".$keywords.'&p='));
+			switch($type){
+				case 'title':
+				$this->assign('pageCode',semanticPageDirect($totalPage,$p,'/novels/title/'.$keywords.'/'));
+				break;
+
+				case 'author':
+				$this->assign('pageCode',semanticPageDirect($totalPage,$p,'/novels/author/'.$authorID.'/'));
+				break;
+
+				case 'tag':
+				$this->assign('pageCode',semanticPageDirect($totalPage,$p,'/novels/tag/'.$keywords.'/'));
+				break;
+			}
 		}
 		
 		$this->assign('searchKeywords',$keywords);
@@ -125,7 +139,7 @@ class NovelController extends Controller{
 	public function Mark($tid){
 		header('Content-type:application/json');
 		if(!session('?user')){
-			msg(0,'登陆了才能收藏哦');
+			msg(0,'登陆了才能操作哦');
 		}
 		$userInfo=session('user');
 
@@ -140,6 +154,26 @@ class NovelController extends Controller{
 			msg(200,'取消收藏成功');
 		}
 	}
+
+	public function api($action=null,$tid){
+		switch($action){
+			case 'delete':
+			$ret=$this->i->where('threadid = %d',$tid)->setField('del',1);
+			if($ret){
+				msg(200,'删除成功');
+			}else{
+				msg(0,'删除失败');
+			}
+			break;
+
+
+			default:
+			msg('0','未定义的操作');
+			break;
+		}
+	}
+
+
 
 
 }

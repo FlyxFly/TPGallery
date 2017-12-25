@@ -16,9 +16,16 @@
 		<tbody>
 			<volist name="novelList" id="novel">
 			<tr>
-				<td><a href="{:U('Search',array('keywords'=>$novel['category'],'type'=>'category'))}">{$novel.category}</a></td>
-				<td><a href="novel/{$novel['threadid']}">{$novel.title}</a></td>
-				<td><a href="{:U('Search',array('authorId'=>$novel['authorid'],'type'=>'author'))}">{$novel.authorname}</a></td>
+				<td>
+					<a href="/novel/tag/{$novel['category']}">{$novel.category}</a>
+				</td>
+				<td>
+					<if condition="session('?user')">
+						<a  class="ui button mini red delete" data-tid="{$novel.threadid}">删除</a>
+					</if>
+					<a href="/novel/{$novel['threadid']}">{$novel.title}</a>
+				</td>
+				<td><a href="/novels/author/{$novel['authorid']}">{$novel.authorname}</a></td>
 				<td>{$novel.createdate}</td>
 				<td>{$novel.view}</td>
 				<td>{$novel.reply}</td>
@@ -36,4 +43,16 @@
 		</div>
 	</div>
 </div>
+<script>
+	$('.delete').on('click',function(){
+		$.post('/index.php?m=gdb&c=novel&a=api',{'action':'delete',tid:$(this).data('tid')},function(err,res,body){
+			if(res.code==200){
+				alert(res.message);
+			}else{
+				alert(res.message);
+				console.log(res);
+			}
+		})
+	})
+</script>
 <include file='Public/Footer' />

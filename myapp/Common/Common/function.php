@@ -60,6 +60,7 @@ function semanticPage($totalPage,$currPage,$urlFuncParam){
 	// 参数为总页数，当前页码，U方法生成url使用的参数，比如说"Admin/Index/Article?p="
 	$html="<div class='ui right floated pagination menu'>";
 	if($currPage!=1){
+		$html.='<a href="'.U($urlFuncParam.(1)).'" class="icon item">1</a>';
 		$html.='<a href="'.U($urlFuncParam.($currPage-1)).'" class="icon item"><i class="left chevron icon"></i></a>';
 	}
 	if($totalPage<10){
@@ -100,6 +101,64 @@ function semanticPage($totalPage,$currPage,$urlFuncParam){
 	}
 	if($currPage<$totalPage){
 		$html.='<a href="'.U($urlFuncParam.($currPage+1)).'" class="icon item"><i class="right chevron icon"></i></a>';
+		
+	}
+	if($currPage<($totalPage-5)){
+		$html.='<a href="'.U($urlFuncParam.$totalPage).'" class="icon item">'.$totalPage.'</a>';
+	}
+	$html.="</div>";
+	return $html;
+}
+
+
+function semanticPageDirect($totalPage,$currPage,$urlFuncParam){
+	// 参数为总页数，当前页码，"Admin/Index/Article?p="
+	$html="<div class='ui right floated pagination menu'>";
+	if($currPage!=1){
+		$html.='<a href="'.U($urlFuncParam.(1)).'" class="icon item">1</a>';
+		$html.='<a href="'.$urlFuncParam.($currPage-1).'" class="icon item"><i class="left chevron icon"></i></a>';
+	}
+	if($totalPage<10){
+		for($i=1;$i<$totalPage;$i++){
+			if($i==$currPage){
+				$html.='<a href="'.$urlFuncParam.$i.'" class="item active">'.$i.'</a>';
+			}else{
+				$html.='<a href="'.$urlFuncParam.$i.'" class="item">'.$i.'</a>';
+			}
+			
+		}
+	}else{
+		if($currPage<5){
+			for($i=1;$i<=10;$i++){
+				if($i==$currPage){
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item active">'.$i.'</a>';
+				}else{
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item">'.$i.'</a>';
+				}
+			}
+		}else if($totalPage-$currPage<5){
+			for($i=$totalPage-9;$i<=$totalPage;$i++){
+				if($i==$currPage){
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item active">'.$i.'</a>';
+				}else{
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item">'.$i.'</a>';
+				}
+			}
+		}else{
+			for($i=$currPage-4;$i<=$currPage+5;$i++){
+				if($i==$currPage){
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item active">'.$i.'</a>';
+				}else{
+					$html.='<a href="'.$urlFuncParam.$i.'" class="item">'.$i.'</a>';
+				}
+			}
+		}
+	}
+	if($currPage<$totalPage){
+		$html.='<a href="'.$urlFuncParam.($currPage+1).'" class="icon item"><i class="right chevron icon"></i></a>';
+	}
+	if($currPage<($totalPage-5)){
+		$html.='<a href="'.U($urlFuncParam.$totalPage).'" class="icon item">'.$totalPage.'</a>';
 	}
 	$html.="</div>";
 	return $html;

@@ -2,7 +2,7 @@
 <div class="ui container">
 	<div id="sidebarBtn" class="item"><i class="icon list"></i>	</div>
 	<div class="item header">GVDB</div>
-	<div class="ui dropdown item">
+	<div class="ui dropdown item" v-if='module!="novel"'>
 		演员
 		<i class="icon dropdown"></i>
 		<div class="menu">
@@ -11,7 +11,7 @@
 			<a href="{:U('Index/Actor')}" class="item">所有演员</a>
 		</div>
 	</div>
-	<div class="ui dropdown item">
+	<div class="ui dropdown item" v-if='module!="novel"'>
 		视频
 		<i class="icon dropdown"></i>
 		<div class="menu">
@@ -22,36 +22,28 @@
 		</div>
 	</div>
 	
-	<div class="ui dropdown item">
+	<div class="ui dropdown item" v-if='module=="novel"'>
 		小说
 		<i class="icon dropdown"></i>
 		<div class="menu">
-			<a href="{:U('Novel/Catalog')}" class="item">目录</a>
-			<a href="{:U('Novel/Random')}" class="item">随便看看</a>
-			<a href="{:U('Novel/Search',array('fav'=>1))}" class="item">收藏夹</a>
-			
+			<a href="/novels/index" class="item">目录</a>
+			<a href="/novels/lucky" class="item">随便看看</a>
+			<a href='/novels/fav' class="item">收藏夹</a>
 		</div>
 	</div>
 	<div class="right menu hide-below-tablet">
 		<div class="item">
-		<div class="ui selection dropdown fluid">
-			<input type="hidden" name="type" v-model="searchType">
-			<i class="dropdown icon"></i>
-			<div class="default text">片名</div>
-			<div class="menu">
-				<div class="item" data-value="video">片名</div>
-				<div class="item" data-value="actor">演员</div>
-				<div class="item" data-value="novel">小说</div>
-				<div class="item" data-value="tag">标签</div>
+			<div class="ui action input">
+			  <input type="text" placeholder="演员或片名" name="keywords" id="searchKeywords" v-model="keywords" @keyup.enter=gotoSearch>
+			  <select class="ui compact selection dropdown" v-model="searchType">
+			    <option value="video">片名</option>
+					<option value="actor">演员</option>
+					<option value="novel">小说</option>
+			  </select>
+			  <a class="ui button" @click=gotoSearch href="javascript:void(0)">搜索</a>
 			</div>
 		</div>
-		<div class="ui action left icon input">
-			<i class="icon search"></i>
-			<input type="text" placeholder="演员或片名" name="keywords" id="searchKeywords" v-model="keywords" @keyup.enter=gotoSearch>
-			<a class="ui button" @click=gotoSearch href="javascript:void(0)">搜索</a>
-		</div>
-		</div>
-		<div class="ui dropdown item">
+		<div class="ui dropdown item" v-if='module!="novel"'>
 			添加
 			<i class="icon dropdown"></i>
 			<div class="menu">
@@ -79,24 +71,65 @@ var app=new Vue({
 	el:'#navbar',
 	data:{
 		searchType:'video',
-		keywords:''
+		keywords:'',
+		module:''
 	},
 	methods:{
 		gotoSearch:function(){
-			let a=window.open();
-			a.location.href=`?m=gdb&c=index&a=search&type=${this.searchType}&content=${this.keywords}`;
+			if(this.searchType=='novel'){
+				window.location.href='/novels/title/'+$('#searchKeywords').val();
+				return;
+			}
+			if(this.searchType=='actor'){
+				window.location.href='/index.php?m=Gdb&c=Index&a=Actor&keywords='+$('#searchKeywords').val();
+				return;
+			}
+			if(this.searchType=='video'){
+				window.location.href='/index.php?m=Gdb&c=Index&a=Video&keywords='+$('#searchKeywords').val();
+				return;
+			}
+			alert('未定义操作');
+
+			// let a=window.open();
+			// a.location.href=`?m=gdb&c=index&a=search&type=${this.searchType}&content=${this.keywords}`;
 		}
+	},
+	mounted:function(){
+		var url=window.location.href;
+		if(url.match(/(n|N)ovel/)){
+			this.module='novel';
+			this.searchType='novel';
+			return;
+		}
+		if(url.match('actor')){
+			this.module='actor';
+			this.searchType='actor';
+			return;
+		}
+		if(url.match('video')){
+			this.module='video';
+			this.searchType='video';
+			return;
+		}
+		if(url.match('videolist')){
+			this.module='videolist';
+			return;
+		}
+
 	}
 })
 $(document).ready(function(){
-	$('#searchKeywords').on('keydown',function(event){
-		if(event.keyCode==13){
-			window.location.href='{:U($searchAPI)}'+'&keywords='+$('#searchKeywords').val();
-		}
-	})
-	$('#searchBtn').on('click',function(){
-		window.location.href='{:U($searchAPI)}'+'&keywords='+$('#searchKeywords').val();
-	})
+	// $('#searchKeywords').on('keydown',function(event){
+	// 	if(event.keyCode==13){
+	// 		window.location.href='{:U($searchAPI)}'+'&keywords='+$('#searchKeywords').val();
+	// 	}
+	// })
+	// $('#searchBtn').on('click',function(){
+	// 	if(this.searchType=='novel'){
+	// 		window.location.href='/novels/title/'+$('#searchKeywords').val();
+	// 	}
+	// 	window.location.href='{:U($searchAPI)}'+'&keywords='+$('#searchKeywords').val();
+	// })
 
 	$('#addVideo').on('click',function(){
 		$('#newVideoModal').modal('show')

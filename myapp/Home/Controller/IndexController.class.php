@@ -139,7 +139,7 @@ class IndexController extends Controller {
 		$entryDB=M("entry");
 		$imgsDB=M("imgs");
 		$where1=array("postid"=>$pid);
-        if(session('user')){
+        if(session('user') || $this->options['showhiddenentry']){
             $where1=array(
                 'postid'=>$pid);
         }else{
