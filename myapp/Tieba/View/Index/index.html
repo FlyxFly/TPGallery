@@ -172,7 +172,7 @@
         methods:{
             deleteImg:function(id,index){
                 var animateId=layer.load();
-                this.$http.post('index.php?m=tieba&c=index&a=api',{action:'delete',item:'img',id:id}).then(function(response){
+                this.$http.post('/index.php?m=tieba&c=index&a=api',{action:'delete',item:'img',id:id}).then(function(response){
                     let res=response.body;
                     layer.close(animateId);
                     console.log(res.message);

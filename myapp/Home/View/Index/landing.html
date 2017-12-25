@@ -6,7 +6,7 @@
 		<title>Landing Page</title>
 		<style>
 				*{
-					font-family: Microsoft Yahei;
+					font-family:Eras ITC, Microsoft Yahei;
 				}
 				.container{
 					width: 90%;
@@ -43,6 +43,20 @@
 					color: #75a7ff;
 					font-weight:bold;
 				}
+
+				.out-link:link,.out-link:visited,.out-link:active{
+					text-decoration: none;
+					font-weight: normal;
+					color: black;
+					font-family: Nirmala UI;
+				}
+				.out-link{
+					transition: 0.3s all ease-in;
+				}
+				.out-link:hover{
+					border-bottom: 1px solid black;
+				}
+
 				
 				
 				
@@ -55,10 +69,11 @@
 			<ul>
 				<li><a href="/boys">Home</a> Colletion of cute boys from web and tumblr likes</li>
 				<li><a href="index.php?m=gdb&c=index&a=video">Gdb</a> A database of videos and models from GV company</li>
-				<li><a href="/novels/index">小说</a> 搜同小说备份</li>
-				<li><a href="/tieba/index">贴吧爆照</a> 肩上的脚丫吧，直男吧，运动白袜吧照片备份</li>
+				<li><a href="/novels/index">Novel</a> Backup of novels from <a class="out-link" href="https://stboy.net">Soutong</a></li>
+				<li><a href="/tieba/index">Photos</a> Photos of users from tieba: <a class="out-link" href="https://tieba.baidu.com/f?kw=%E8%82%A9%E4%B8%8A%E7%9A%84%E8%84%9A%E4%B8%AB&fr=index">Feet on the shoulder</a>, <a class="out-link"href="https://tieba.baidu.com/f?kw=%E7%9B%B4%E7%94%B7&fr=index&fp=0&ie=utf-8">Straight Man</a>, <a class="out-link" href="https://tieba.baidu.com/f?kw=%E8%BF%90%E5%8A%A8%E7%99%BD%E8%A2%9C&fr=index&fp=0&ie=utf-8"></a></li>
+				<li><a href="/Admin/Login/reg">Sign Up</a> You can have an account.</li>
+				<li><a href="/Admin/Login/login">Login</a> Login in to see more.</li>
 			</ul>
-
 		</div>
 		{$statCode}
 	</body>

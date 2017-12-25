@@ -14,6 +14,7 @@ class IndexController extends Controller{
 
 
     public function index($p=1,$keywords=null,$searchType=null,$ba=null){
+        // dump(session('user.type'));
         // dump($keywords);
         // dump($searchType);
         
@@ -27,7 +28,7 @@ class IndexController extends Controller{
             $searchParams=['searchType'=>null,'keywords'=>null];
     	}
     	// dump($ret['data']);
-        $isLogin=session('?user')?1:0;
+        $isLogin=session('user.type')==1?1:0;
         $this->assign('statCode',$this->options['statcode']);
         $this->assign('isLogin',$isLogin);
         // dump(in_array($searchType,C('search_type')));
@@ -54,6 +55,9 @@ class IndexController extends Controller{
         header('Content-type: application/json');
         if(!session('?user')){
             msg(0,'Need log in!');
+        }
+        if(session('user.type')!=1){
+            msg(0,'Not admin!');
         }
         if(!in_array($action, ['delete'],false)){
             msg(1,'Wrong Action!');
