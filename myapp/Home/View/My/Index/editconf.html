@@ -1,0 +1,126 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Public/navbar.html"/>
+<div class="ui container">
+<h2 class="header">站点设置</h2>
+<div class="ui divider"></div>
+<div class="ui one column stackable aligned page grid">
+<div class="column twelve wide">
+
+<form class="ui form">
+	<input type="hidden" name="whose" value="system">
+	<div class="field">
+		<label class="floated right pointing west">站点名称：</label>
+		<input type="text" name="sitename" value="{$sysOption['sitename']}">
+	</div>
+	<div class="field">
+		<label>站点描述：</label>
+		<input type="text" name="sitedesc" value="{$sysOption['sitedesc']}">
+	</div>
+	<div class="field">
+		<label>关键词：</label>
+		<input type="text" name="keywords" value="{$sysOption[keywords]}">
+	</div>
+	<div class="field">
+		<label>图片上传路径：</label>
+		<input type="text" name="uploaddir" value="{$sysOption[uploaddir]}">
+	</div>
+	<div class="inline fields">
+		<label>新上传图片存放位置：</label>
+		<div class="field">
+		<div class="ui radio checkbox">
+			<input type="radio" name="newuploaddir" {$sysOption['newuploaddir']=='newfolder'?'checked':''} value="newfolder"><label>新文件夹</label>
+		</div>
+			
+		</div>
+		<div class="field">
+		<div class="ui radio checkbox">
+			<input type="radio" name="newuploaddir" {$sysOption['newuploaddir']=='upload'?'checked':''} value="upload"><label>upload文件夹</label>
+		</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="field">
+			<label>默认首页每页显示日志数：</label>
+			<input type="number" name="entrysperpage" value="{$sysOption['entrysperpage']}">
+		</div>
+		<div class="field">
+			<label>默认首页每页显示图片数：</label>
+			<input type="number" name="imgsperpage" value="{$sysOption['imgsperpage']}">
+		</div>
+	</div>
+	<div class="inline fields">
+		<label>首页是否显示隐藏日志</label>
+		<div class="field">
+		<div class="ui radio checkbox">
+			<input type="radio" name="showhiddenentry" {$sysOption['showhiddenentry']=='1'?'checked':''} value="1"><label>是</label>
+		</div>
+			
+		</div>
+		<div class="field">
+		<div class="ui radio checkbox">
+			<input type="radio" name="showhiddenentry" {$sysOption['showhiddenentry']=='0'?'checked':''} value="0"><label>否</label>
+		</div>
+		</div>
+	</div>
+	<div class="field">
+		<label>统计代码：</label>
+		<textarea rows="5" name="statcode">{$sysOption['statcode']}</textarea>
+	</div>
+	<a class="ui primary button" id="save">保存设置</a>
+
+</form>
+</div>
+</div>
+</div>
+<script>
+$(document).ready(function(){
+	$('.ui.radio.checkbox').checkbox();
+	$('.ui.checkbox').checkbox();
+
+	$("#save").on("click",function(){
+		var aniHandle=layer.load();
+		$.post("{:U('Admin/Index/editconf')}",$("form").serialize(),function(result){
+			layer.close(aniHandle);
+			var translation={
+				sitename:'站点名称',
+				sitedesc:'站点描述',
+				keywords:'站点关键字',
+				uploaddir:'上传目录',
+				entrysperpage:'每页日志数',
+				imgsprepage:'每页图片数',
+				statcode:'统计代码',
+				newuploaddir:'新上传图片存放位置',
+				showhiddenentry:'是否显示隐藏文件',
+			}
+			var resultChinese="";
+			try{
+				result=JSON.parse(result);
+			}catch(e){
+				resultChinese="服务器出错"+e.message;
+				layer.confirm(resultChinese,{
+					btn:['ok']
+					})
+				return;
+			}
+			for(var i in result){
+				if(result[i]){
+					resultChinese+=translation[i]+","
+				}
+			}
+
+			if(!resultChinese==""){
+				resultChinese+="更新成功";
+			}else{
+				resultChinese+="没有更改需要保存";
+			}
+			layer.confirm(resultChinese,{
+				btn:['ok']
+			})
+
+		})
+	})
+})
+	
+;
+</script>
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

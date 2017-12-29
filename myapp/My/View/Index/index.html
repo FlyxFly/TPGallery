@@ -1,0 +1,167 @@
+<include file='Public/Header' /> 	
+<include file='Public/Navbar' keywords='keywords' searchAPI='Gdb/Index/Actor/keywords' />
+<div class="ui container">
+<!-- 演员详情开始 -->
+<present name='actorDetail'>
+<div class="ui grid">
+	<div class="six wide column">
+		<img class="ui image" src="{$actorDetail['localcover']}" alt="">
+	</div>
+	<div class="ten wide column">
+		<div class="ui list">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content"><h3>{$actorDetail['name']}</h3></div>
+			</div>
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Company: <a href="{$actorDetail['companyurl']}" class="href">{$companyName[$actorDetail['companyid']]}</a></div>
+			</div>
+			<if condition="$actorDetail['companyid'] eq 1">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Birthday: {$actorDetail['birthday']}</div>
+			</div>
+			<elseif condition="$actorDetail['companyid'] eq 2" />
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Age: {$actorDetail['age']}</div>
+			</div>
+			</if>
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Cock: {$actorDetail['cock']} cm</div>
+			</div>
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Height: {$actorDetail['height']}</div>
+			</div>
+			<if condition="$actorDetail['weight'] neq '' AND $actorDetail['weight'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Weight: {$actorDetail['weight']}</div>
+			</div>
+			</if>
+			<if condition="$actorDetail['waist'] neq '' AND $actorDetail['waist'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Waist: {$actorDetail['waist']}</div>
+			</div>
+			</if>
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Role: {$actorDetail['role']}</div>
+			</div>
+			<if condition="$actorDetail['ethnicity'] neq '' AND $actorDetail['ethnicity'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Ethnicity: {$actorDetail['ethnicity']}</div>
+			</div>
+			</if>
+			<if condition="$actorDetail['orientation'] neq '' AND $actorDetail['orientation'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Orientation: {$actorDetail['orientation']}</div>
+			</div>
+			</if>
+			<if condition="$actorDetail['haircolor'] neq '' AND $actorDetail['haircolor'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Haircolor: {$actorDetail['haircolor']}</div>
+			</div>
+			</if>
+			<if condition="$actorDetail['eyecolor'] neq '' AND $actorDetail['eyecolor'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">Eyecolor: {$actorDetail['eyecolor']}</div>
+			</div>
+			</if>
+			<if condition="$actorDetail['description'] neq '' AND $actorDetail['memo'] neq null">
+			<div class="item">
+				<i class="icon"></i>
+				<div class="content">
+					<div class="ui raised segment">
+					  <p>{$actorDetail['description']}</p>
+					  <p>{$actorDetail['memo']}</p>
+					</div>
+				</div>
+			</div>
+			</if>
+		</div>
+	</div>
+</div>
+</present>
+<!-- 演员详情结束 -->
+
+<!-- 演员列表开始 -->
+<present name='actorsInfo'>
+<div class="ui link four stackable cards">
+	<volist name='actorsInfo' id='item'>
+	<div class="card">
+		<div class="image">
+			<img src="{$item.localcover}" alt="">
+		</div>
+		<div class="content">
+			<i class="icon right floated like"></i>
+			<div class="header"><a href="{:U('Actor',array('id'=>$item['id']))}">{$item.name}</a></div>
+			<div class="meta">
+				<if condition="$item.cock neq ''">Cock: </if>{$item['cock']?$item['cock']:''}<if condition="$item.cock neq ''">cm</if>
+				<if condition="$item.height neq ''"> | Height: </if>{$item['height']?$item['height']:''}<if condition="$item.height neq ''">cm </if>
+				<if condition="$item.nation neq '' OR $item.ethnicity neq ''">| </if> {$item['nation']?$item['nation']:$item['ethnicity']}
+				<if condition="$item.cock eq '' AND $item.height eq '' AND $item.nation eq '' AND $item.ethnicity eq ''">NO INFO</if>
+			 </div>
+			 <div class="meta">&nbsp;</div>
+<!-- 				<div class="description">
+				<ul class="ul list">
+					<div class="item">
+						<i class="icon"></i>
+						<div class="content"></div>
+					</div>
+				</ul>
+			</div> -->
+			<div class="extra content">
+				<span class="right floated">
+					<i class="icon user"></i>{$item.role}
+				</span>
+				<span>
+					<a href="{$item.companyurl}">{$item.company}</a>
+				</span>
+			</div>
+			
+		</div>
+	</div>
+	</volist>
+</div>
+{$pagingCode}
+</present>
+<!-- 演员列表结束 -->
+<present name='actorVideoInfos'>
+<div class="ui link three stackable cards">
+<volist name='actorVideoInfos' id='video'>
+	<div class="ui card">
+	  <div class="content">
+	    <div class="header"><a href="{:U('Video',array('id'=>$video['id']))}">{$video.name}</a></div>
+	    <div class="meta">
+	      <span class="category">
+	      	<volist name="video['actorInfo']" id='actor'>
+	      	<div style='display:inline-block'>
+	      	<a href="{:U('Actor',array('id'=>$actor['id']))}">
+	      		<img class="ui avatar image" src="{$gdbImgServer}?type=avatar&url={$actor['officialcover']}&companyId={$actor['companyid']}" alt="">
+		    </a>
+		    </div>
+	   		</volist>
+	      </span>
+	    </div>
+	    <div class="description">
+	    	<img class="ui image" src="{$video['localcover']}" alt="">
+	    </div>
+	  </div>
+	</div>
+</volist>
+</div>
+</present>
+
+		
+
+</div>
+<include file='Public/Footer' />

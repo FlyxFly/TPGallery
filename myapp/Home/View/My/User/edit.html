@@ -1,0 +1,66 @@
+<include file="myapp/Admin/View/semantic/Public/header.html" sitename="{:C('sitename')}" pagename="{$pagename}" />
+<include file="myapp/Admin/View/semantic/Public/navbar.html" userinfo="{$userinfo}" />
+<style>
+	.btn-margin-right{margin-right: 5px}
+</style>
+<div class="ui container">
+	<form class="ui form">
+	<div class="three fields">
+		<div class="field">
+			<label for="usrid">编号</label>
+			<input id="usrid" name="id" type="text" value="{$user.id}">
+		</div>
+		<div class="field">
+			<label for="usrname">用户名</label>
+			<input id="usrname" name="username" type="text" value="{$user.username}">
+		</div>
+		<div class="field">
+			<label for="password">密码</label>
+			<input id="password" name="password" type="text" >
+		</div>
+		<div class="field">
+			<label for="email">邮箱</label>
+			<input id="email" name="email" type="email" value="{$user.email}">
+		</div>
+		<div class="field">
+			<label for="createdate">注册日期</label>
+			<input id="createdate" type="text" data-value="{$user.createdate}" value="{$user.createdate|date='Y-m-d h:i:s',###}">
+		</div>
+		<div class="field">
+			<label for="usertype">用户类型</label>
+			<select class="ui dropdown" name="type" id="usertype">
+				<foreach name="usertype" item="type">
+					<option <if condition="$key eq $user['type']">selected</if> value="{$key}">{$type}</option>
+				</foreach>
+			</select>
+		</div>
+	</div>
+		<input type="hidden" name="token" value="{$token}">
+		<div class="row">
+				<button class="ui primary button" id="save">保存</button>
+				<button class="ui red button" id="cancel">取消</button>
+		</div>
+	</form>
+</div>
+
+<script>
+$("document").ready(function(){
+	$("select.dropdown").dropdown();
+})
+
+$("#save").click(function(){
+	var data=$("form").serialize();
+	var createdate=new Date($("#createdate").val());
+	data=data+"&createdate="+Math.round(createdate.getTime()/1000);
+	$.post("{:U('Admin/User/saveAPI')}",data,function(res){
+		alert(res.message)
+	})
+	return false;
+})
+$("#cancel").click(function(){
+	window.location.reload();
+	return false;
+})
+</script>
+
+<include file="myapp/Admin/View/semantic/Public/footer.html"/>

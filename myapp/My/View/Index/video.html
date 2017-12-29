@@ -1,0 +1,163 @@
+<include file='Public/Header' /> 	
+<include file='Public/Navbar' keywords='keywords' searchAPI='Gdb/Index/Actor/keywords' />
+<div class="ui container">
+
+<!-- 视频列表开始 -->
+<present name="videosInfo">
+<div class="ui link three stackable cards">
+	<volist name='videosInfo' id='item'>
+	<div class="card">
+		<div class="image">
+			<img src="{$gdbImgServer}?url={$item['listcover']}&type=avatar&companyId={$item['companyid']}">
+		</div>
+		<div class="content">
+			<i class="icon right floated like {$item['have']==1?'red':''}"></i>
+			<div class="header">
+				<a href="{:U('Video',array('id'=>$item['id']))}">{$item.name}</a>
+			</div>
+		</div>
+		<div class="meta">
+			<volist name="videoDetail['actorsInfo']" id="actor">
+			<div style='display:inline-block'>
+	     		<a href="{:U('Actor',array('id'=>$actor['id']))}">
+	     			<img class="ui avatar image" src="{$gdbImgServer}?url={$item['officialcover']}&type=avatar&companyId={$item['companyid']}">
+
+		    		<!-- <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> --> {$actor.name}
+		    	</a>
+		    </div>
+			</volist>
+		</div>
+	</div>
+	</volist>
+</div> 
+</present>
+<!-- 视频列表结束 -->
+
+<!-- 视频详情开始 -->
+<present name="videoDetail">
+<script>
+	var videoId={$videoDetail.id}
+</script>
+<div class="ui grid">
+
+	<div class="sixteen wide column">
+
+	<div class="ui fluid card">
+	<a id="haveFlag" class="ui {$videoDetail['have']==1?'red':'gray'} right corner label" title="{$videoDetail['have']==1?'在库':'没有此视频'}">
+		<i class="video play icon"></i>
+	</a>
+	<div class="header" style="padding: 1em">
+	<div class="column">
+	<h2>{$videoDetail['name']}</h2>
+		<div class="left floated">
+			<span class="meta">
+				<php>echo date("Y-m-d",strtotime($videoDetail['releasedate']))</php>
+				<if condition="$videoDetail['have'] neq 1">
+				<a class="ui button primary" id="markDownload">标记已下载</a>
+				</if>
+			</span>
+		</div>
+		<div class="right floated">
+			<div class="ui special cards" style="margin-right: 2em">
+			<volist name="videoDetail['actorsInfo']" id="actor">
+			  <div style='display:inline-block;padding:1em'>
+		      	<a href="{:U('Actor',array('id'=>$actor['id']))}">
+
+					<img class="ui avatar image" src="{$gdbImgServer}?url={$actor['officialcover']}&type=avatar&companyId={$actor['companyid']}">
+			       <!--  <img class="ui avatar image" src="{:U('img',array('url'=>$actor['officialcover'],'type'=>'avatar','compId'=>$actor['companyid']))}"> --> {$actor.name}
+			     </a>
+			     </div>
+			</volist>
+			</div>
+		</div>
+	</div>
+	</div>
+		<div class="image">
+			<img src="{$gdbImgServer}?url={$videoDetail['detailcover']}&type=video&companyId={$videoDetail['companyid']}">
+			<!-- <img class="ui image" src="{:U('img',array('url'=>$videoDetail['detailcover'],'type'=>'video','compId'=>$videoDetail['companyid']))}" alt=""> -->
+		</div>
+	</div>
+	<div class="description">
+	<div class="ui column">
+
+	</div>
+	<div class="ui column">
+		<volist name="videoDetail['tags']" id='tag' key='i'>
+			<a class="ui label {$tagColors[$i%13-1]}" href="{:U('Tag',array('Id'=>$tag['tag_id'],'CompanyId'=>$tag['company_id']))}">{$tag.tag_name}</a>
+		</volist>
+	</div>
+	</div>
+		
+	</div>
+
+</div>
+<script>
+$(document).ready(function(){
+	$('#markDownload').on('click',function(){
+		var that=$(this);
+		that.attr('disabled','true');
+		$.post("{:U('Mark')}",{id:videoId,message:'downloaded'},function(result){
+			if(result.code==200){
+				that.hide();
+				$('#haveFlag').removeClass('gray').addClass('red');
+			}else{
+				alert(result.message)
+			}
+		})
+	})
+})
+</script>
+</present>
+<!-- 视频详情结束 -->
+
+<!-- 视频图片列表开始 -->
+<present name="videoGallery">
+<div class="ui indicating progress" id="progress-bar" style="display:none">
+  <div class="bar">
+  </div>
+  <div class="label">图片载入中...(<span id="loaded-img-count"></span>)</div>
+</div>
+<div class="ui small images gallery-thumb" id="gallery-thumb">
+	<volist name="videoGallery" id="item" key="k">
+		<a href="{$gdbImgServer}?url={$item}&type=gallery&companyId={$videoDetail['companyid']}" data-lightbox="actor-picture">
+		<img style="cursor:pointer" data-index={$k} src="{$gdbImgServer}?url={$item}&type=gallery&companyId={$videoDetail['companyid']}">
+		<!-- <img style="cursor:pointer" data-index={$k}  src="{:U('img',array('url'=>$item,'type'=>'gallery','compId'=>$videoDetail['companyid']))}" alt=""></a> -->
+	
+	</volist>
+</div>
+
+	
+</div>
+<script>
+$(document).ready(function(){
+	var imgs=$('#gallery-thumb img');
+	var loadedImg=0;
+	var counter=$("#loaded-img-count");
+	var progressBar=$('#progress-bar');
+	if(imgs.length>0){
+		progressBar.fadeIn();
+		imgs.on('load',function(){
+			console.log(loadedImg+":"+imgs.length)
+			console.log(this.dataset.index)
+			loadedImg+=1;
+			counter.text(loadedImg+"/"+imgs.length);
+			$('.progress').progress({
+				percent:Math.ceil(loadedImg/imgs.length*100)
+			});
+
+			if(loadedImg-imgs.length==0){
+				progressBar.fadeOut();
+			}
+		})
+	}
+	
+	window.onload=function(){
+		progressBar.fadeOut();
+	}
+})
+
+</script>
+</present>
+<!-- 视频图片列表结束 -->
+{$pagingCode}
+<include file='Public/Footer' />

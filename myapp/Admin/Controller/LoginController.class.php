@@ -16,11 +16,12 @@ class LoginController extends Controller{
 	}
 
 	public function index(){
-		$this->assign("pagename","登陆");
+		$this->assign('pagename','Login');
 		$this->display("index");
 	}
 
 	public function reg(){
+		$this->assign('pagename','Sign Up');
 		$this->display("register");
 	}
 
@@ -50,6 +51,7 @@ class LoginController extends Controller{
 	}
 
 	public function login(){
+		
 		$log=D('Home/Entry');
 		if(!isset($_POST['email']) || !isset($_POST['password'])){
 			msg(0,"Please input both email and password.");
@@ -72,6 +74,7 @@ class LoginController extends Controller{
 	}
 
 	public function register(){
+		
 		$log=D('Home/Entry');
 		if(!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['email'])){
 			msg(0,"Please input username password and email.");
