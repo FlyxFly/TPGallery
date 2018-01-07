@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贴吧爆照</title>
-    <link rel="stylesheet" href="__PUBLIC__/semantic/semantic.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/Lightbox/css/lightbox.min.css">
-    <script src="__PUBLIC__/lib/js/jquery-3.1.1.min.js"></script>
-    <script src="__PUBLIC__/semantic/semantic.min.js"></script>
-    <script src="__PUBLIC__/js/vue.js"></script>
-    <script src="__PUBLIC__/js/vue-resource.min.js"></script>
-    <script src="__PUBLIC__/js/layer.js"></script>
+<include file="./myapp/Gdb/View/Public/Header.html" />
+<include file="./myapp/Gdb/View/Public/Navbar.html" keywords='keywords' searchapi='Gdb/Novel/Search' />
     <style type="text/css">
     .no-padding {
         padding: 0!important
@@ -25,6 +13,23 @@
         width: 100%;
         height: 15%
     }
+    .grid-item{
+        width: 274px;
+        margin-bottom: 10px;
+    }
+    .caption{
+        position: absolute;
+        bottom: 0px;
+        height: 30px;
+        width: 100%;
+        background-color: rgba(0,0,0,0.3);
+        padding: 0 1em;
+    }
+    .caption a:link{
+        color:white;
+        font-weight: bold;
+        line-height: 30px
+    }
 
     @media (max-width:749px) {
         .hide-on-mobile {
@@ -36,7 +41,7 @@
 <body>
     <div id="shuaibi">
         <!-- 导航栏开始 -->
-        <div class="ui menu navbar">
+   <!--      <div class="ui menu navbar">
             <div class="ui container">
                 <a href="#" class="item sidebar-trigger"><i class="sidebar icon"></i></a>
                 <div class="item header"><a href="/tieba">贴吧爆照</a></div>
@@ -75,7 +80,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- 导航栏结束 -->
         <!-- 侧边栏导航开始 -->
         <div class="ui vertical menu sidebar">
@@ -118,7 +123,20 @@
         </div>
         <!-- 侧边栏导航结束 -->
         <div class="ui container pusher">
-            <div class="ui five stackable cards">
+            <div class="main">
+                <volist name="photos" id="photo"> 
+                    <div class="grid-item">
+                        <div class="segment">
+                            <img class="ui fluid image lazyload" src="__PUBLIC__/img/loading.gif" data-src="{$photo.file_name}" alt="">
+                        <div class="caption">
+                            <a class="ui link" href="/tieba/name/{$photo.user_name}" title="发表在{$photo.forum_name}">{$photo.user_name}</a>
+                        </div>
+                        </div>
+                     </div>
+                </volist>
+            </div>
+
+<!--             <div class="ui five stackable cards">
 
                     <div class="ui card" v-for="(card,index) in cards">
                         <div class="image">
@@ -140,24 +158,48 @@
                         <div class="extra content">
                             <a :href=originalPic(card.original_url,card.thread_id,card.forum_name) v-if=originalPic(card.original_url,card.thread_id,card.forum_name) target="_blank">查看原图</a>
                             <a v-if="isLogin" href="javascript:void(0)" @click=deleteImg(card.id,index) class="right floated">删除</a>
-                            <!--             <div class="ui large transparent left icon input">
-                                <i class="heart outline icon"></i>
-                                <input type="text" placeholder="Add Comment...">
-                            </div> -->
                         </div>
                     </div>
 
-            </div>
+            </div> -->
+            
+        </div>
+        <div class="ui container">
             {$pageCode}
+            
         </div>
     </div>
     <div class="footer">
     </div>
     <script>
+    (function (){
+        var timeHandler='';
+        $('.lazyload').lazyload({
+            effect:'fadeIn',
+            failurelimit:40,
+        })
+        $('.lazyload').on('load',function(){
+            if(timeHandler){
+                clearTimeout(timeHandler);
+            }
+            timeHandler=setTimeout(function(){
+                $('.main').masonry({
+                  columnWidth: 0,
+                  gutter:10,
+                  itemSelector: '.grid-item'
+                });
+                timeHandler=0;
+            },800)
+            console.log(timeHandler);
+            return;
+        })
+    })()
+
+
     Vue.http.options.emulateJSON = true;
     var searchParams={$searchParams};
     var myapp = new Vue({
-        el: '#shuaibi',
+        el: '',
         data: {
             isLogin:{$isLogin},
             searchType: '',
@@ -222,6 +264,15 @@
             this.$nextTick(function(){
                 self.searchType=searchParams.searchType?searchParams.searchType:'userName';
                 self.keywords=searchParams.keywords?searchParams.keywords:'';
+                $('.grid').masonry({
+                  columnWidth: 0,
+                  itemSelector: '.grid-item'
+                });
+            })
+        },
+        updated:function(){
+            this.$nextTick(function(){
+                
             })
         }
     })

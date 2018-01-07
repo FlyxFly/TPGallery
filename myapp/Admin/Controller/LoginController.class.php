@@ -17,7 +17,7 @@ class LoginController extends Controller{
 
 	public function index(){
 		$this->assign('pagename','Login');
-		$this->display("index");
+		$this->display("newlogin");
 	}
 
 	public function reg(){

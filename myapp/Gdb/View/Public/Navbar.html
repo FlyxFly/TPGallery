@@ -2,35 +2,29 @@
 <div class="ui container">
 	<div id="sidebarBtn" class="item"><i class="icon list"></i>	</div>
 	<div class="item header">GVDB</div>
-	<div class="ui dropdown item" v-if='module!="novel"'>
-		演员
-		<i class="icon dropdown"></i>
-		<div class="menu">
-			<a href="" class="item">评分最高</a>
-			<a href="" class="item">最常点击</a>
-			<a href="{:U('Index/Actor')}" class="item">所有演员</a>
-		</div>
-	</div>
-	<div class="ui dropdown item" v-if='module!="novel"'>
+
+<!-- 	<div class="ui dropdown item" v-if='module!="novel"'>
 		视频
 		<i class="icon dropdown"></i>
 		<div class="menu">
-			<a href="{:U('Index/VideoList')}" class="item">视频列表</a>
+			<a href="" class="item">视频列表</a>
 			<a href="" class="item">评分最高</a>
 			<a href="" class="item">最常点击</a>
 			<a href="{:U('Index/Video')}" class="item">所有视频</a>
 		</div>
-	</div>
-	
-	<div class="ui dropdown item" v-if='module=="novel"'>
-		小说
+	</div> -->
+	<a href="{:U('Index/VideoList')}"  class="item">Gay Videos</a>
+	<a href="{:U('Index/Actor')}"  class="item">GV Actors</a>
+	<a href="/tieba" class="item">Tieba Photo</a>
+	<a href="/novels/index" class="item">Novel</a>
+<!-- 	<div class="ui dropdown item" v-if='module=="novel"'>
 		<i class="icon dropdown"></i>
 		<div class="menu">
 			<a href="/novels/index" class="item">目录</a>
-			<a href="/novels/lucky" class="item">随便看看</a>
+			
 			<a href='/novels/fav' class="item">收藏夹</a>
 		</div>
-	</div>
+	</div> -->
 	<div class="right menu hide-below-tablet">
 		<div class="item">
 			<div class="ui action input">

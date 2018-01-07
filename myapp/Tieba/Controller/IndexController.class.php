@@ -32,6 +32,7 @@ class IndexController extends Controller{
         $this->assign('statCode',$this->options['statcode']);
         $this->assign('isLogin',$isLogin);
         // dump(in_array($searchType,C('search_type')));
+        $this->assign('photos',$ret['data']);
     	$this->assign('data',json_encode($ret['data']));
         // dump(ceil($ret['total']/C('index_item_per_page')));
     	$this->assign('pageCode',semanticPage(ceil($ret['total']/C('index_item_per_page')),$p,$pageUrlParam));

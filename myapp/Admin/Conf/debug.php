@@ -2,6 +2,5 @@
 
 return array(
 	"entryPerPage"=>"13",
-	"default_theme"=>"semantic",
 	'SHOW_PAGE_TRACE'=> true,
 	);

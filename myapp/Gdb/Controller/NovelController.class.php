@@ -47,6 +47,16 @@ class NovelController extends Controller{
 		// dump($threadInfo);
 		$threadInfo=$threadInfo[0];
 		$content=$this->c->where('threadid=%d',array($tid))->order('uniquepostid')->select();
+
+		$authorArticles=$this->i->where('authorid=%d',$threadInfo['authorid'])->order('threadid desc')->select();
+		$filteredAuthorArticles=[];
+		foreach ($authorArticles as $key => $value) {
+			if($value['threadid']!=$tid){
+				array_push($filteredAuthorArticles, $value);
+			}
+		}
+		// dump($filteredAuthorArticles==[]);
+		$this->assign('authorArticles',$filteredAuthorArticles);
 		// dump($content);
 		foreach ($content as $key => $value) {
 

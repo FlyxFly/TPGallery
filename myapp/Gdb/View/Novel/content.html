@@ -1,13 +1,28 @@
 <include file='Public/Header' />
 <include file='Public/Navbar' keywords='{{$keywords}}' searchapi='Gdb/Novel/Search' />
 <div class="ui container">
-<div class="segment">
+
+
+
+<div class="ui segment">
 	<h4 class="ui header">{$threadInfo.title}</h4>
 	<div class="meta">
 		<a class="ui label">作者:{$threadInfo.authorname}</a>
 		<a class="ui label">发布日期:{$threadInfo.createdate}</a> 
 		<a id="addFav" class="ui teal label" data-tid='{$threadInfo.threadid}'>加入收藏</a>
-		<a href="{$threadInfo.url}" class="ui green label">原帖地址</a>
+		<a href="{$threadInfo.url}" target="_blank" class="ui green label">原帖地址</a>
+	</div>
+	
+	<div class="right ui rail" style="margin-left: 0!important">
+		<div class="ui segment">
+			<p class="ui header">其他作品</p>
+			<if condition="$authorArticles eq []">暂无</if>
+			<div class="ui link list">
+			    <volist name="authorArticles" id="article">
+			  		<a class="item" href="/novel/{$article.threadid}">{$key+1}. {$article.title}</a>
+			  </volist>
+			</div>
+		</div>
 	</div>
 </div>
 	<volist name="novelTheads" id="thread">
