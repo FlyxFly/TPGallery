@@ -2,9 +2,11 @@
 namespace Admin\Model;
 use Think\Model;
 class OptionsModel extends Model{
+	protected $tablePrefix = null; 
+	protected $trueTableName = 'options'; 
 	private $_db='';
 	public function __construct(){
-		$this->_db=M('gg.options');
+		$this->_db=M('gg.options',Null);
 	}
 	public function getSysConfig(){
 		$fromDB= $this->_db->where('user=0')->select();

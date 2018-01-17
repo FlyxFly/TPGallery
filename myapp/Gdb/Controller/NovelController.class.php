@@ -1,7 +1,9 @@
 <?php
 namespace Gdb\Controller;
 use Think\controller;
+
 import("ORG\Util\Page");
+
 class NovelController extends Controller{
 	protected $i='';
 	protected $c='';
@@ -10,8 +12,9 @@ class NovelController extends Controller{
 		$this->i=D('stnovel_info');
 		$this->c=D('stnovel_content');
 		$this->fav=D('stnovel_fav');
-    $optionsModel = new \Admin\Model\OptionsModel();
-    $this->options=$optionsModel->getCachedSysConfig();
+		$optionsModel  = new \Admin\Model\OptionsModel();
+    	$this->options=$optionsModel->getCachedSysConfig();
+    	$this->userFav=new \Home\Model\UserfavModel();
 	}
 	public function Index(){
 		$this->redirect('Catalog');
@@ -153,13 +156,18 @@ class NovelController extends Controller{
 		}
 		$userInfo=session('user');
 
-		$ret=$this->fav->where('thread_id = %d and user_id = %d',[$tid,$userInfo['id']])->select();
+		$ret=M('user_fav')->where('type="novel" and item_id=%d and user_id=%d',[$tid,$userInfo['id']])->select();
+
+		// $ret=$this->fav->where('thread_id = %d and user_id = %d',[$tid,$userInfo['id']])->select();
 		$ret=$ret[0];
 		if(count($ret)<1){
-			$this->fav->data(['thread_id'=>$tid,'user_id'=>$userInfo['id'],'add_date'=>date("Y-m-d H:i:s")])->add();
+			$description=$this->i->where('threadid=%d',$tid)->getField('title');
+			// dump($this->userFav);
+			$this->userFav->add('novel',$tid,$description,$userInfo['id']);
+			// $this->fav->data(['thread_id'=>$tid,'user_id'=>$userInfo['id'],'add_date'=>date("Y-m-d H:i:s")])->add();
 			msg(200,'加入收藏成功');
 		}else{
-			$sql=$this->fav->delete($ret['id']);
+			$sql=$this->userFav->delete($ret['id']);
 			// msg(0,json_encode($sql));
 			msg(200,'取消收藏成功');
 		}
@@ -183,7 +191,11 @@ class NovelController extends Controller{
 		}
 	}
 
-
+	public function test(){
+		$uf=new \Home\Model\UserfavModel();
+		$ret=$uf->add('entry',123,'bala bala',2);
+		dump($ret);
+	}
 
 
 }

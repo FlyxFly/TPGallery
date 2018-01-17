@@ -5,7 +5,10 @@ use Think\Model;
 
 class PostModel extends Model{
 
+    protected $tablePrefix = 'tieba_'; 
+
 	public function urlConvert($filepath=null){
+
 		if($filepath==null){
 			return null;
 		}
@@ -15,18 +18,19 @@ class PostModel extends Model{
 		return C('img_url_prefix').$subFolder.'/'.$fileName;
 	}
     public function imageList($p=1,$keywords=null,$searchType=null){
-        $countSQL='select count(img.id) from img left join post on img.post_id=post.post_id left join user on post.user_id=user.user_id';
+        $countSQL='select count(tieba_img.id) from tieba_img';
     	$resultObj=M('img');
     	if($keywords){
+            $countSQL.=' left join tieba_post on tieba_img.post_id=tieba_post.post_id left join tieba_user on tieba_post.user_id=tieba_user.user_id';
     		switch($searchType){
     			case 'userName':
-                $countSQL.=" where user.user_name like '%${keywords}%'";
-    			$resultObj=$resultObj->where('user.user_name like "%s"','%'.$keywords.'%');
+                $countSQL.=" where tieba_user.user_name like '%${keywords}%'";
+    			$resultObj=$resultObj->where('tieba_user.user_name like "%s"','%'.$keywords.'%');
     			break;
 
     			case 'userId':
-    			$countSQL.=" where user.user_id=${keywords}";
-    			$resultObj=$resultObj->where('user.user_id=%d',$keywords);
+    			$countSQL.=" where tieba_user.user_id=${keywords}";
+    			$resultObj=$resultObj->where('tieba_user.user_id=%d',$keywords);
     			break;
 
     			case 'content':
@@ -35,13 +39,13 @@ class PostModel extends Model{
 
     	}
     	
-        $ret=$resultObj->join('left join post on img.post_id=post.post_id')->join('left join forum on post.forum_id = forum.forum_id')->join('left join user on post.user_id=user.user_id')->page($p,C('index_item_per_page'))->order('img.id desc')->select();
+        $ret=$resultObj->join('left join tieba_post on tieba_img.post_id=tieba_post.post_id')->join('left join tieba_forum on tieba_post.forum_id = tieba_forum.forum_id')->join('left join tieba_user on tieba_post.user_id=tieba_user.user_id')->page($p,C('index_item_per_page'))->order('tieba_img.id desc')->select();
     	$totalItem=M()->query($countSQL);
 
         foreach ($ret as $key=>$value) {
         	$ret[$key]['file_name']=$this->urlConvert($value['file_name']);
         }
-        return ['total'=>$totalItem[0]['count(img.id)'],'data'=>$ret];
+        return ['total'=>$totalItem[0]['count(tieba_img.id)'],'data'=>$ret];
     }
 
     public function threadInfo($threadId=null,$p=1){
@@ -50,7 +54,7 @@ class PostModel extends Model{
         }
         $imgTagPattern='/<img([\w\W]+?)>/';
         $total=M('post')->where('thread_id=%f',$threadId)->count();
-        $ret=M('post')->where('thread_id=%f',$threadId)->page($p,C('post_per_page'))->join('left join user on user.user_id=post.user_id')->join('left join img on post.post_id=img.post_id')->join('left join forum on forum.forum_id=post.forum_id')->order('post_index')->select();
+        $ret=M('post')->where('thread_id=%f',$threadId)->page($p,C('post_per_page'))->join('left join tieba_user on tieba_user.user_id=tieba_post.user_id')->join('left join img on tieba_post.post_id=tieba_img.post_id')->join('left join tieba_forum on tieba_forum.forum_id=tieba_post.forum_id')->order('post_index')->select();
         
         foreach ($ret as $key => $value) {
             $ret[$key]['file_name']=$this->urlConvert($value['file_name']);

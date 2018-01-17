@@ -3,7 +3,10 @@
 namespace Home\Controller;
 use Think\Controller;
 class MyController extends Controller{
-	public function test(){
-		$this->show("这是Mytest控制器里面的test方法");
+	public function index(){
+		if(!session('?user')){
+		}
+			$this->redirect('admin/login/index');
+		$this->display();
 	}
 }

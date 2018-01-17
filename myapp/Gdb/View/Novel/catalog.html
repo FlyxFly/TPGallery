@@ -21,7 +21,7 @@
 				</td>
 				<td>
 					<if condition="session('?user')">
-						<a  class="ui button mini red delete" data-tid="{$novel.threadid}">删除</a>
+						<a  class="ui button mini delete" data-tid="{$novel.threadid}"><i data-tid="{$novel.threadid}" class="ui icon ban"></i></a>
 					</if>
 					<a href="/novel/{$novel['threadid']}">{$novel.title}</a>
 				</td>

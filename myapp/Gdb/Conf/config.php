@@ -1,6 +1,6 @@
 <?php
 return array(
-'DB_NAME'   => 'gdb', // 数据库名
+'DB_PREFIX' =>  'gdb_',
 'URL_MODEL' => 0,
 'image_host_prefix'=> 'http://192.168.1.140:8888/gdb/',
 // 'img_local_dir'=>'d:/wamp64/www/gdb/',
