@@ -8,7 +8,9 @@
 		<css href="__PUBLIC__/Lightbox/css/lightbox.min.css" />
 		<script src="__PUBLIC__/lib/js/jquery-3.1.1.min.js"></script>
 		<js href="__PUBLIC__/Lightbox/js/lightbox.js" />
-		<import type="js" file="semantic/semantic,js/masonrypkgdmin"/>
+		<js href="__PUBLIC__/js/masonry.pkgd.min.js" />
+		<js href="__PUBLIC__/js/layer.js" />
+		<import type="js" file="semantic/semantic"/>
 		<link href="https://vjs.zencdn.net/6.2.4/video-js.css" rel="stylesheet">
 		<!-- If you'd like to support IE8 -->
 		<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
@@ -66,10 +68,28 @@
 				background-color: #EF5353;
 				color: white
 			}
+			#moveTo{
+				position: absolute;
+				width: 300px;
+				height: 400px;
+				display: none;
+				z-index: 1001
+			}
+			.close-moveto-icon{
+				position: absolute;
+				right: 0;top: 0;
+				cursor: pointer;
+				line-height: 1em;
+				text-align: center
+			}
+			.close-moveto-icon:hover{
+				color: red
+			}
 		</style>
 		<title>{$pagetitle}-{$title}</title>
 	</head>
 	<body>
+
 		<!-- navbar -->
 		<div class="ui menu top-navbar">
 			<div class="ui container">
@@ -82,12 +102,18 @@
 				<a class="item" href="{:U('Home/Index/index')}">
 					<i class="icon home"></i>Home
 				</a>
-	<!-- 			<a class="item" onclick="javascript:history.back()"><i class="icon arrow left"></i>Back</a> -->
 				<if condition="PrevAndNext[1] neq null">
 					<a class="item" href="{$PrevAndNext[1]['postid'] | postURL}" title="{$PrevAndNext[1]['title']}">Next<i class="icon angle double right"></i></a>
 					<else/>
 					<span class="item">后面没有了</span>
 				</if>
+				<if condition="session('user') neq null">
+				<a href="javascript:void(0)" class="item" id="editImgs">编辑</a>
+				<a href="javascript:void(0)" class="item" id="deleteImgs" style="display: none">删除</a>
+				<a href="javascript:void(0)" class="item" id="moveImgs" style="display: none">移动到</a>
+				</if>
+
+
 
 				<div class="right menu hide-on-mobile">
 					<div class="item">
@@ -127,7 +153,7 @@
 				</div>
 		</div>
 		<div class="container pusher">
-			
+			<div class="ui dimmer" id="dimmer"></div>
 			<div class="ui stackable grid">
 
 				<div class="row">
@@ -147,7 +173,7 @@
 						<div class="img-gallery">
 
 							<foreach name="data.content.img" item="entry">
-							<a href="{$entry.url}" data-lightbox="gallery" ><img class="img-gallery-item" src="{$entry.url}" alt="" ></a>
+							<a href="{$entry.url}" data-lightbox="gallery" ><img <if condition="session('user') neq null">data-imgid={$entry.id}</if> class="img-gallery-item" src="{$entry.url}" alt="" ></a>
 							</foreach>
 						</div>
 						</if> 
@@ -164,11 +190,35 @@
 			</div>
 			</div>
 		</div>
-		
+		<div class="ui four wide segment" id="moveTo">
+			<i class="ui icon remove close-moveto-icon"></i>
+			<div class="ui form">
+				<div class="field">
+			      <label>Select target </label>
+			      <p class="ui meta">Last choice: <span id='lastChoice'></span> </p>
+			      <select class="ui fluid search dropdown">
+
+			      </select>
+<!-- 			      <input type="text" list="imgIds">
+			      <datalist id="imgIds">
+			      	
+			      </datalist> -->
+			  </div>
+			  <div class="field">
+			  	<button class="ui button primary" id="confirmMove">确定</button>
+			  </div>
+			</div>
+		</div>
 		<!-- container end -->
 		<script src="https://vjs.zencdn.net/6.2.4/video.js"></script>
 		<script type="text/javascript">
+		function closeMoveToBox(){
+			$('#moveTo').hide();
+			$('#dimmer').removeClass('active');
+		}
+
 		$(document).ready(function(){
+			var imgMngApi="{:U('Admin/Index/imgEdit')}";
 			$(".sidebar-btn").click(function(){
 				$('.ui.sidebar').sidebar('toggle')
 			})
@@ -202,6 +252,127 @@
 			}else{
 				$progressBar.fadeOut();
 			}
+
+			var imgToBeEdited=[];
+			$('#editImgs').click(function(){
+				$('#deleteImgs').show();
+				$('#moveImgs').show();
+				$imgGallery.empty().append($imgGalleryItems);
+				$imgGalleryItems.on('click',function(){
+					var ele=$(this)[0];
+					var imgId=ele.dataset.imgid;
+					var idx=imgToBeEdited.indexOf(imgId);
+					//判断图片是否已经在要编辑的数组里面
+					if(idx>-1){
+						imgToBeEdited.splice(idx,1);
+						ele.style.opacity=1;
+					}else{
+						imgToBeEdited.push(imgId);
+						ele.style.opacity=0.3;
+					}
+					console.log(imgToBeEdited);
+				})
+			})
+			$('#deleteImgs').on('click',function(){
+				if(imgToBeEdited.length===0){
+					layer.msg('还没有选择要删除的图片哦');
+					return false;
+				}
+				layer.confirm(`确定要删除${imgToBeEdited.length}张图片吗？`, {
+				  btn: ['是的','不'] //按钮
+				}, function(){
+					layer.closeAll();
+					var handler=layer.load();
+					$.post(imgMngApi,{action:'delete',imgId:imgToBeEdited},function(result){
+						layer.close(handler);
+						var res=JSON.parse(result);
+						res.message=JSON.parse(res.message);
+						console.log(res)
+						if(res.message.count>0){
+							var resultHtml=`成功删除了${res.message.count}个文件:<br/>`;
+							for(let i=0;i<res.message.data.length;i++){
+								resultHtml+=`ID:${res.message.data[i]['key']},删除${res.message.data[i]['delsuccess']?'成功':'失败'}<br/>`;
+							}
+							layer.alert(resultHtml);
+						}else{
+							layer.alert('未删除任何文件');
+						}
+				  		
+				  	})
+				  
+				}, function(){
+					layer.msg('已取消', {icon: 1,time:2000});
+				});
+			})
+			var moveToEntryId=0;
+
+			$('select').on('change',function(){
+				moveToEntryId=$(this).val();
+			})
+			$('#moveImgs').on('click',function(){
+				// if(imgToBeEdited.length===0){
+				// 	layer.msg('还没有选择要移动的图片哦');
+				// 	return false;
+				// }
+				//显示移动目标日志选择框
+				loadAllEntryId(function(){
+					$('select.dropdown').dropdown();
+					$('#dimmer').toggleClass('active');
+					$moveTo=$('#moveTo');
+					$moveTo.css({'top':Math.round(document.body.clientHeight/2-parseInt($moveTo.css('height'))/2)+'px',
+								 'left':Math.round(document.body.clientWidth/2-parseInt($moveTo.css('width'))/2)+'px',
+								 'display':'block'
+								});
+				})
+
+			})
+
+
+
+			$('#confirmMove').on('click',function(){
+				$(this).attr('disabled',true);
+				if(imgToBeEdited.length===0){
+					layer.msg('还没有选择要移动的图片哦');
+					return false;
+				}
+				var handler=layer.load();
+				$.post(imgMngApi,{action:'move',imgId:imgToBeEdited,moveTo:$('select').val()},function(result){
+					var res=JSON.parse(result);
+					res.message=JSON.parse(res.message);
+					layer.close(handler);
+					layer.alert(`成功移动了${res.message.count}张图片`,function(index){
+						layer.close(index);
+						closeMoveToBox();
+
+					});
+				})
+			})
+
+			$('.close-moveto-icon').on('click',function(){
+				closeMoveToBox();
+			})
+			var entryIdGot=0;
+			function loadAllEntryId(callback){
+				$.get('{:U("Admin/Index/getAllEntryId")}',function(response){
+					if(!response.length){
+						layer.alert('未获取到日志列表');
+						return;
+					}
+					if(entryIdGot){
+						return callback();
+					}
+					entryIdGot=1;
+					var html='';
+					// console.log(response.length);
+					// return;
+					for (var i = response.length - 1; i >= 0; i--) {
+						html+=`<option value=${response[i].postid}>${response[i].title}</option>`
+					}
+					$('select').append(html);
+					callback();
+				})
+			}
+
 			
 		})
 		</script>

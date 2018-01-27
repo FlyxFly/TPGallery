@@ -293,21 +293,26 @@ class IndexController extends Controller{
 	}
 
 	public function imgEdit(){
+		header('Content-type','application/JSON');
 		if(isset($_POST['action'])){
+			if(!isset($_POST["imgId"]) || count($_POST["imgId"])===0){
+				msg(0,'未指定图片id');
+			}
 			switch($_POST["action"]){
 				case "delete":
-				if(isset($_POST["imgid"])){
 					$result=self::imgEditAPI("delete",$_POST);
 					msg(1,json_encode($result));
-				}else{
-					msg(0,"未指定图片id");
-				}
+	
 				break;
 
 				case "add":
 					$result=self::imgEditAPI("add",$_POST);
 					msg(1,json_encode($result));
 				break;
+
+				case "move":
+					$result=self::imgEditAPI("move",$_POST);
+					msg(1,json_encode($result));
 
 				default:
 				msg(0,"操作不合法！");
@@ -320,27 +325,25 @@ class IndexController extends Controller{
 	}
 
 	private function imgEditAPI($action,$data){
+
 		//接受一个对象，对图片库进行操作
 		//{"action":"","url":[],"imgid":[]}
 		$imgsDB=M("imgs");
 		switch($action){
 			case "delete":
 			$result=array('count'=>0,"data"=>array());
-			foreach ($data["imgid"] as $key => $value) {
-				$result["data"][$key]["url"]=$res[0]["url"];
+			foreach ($data["imgId"] as $key => $value) {
 				$res=$imgsDB->where("id=%d",$value)->select();
 				$patharray=explode("/", $res[0]['url']);
 				$filepath=urldecode(C("imgpath").$patharray[3]."/".$patharray[4]."/".$patharray[5]);
-				// dump($filepath);
-				if(!unlink($filepath)){
-					$result["data"][$key]["delsuccess"]=0;
+				if(file_exists($filepath) && !unlink($filepath)){
+					array_push($result['data'], ['key'=>$value,'delsuccess'=>0,'path'=>$filepath]);
+				
 				}else{
 					$sqlresult= $imgsDB->delete($value);
 					$result["count"]+=1;
-					$result["data"][$key]["delsuccess"]=1;
-					
+					array_push($result['data'], ['key'=>$value,'delsuccess'=>1]);
 				}
-
 			}
 			return $result;
 			break;
@@ -355,12 +358,15 @@ class IndexController extends Controller{
 			}
 			$result=array("tobe"=>count($_POST["url"]),"success"=>$resultcount);
 			return $sqlresult;
+			break;
 
-			
+
+			case "move":
+				$where['id']=['in',$data['imgId']];
+				$ret=$imgsDB->where($where)->setField('postid',$data['moveTo']);
+				return ['count'=>$ret];
 			break;
-			case "edit":
-			msg(0,"功能未完成");
-			break;
+
 			default:
 			msg(0,"非法操作！");
 		}
@@ -384,8 +390,8 @@ class IndexController extends Controller{
 			msg(0,"未指定操作");
 		}
 		$upload = new \Think\Upload();
-	    $upload->maxSize   =     10485760 ;// 设置附件上传大小
-	    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg', 'pdf');// 设置附件上传类型
+	    $upload->maxSize   =     104857600 ;// 设置附件上传大小
+	    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg', 'pdf', 'mp4', 'mkv', 'avi', 'webp');// 设置附件上传类型
 	    $upload->rootPath  =     C("uploadDir"); // 设置附件上传根目录
 	    $upload->autoSub=false;
 		$newFileDir=M('options')->where('op = "newuploaddir" and user =0')->select();
@@ -633,8 +639,10 @@ class IndexController extends Controller{
 	}
 
 
-	public function test(){
-
+	public function getAllEntryId(){
+		$res=M('entry')->field('postid,title')->select();
+		header('Content-type: application/json');
+		echo json_encode($res);
 	}
 
 }

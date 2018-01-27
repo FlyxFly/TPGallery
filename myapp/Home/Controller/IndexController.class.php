@@ -189,7 +189,7 @@ class IndexController extends Controller {
         $this->assign('PrevAndNext',$prevAndNext);
         $this->assign("AllTags",$tags);
         $this->assign("page",$pageShow);
-        // dump($result);
+        // dump($result['content']['img']);
 		$this->assign("data",$result);
         $this->assign("options",$this->options);
 		// $this->display("postHydrogen");
