@@ -44,6 +44,9 @@ class NovelController extends Controller{
 	}
 
 	public function content($tid=null,$p=1){
+		if(!session('?user')){
+			$this->redirect('admin/login/index');
+		};
 		// dump(session('user')['id']);
 		// dump($this->i->query('show variables like "%character%"'));
 		$threadInfo=$this->i->where('threadid=%d',$tid)->select();

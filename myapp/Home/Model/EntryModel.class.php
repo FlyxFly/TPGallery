@@ -94,4 +94,22 @@ class EntryModel extends Model{
 		$ret=M('log')->data($data)->add();
 		return $ret;
 	}
+
+	public function searchByTitle($keywords=null,$p=1){
+		$login=session('?user');
+		$p=(int)$p?(int)$p:1;
+		$entryPerPage=C("entryPerPage");
+		$keywords='%'.$keywords.'%';
+		$startItem=$entryPerPage*($p-1);
+		if($login){
+			$dataSQL='select * from entry left join imgs on entry.postid=imgs.postid where entry.title like "'.$keywords.'" and entry.private=1 and imgs.cover=1 ORDER BY entry.postid desc limit '.$startItem.','.$entryPerPage.'';
+			$countSQL='select count(postid) from entry where private=1 and entry.title like "'.${keywords}.'"';
+		}else{
+			$dataSQL='select * from entry left join imgs on entry.postid=imgs.postid where entry.title like "'.$keywords.'" and entry.private=0 and imgs.cover=1 ORDER BY entry.postid desc limit '.$startItem.','.$entryPerPage.'';
+			$countSQL='select count(postid) from entry where private=0 and entry.title like "'.${keywords}.'"';
+		}
+		$dataResult=M()->query($dataSQL);
+        $countResult=M()->query($countSQL);
+        return ["count"=>$countResult[0]['count(postid)'],"data"=>$dataResult];
+	}
 }

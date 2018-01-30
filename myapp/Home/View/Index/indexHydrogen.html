@@ -18,8 +18,8 @@
 	<link rel="shortcut icon" href="__ROOT__/Public/indexassets/img/favicon.ico">
 
 	<!-- Google Webfonts -->
-	<link href='https://fonts.fly2x.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.fly2x.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="__ROOT__/Public/IndexHydrogen/css/animate.css">
@@ -45,7 +45,7 @@
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
-		<p><a href="{:U('Admin/Login/index')}">登陆</a></p>
+		<p><a href="{:U('Admin/Login/index')}" class="btn">登陆</a></p>
 		<ul>
 		<foreach name="AllTags" item="tag">
 			<li><a href="{:U('/Home/Index/index?tagid='.$tag['mid'])}" title="{$tag.slug}" <if condition="$thisMid neq null and $thisMid eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>

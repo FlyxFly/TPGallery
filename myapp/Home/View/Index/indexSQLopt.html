@@ -18,8 +18,8 @@
 	<link rel="shortcut icon" href="__PUBLIC__/indexassets/img/favicon.ico">
 
 	<!-- Google Webfonts -->
-	<link href='https://fonts.fly2x.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.fly2x.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="__PUBLIC__/IndexHydrogen/css/animate.css">
@@ -44,14 +44,19 @@
 	<div id="fh5co-offcanvass">
 		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
 		<h1 class="fh5co-logo"><a class="navbar-brand" href="{:('/Home/')}">A Photo Gallery</a></h1>
-		<p>
-			<if condition="$user eq null">
-			<a href="{:U('Admin/Login/index')}">Login</a> <a href="{:U('Admin/Login/reg')}">Register</a>
-			<else/>
-			Hello,{$user.username} <a href="{:U('Home/Index/logout')}">Log out</a>.
-			</if>
-		</p>
 		<ul>
+			<if condition="$user eq null">
+			<a href="{:U('Admin/Login/index')}" class="btn">Login</a> <a href="{:U('Admin/Login/reg')}" class="btn">Register</a>
+			<else/>
+			Hello,{$user.username} <a href="{:U('Home/Index/logout')}" class="btn">Log out</a>.
+			</if>
+        <li>
+        	<div class="col-md-12">
+	            <div class="form-group">
+	                <input type="text" class="form-control" placeholder="Search..." name="keywords" onkeyup="search(event)">   
+	            </div>
+        	</div>
+        </li>
 		<foreach name="AllTags" item="tag">
 			<li><a href="{:U('/Home/Index/index',['tagid'=>$tag['mid']])}" title="{$tag.slug}" <if condition="$tagInfo['mid'] eq $tag['mid']">class='current-category'</if>>{$tag.name}</a></li>
 		</foreach>
@@ -86,11 +91,10 @@
         <foreach name="data" item="entry">
         	<div class="item">
         		<div class="animate-box">
-	        		<a href="{$entry.url}" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="__PUBLIC__/img/loading.gif" data-original="{$entry.url}" alt="此处应有图片，然而并没有"></a>
+	        		<a href="{$entry.url}" class="image-popup fh5co-board-img" title="{$entry.title}"><img src="{$entry.url}" alt="此处应有图片，然而并没有"></a>
         		</div>
         		<div class="fh5co-desc">
         			<a href="{$entry['postid'] | postURL}">{$entry.title} ({$imgCount[$entry['postid']]}P)   &nbsp;&nbsp;<i class="icon-eye"></i>{$entry.view}</a>
-					
         		</div>
         	</div>
         	</foreach>
@@ -139,5 +143,16 @@
 	<!-- Main JS -->
 	<script src="__PUBLIC__/IndexHydrogen/js/main.js"></script>
 	{$options['statcode']}
+	<script>
+		var search=function(event){
+			if(event.code==='Enter'){
+				window.location.href='/Home/Index/search?keywords='+event.target.value
+			}
+			
+		}
+	</script>
 	</body>
+
+
+
 </html>

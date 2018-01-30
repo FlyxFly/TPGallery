@@ -16,9 +16,17 @@
 
 	// OffCanvass
 	var offCanvass = function() {
-		$('body').on('click', '.js-fh5co-menu-btn, .js-fh5co-offcanvass-close', function(){
+		$("#fh5co-header").find(".js-fh5co-menu-btn").unbind("click").on("click",function(event){
 			$('#fh5co-offcanvass').toggleClass('fh5co-awake');
+			event.stopPropagation();
 		});
+		$("#fh5co-offcanvass").find(".js-fh5co-offcanvass-close").unbind("click").on("click",function(event){
+			$('#fh5co-offcanvass').toggleClass('fh5co-awake');
+			event.stopPropagation();
+		});
+		// $('body').on('click', '.js-fh5co-menu-btn, .js-fh5co-offcanvass-close', function(){
+		// 	$('#fh5co-offcanvass').toggleClass('fh5co-awake');
+		// });
 	};
 
 	// Click outside of offcanvass
@@ -86,14 +94,23 @@
 
 	};
 
+    var lazyLoad = function () {
+    	$(".fh5co-board-img img").lazyload({
+    		effect:"fadeIn",
+    		failurelimit:40,
+    		load:function(){
+    			magnifPopup();
+				offCanvass();
+				mobileMenuOutsideClick();
+				animateBoxWayPoint();
+    		}
+    	})
+    }
 	
 
 	
 	$(function(){
-		magnifPopup();
-		offCanvass();
-		mobileMenuOutsideClick();
-		animateBoxWayPoint();
+		lazyLoad();
 	});
 
 

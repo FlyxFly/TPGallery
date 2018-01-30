@@ -229,6 +229,30 @@ class IndexController extends Controller {
         $this->display();
     }
 
+    public function search($keywords=null,$p=1){
+        $result=D('entry')->searchByTitle($keywords,$p);
+        $this->assign('keywords',$keywords);
+        $this->assign("title",C("title"));
+        $this->assign("data",$result['data']);
+        $this->assign("pagetitle",'搜索:'.$keywords);
+        $imgCount=D('entry')->getImgCount();
+        // dump($imgCount);
+        $paging= new  \Think\Page($result['count'], C("entryPerPage"));
+        $paging->urlPrefix=C('site_url').'boys/p/'.urlencode('[PAGE]');
+        $show=$paging->show();
+        $this->assign("imgCount",$imgCount);
+        $this->assign("page",$show);
+        $this->assign("statCode",$this->options['statcode']);
+
+        //tag
+        // dump(session('user'));
+        $this->assign('user',session('user'));
+        $tags = M('meta')->where("type= 'category'")->select();
+        $this->assign("AllTags",$tags);
+        $this->assign("options",$this->options);
+        $this->display("indexSQLopt"); 
+    }
+
     public function index($tagid=0,$p=1){
         D('entry')->addLog('view','index');
         $legalTagId=D('entry')->getCategoryIds();
